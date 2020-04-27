@@ -1,6 +1,5 @@
 package com.munozdiego.freenscaelis;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 
 public class MyGame extends Game {
@@ -16,4 +15,5 @@ public class MyGame extends Game {
         
         setScreen(gs);
     }
+    
 }

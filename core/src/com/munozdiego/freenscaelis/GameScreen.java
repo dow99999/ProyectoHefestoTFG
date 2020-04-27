@@ -11,6 +11,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,16 +40,16 @@ class GameScreen implements Screen{
 
     public void processUserInput(){
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            camera.translate(-5, 0);
+            camera.translate(5*Gdx.graphics.getDeltaTime()*60, 0);
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            camera.translate(5, 0);
+            camera.translate(-5*Gdx.graphics.getDeltaTime()*60, 0);
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
-            camera.translate(0, 5);
+            camera.translate(0, -5*Gdx.graphics.getDeltaTime()*60);
 
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            camera.translate(0, -5);
+            camera.translate(0, 5*Gdx.graphics.getDeltaTime()*60);
             
         if(MyGame.DEBUG_MODE)
             System.out.println("CameraPointing(" + camera.position.x + ", " + camera.position.y + ")");
