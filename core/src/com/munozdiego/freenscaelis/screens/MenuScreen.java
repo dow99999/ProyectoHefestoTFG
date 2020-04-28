@@ -15,10 +15,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.Assets;
-import com.munozdiego.freenscaelis.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
 
 /**
@@ -73,6 +71,11 @@ public class MenuScreen implements Screen {
             boxes[i + 2].set(100, 750 + 35 * i, layout.width, layout.height*-1);
         }
         
+        sprite_back = Assets.getSprite("images/bg-re.png");
+    }
+
+    @Override
+    public void show() {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -81,6 +84,7 @@ public class MenuScreen implements Screen {
                 
                 if (boxes[0].contains(screenX, screenY)) {
                     System.out.println(texts[0]);
+                    m_game.setScreen(m_game.screens.get("login"));
                 } else {
                     if (boxes[1].contains(screenX, screenY)) {
                         System.out.println(texts[1]);
@@ -120,13 +124,6 @@ public class MenuScreen implements Screen {
                 return true;
             }
         });
-        
-        sprite_back = Assets.getSprite("images/bg-re.png");
-    }
-
-    @Override
-    public void show() {
-
     }
 
     public void processUserInput() {

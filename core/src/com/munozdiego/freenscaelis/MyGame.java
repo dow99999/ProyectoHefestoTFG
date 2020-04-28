@@ -2,23 +2,30 @@ package com.munozdiego.freenscaelis;
 
 import com.munozdiego.freenscaelis.screens.MenuScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.munozdiego.freenscaelis.screens.LoginScreen;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyGame extends Game {
     public static final boolean DEBUG_MODE = true;
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     
-    public MenuScreen menuScreen;
+    public Map<String, Screen> screens;
 	
     @Override
     public void create () {
+        screens = new HashMap<>();
         Assets.init();
         Assets.addFont("pixel32b", 32, Color.BLACK, "fonts/pixelart.otf");
         Assets.addFont("pixel32w", 32, Color.WHITE, "fonts/pixelart.otf");
         
-        menuScreen = new MenuScreen(this);
-        setScreen(menuScreen);
+        screens.put("menu-principal", new MenuScreen(this));
+        screens.put("login", new LoginScreen(this));
+        
+        setScreen(screens.get("menu-principal"));
     }
     
 }
