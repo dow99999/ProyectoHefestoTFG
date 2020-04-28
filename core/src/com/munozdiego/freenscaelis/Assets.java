@@ -9,10 +9,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -20,24 +25,71 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
  */
 public class Assets {
     
-    public static Texture texture_back;
-    public static Sprite sprite_back;
+    private static Map<String, BitmapFont> fonts;
     
-    public static BitmapFont font;
+    public static void init(){
+        fonts = new HashMap<>();
+    }
     
-    public static void load(){
-        texture_back = new Texture(Gdx.files.internal("images/bg-re.png"));
-        texture_back.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        sprite_back = new Sprite(texture_back);
-        sprite_back.flip(false, true);
+
+    /**
+     * Funcion que devuelve una animacion
+     * @param path String directorio donde buscar
+     * @param filename String prefijo del set de imagenes de la animacion
+     * @param space float tiempo entre fotogramas
+     * @return Animation<TextureRegion> la animacion
+     */
+    public static Animation<TextureRegion> getAnimation(String path, String filename, float space){
+        return null;
+    }
+    
+    /**
+     * Funcion que devuelve un sprite a partir de su direccion
+     * @param path Strig direccion en la que se encuentra la imagen
+     * @return Sprite el sprite de la imagen
+     */
+    public static Sprite getSprite(String path){
+        Texture auxt;
+        Sprite auxs;
         
+        auxt = new Texture(Gdx.files.internal(path));
+        auxt.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        auxs = new Sprite(auxt);
+        auxs.flip(false, true);
+        
+        return auxs;
+    }
+    
+    /**
+     * Metodo para anadir una nueva fuente a las fuentes disponibles en assets
+     * 
+     * @param name String nombre de la fuente con la que se identificara
+     * @param size int amano de la fuente
+     * @param color Color color de la letra
+     * @param path String directorio dentro de los assets del proyecto en el que esta 
+     * el archivo de fuente(.ttf, .otf)
+     */
+    public static void addFont(String name, int size, Color color, String path){
+        BitmapFont aux;
         FreeTypeFontParameter param = new FreeTypeFontParameter();
-        param.size = 32;
+        param.size = size;
         
-        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pixelart.otf"));
-        font = gen.generateFont(param);
-        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        font.setColor(Color.WHITE);
-        font.getData().setScale(1, -1);
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(path));
+        aux = gen.generateFont(param);
+        aux.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        aux.setColor(color);
+        aux.getData().setScale(1, -1);
+        
+        fonts.put(name, aux);
+    }
+    
+    /**
+     * Funcion para recuperar una fuente de la lista de fuentes
+     * 
+     * @param name String nombre de la fuente
+     * @return BitmapFont la fuente
+     */
+    public static BitmapFont getFont(String name){
+        return fonts.get(name);
     }
 }

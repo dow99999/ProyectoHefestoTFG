@@ -8,11 +8,12 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
                 config.title = "Freen's Caelis";
-                config.width = 1920;
-                config.height = 1080;
-                config.fullscreen = true;
+                config.width = MyGame.WIDTH;
+                config.height = MyGame.HEIGHT;
+//                config.width = 1280;
+//                config.height = 720;
                 config.useGL30 = true;
-                config.fullscreen = false;
+                config.fullscreen = true;
                 
 		new LwjglApplication(new MyGame(), config);
 	}
