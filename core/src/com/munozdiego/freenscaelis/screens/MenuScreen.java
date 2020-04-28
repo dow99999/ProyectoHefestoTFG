@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.Assets;
+import com.munozdiego.freenscaelis.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
 
 /**
@@ -107,7 +108,7 @@ public class MenuScreen implements Screen {
                                         } else {
                                             if (boxes[7].contains(screenX, screenY)) {
                                                 System.out.println(texts[7]);
-
+                                                Gdx.app.exit();
                                             }
                                         }
                                     }
@@ -180,8 +181,9 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int i, int i1) {
-        float ratiox = (float)i/(float)MyGame.WIDTH;
-        float ratioy = (float)i1/(float)MyGame.HEIGHT;
+        //la formula de abajo se ha conseguido haciendo pruebas hasta que funcionara...
+        float ratiox = new Float(Math.sqrt((float)i/(float)MyGame.WIDTH));
+        float ratioy = new Float(Math.sqrt((float)i1/(float)MyGame.HEIGHT));
         Rectangle aux;
         
         if(MyGame.DEBUG_MODE)
@@ -189,11 +191,10 @@ public class MenuScreen implements Screen {
         
         for(int x = 0; x < boxes.length; x++){
             aux = boxes[x];
-            //la formula de abajo se ha conseguido haciendo pruebas hasta que funcionara...
-            aux.set(new Float(aux.x*Math.sqrt(ratiox)),
-                    new Float(aux.y*Math.sqrt(ratioy)),
-                    new Float(aux.width*Math.sqrt(ratiox)), //+ new Float(((1/Math.sqrt(ratiox)) - 1)*100)
-                    new Float(aux.height*Math.sqrt(ratioy)));
+            aux.set(aux.x*ratiox,
+                    aux.y*ratioy,
+                    aux.width*ratiox,
+                    aux.height*ratioy);
             if(MyGame.DEBUG_MODE){
                 System.out.println("box " + x + ":" + aux.x + "," + aux.y + "," + aux.width + "," + aux.height);
             }
