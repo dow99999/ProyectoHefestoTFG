@@ -6,89 +6,98 @@
 package com.munozdiego.freenscaelis.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.munozdiego.freenscaelis.Assets;
+import com.munozdiego.freenscaelis.InputText;
 import com.munozdiego.freenscaelis.MyGame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author diego
  */
-public class LoginScreen implements Screen{
+public class LoginScreen implements Screen {
 
-    MyGame m_game;
-    OrthographicCamera camera;
-    SpriteBatch batch;
+  SpriteBatch batch;
+  MyGame m_game;
+  OrthographicCamera camera;
 
-    BitmapFont fontw;
-    BitmapFont fontb;
+  BitmapFont fontw;
+  BitmapFont fontb;
 
-    Sprite sprite_back;
+  Sprite sprite_back;
+  
+  InputText textListener;
+
+  public LoginScreen(MyGame g) {
+    m_game = g;
+    camera = new OrthographicCamera();
+    camera.setToOrtho(true, 1920, 1080);
+
+    batch = new SpriteBatch();
+    fontw = Assets.getFont("pixel32w");
+    fontb = Assets.getFont("pixel32b");
+
+    sprite_back = Assets.getSprite("images/bg-blur.png");
+
+    textListener = new InputText();
+  }
+
+  @Override
+  public void show() {
+    Gdx.input.setInputProcessor(textListener);
+  }
+
+  @Override
+  public void render(float delta) {
+    camera.update();
+    batch.setProjectionMatrix(camera.combined);
+
+    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+      m_game.setScreen(m_game.screens.get("menu-principal"));
+    }
+
+    batch.begin();
+
+    batch.draw(sprite_back, 0, 0);
     
-    public LoginScreen(MyGame g){
-        m_game = g;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(true, 1920, 1080);
-        
-        batch = new SpriteBatch();
-        fontw = Assets.getFont("pixel32w");
-        fontb = Assets.getFont("pixel32b");
-        
-        sprite_back = Assets.getSprite("images/bg-blur.png");
-    }
-    
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(new InputAdapter(){
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button){
-                //TODO
-                return true;
-            }
-        });
-        
-    }
+    fontw.draw(batch, textListener.getText(), 50, 50);
 
-    @Override
-    public void render(float delta) {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        
-        batch.begin();
-        
-        batch.draw(sprite_back, 0, 0);
-        
-        batch.end();
-    }
+    batch.end();
+  }
 
-    @Override
-    public void resize(int arg0, int arg1) {
-        
-    }
+  @Override
+  public void resize(int arg0, int arg1) {
 
-    @Override
-    public void pause() {
-        
-    }
+  }
 
-    @Override
-    public void resume() {
-        
-    }
+  @Override
+  public void pause() {
 
-    @Override
-    public void hide() {
-        
-    }
+  }
 
-    @Override
-    public void dispose() {
-        
-    }
-    
+  @Override
+  public void resume() {
+
+  }
+
+  @Override
+  public void hide() {
+    textListener.resetText();
+  }
+
+  @Override
+  public void dispose() {
+    textListener.resetText();
+    fontb.dispose();
+    fontw.dispose();
+    batch.dispose();
+  }
+
 }
