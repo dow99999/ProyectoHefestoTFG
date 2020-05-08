@@ -79,8 +79,17 @@ public class MenuScreen implements Screen {
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         if (MyGame.DEBUG_MODE) {
-          System.out.println("Touch(" + screenX + "," + screenY + ")");
+          System.out.println("Before Touch(" + screenX + "," + screenY + ")");
+          System.out.println("camera(" + camera.position.x + "," + camera.position.y + ")");
+        }
+        
+        screenX += camera.position.x - camera.viewportWidth/2;
+        screenY += camera.position.y - camera.viewportHeight/2;
+        
+        if (MyGame.DEBUG_MODE) {
+          System.out.println("After Touch(" + screenX + "," + screenY + ")");
         }
 
         if (boxes[0].contains(screenX, screenY)) {
