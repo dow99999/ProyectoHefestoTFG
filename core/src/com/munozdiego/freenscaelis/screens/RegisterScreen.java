@@ -23,7 +23,7 @@ import com.munozdiego.freenscaelis.MyGame;
  *
  * @author diego
  */
-public class LoginScreen implements Screen {
+public class RegisterScreen implements Screen {
 
   SpriteBatch batch;
   MyGame m_game;
@@ -45,7 +45,7 @@ public class LoginScreen implements Screen {
   String[] texts = new String[]{
     "Username. ",
     "Password. ",
-    "Login"
+    "Register"
   };
 
   Rectangle ruser;
@@ -54,7 +54,7 @@ public class LoginScreen implements Screen {
 
   boolean focus;
 
-  public LoginScreen(MyGame g) {
+  public RegisterScreen(MyGame g) {
     m_game = g;
     camera = new OrthographicCamera();
     camera.setToOrtho(true, 1920, 1080);
@@ -92,8 +92,10 @@ public class LoginScreen implements Screen {
             textListener.resetText();
           } else {
             if (rlogin.contains(screenX, screenY)) {
-              DatabaseDataManager.getInstance().checkUserLogin(user, pass);
-              m_game.setScreen(m_game.screens.get("menu-principal"));
+              if(user.length() > 0 && pass.length() > 0){
+                DatabaseDataManager.getInstance().createUser(user, pass);
+                m_game.setScreen(m_game.screens.get("menu-principal")); 
+              }
             }
           }
         }

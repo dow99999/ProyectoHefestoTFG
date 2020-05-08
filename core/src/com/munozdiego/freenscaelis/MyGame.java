@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
+import com.munozdiego.freenscaelis.screens.RegisterScreen;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class MyGame extends Game {
 
     screens.put("menu-principal", new MenuScreen(this));
     screens.put("login", new LoginScreen(this));
+    screens.put("register", new RegisterScreen(this));
 
     setScreen(screens.get("menu-principal"));
   }
