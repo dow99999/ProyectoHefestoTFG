@@ -5,6 +5,7 @@
  */
 package com.munozdiego.freenscaelis;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
@@ -36,7 +37,11 @@ public class InputText extends InputAdapter {
     }
     if (Input.Keys.DEL == keyCode) {
       if (text.length() > 0) {
-        text = text.substring(0, text.length() - 1);
+        if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)){
+          text = "";
+        } else {
+          text = text.substring(0, text.length() - 1);
+        }
       }
     } else {
       if (capsEnabled) {
@@ -212,6 +217,46 @@ public class InputText extends InputAdapter {
           break;
         case Input.Keys.PERIOD:
           text += ".";
+          break;
+        case Input.Keys.NUM_0:
+        case Input.Keys.NUMPAD_0:
+          text += "0";
+          break;
+        case Input.Keys.NUM_1:
+        case Input.Keys.NUMPAD_1:
+          text += "1";
+          break;
+        case Input.Keys.NUM_2:
+        case Input.Keys.NUMPAD_2:
+          text += "2";
+          break;
+        case Input.Keys.NUM_3:
+        case Input.Keys.NUMPAD_3:
+          text += "3";
+          break;
+        case Input.Keys.NUM_4:
+        case Input.Keys.NUMPAD_4:
+          text += "4";
+          break;
+        case Input.Keys.NUM_5:
+        case Input.Keys.NUMPAD_5:
+          text += "5";
+          break;
+        case Input.Keys.NUM_6:
+        case Input.Keys.NUMPAD_6:
+          text += "6";
+          break;
+        case Input.Keys.NUM_7:
+        case Input.Keys.NUMPAD_7:
+          text += "7";
+          break;
+        case Input.Keys.NUM_8:
+        case Input.Keys.NUMPAD_8:
+          text += "8";
+          break;
+        case Input.Keys.NUM_9:
+        case Input.Keys.NUMPAD_9:
+          text += "9";
           break;
       }
       
