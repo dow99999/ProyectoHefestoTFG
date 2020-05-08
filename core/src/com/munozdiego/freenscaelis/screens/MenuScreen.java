@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.Assets;
+import com.munozdiego.freenscaelis.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
 
 /**
@@ -44,6 +45,9 @@ public class MenuScreen implements Screen {
     "Credits",
     "Exit"
   };
+  
+  GlyphLayout layout;
+  
   final Rectangle[] boxes = new Rectangle[texts.length];
 
   public MenuScreen(MyGame g) {
@@ -55,7 +59,7 @@ public class MenuScreen implements Screen {
     fontw = Assets.getFont("pixel32w");
     fontb = Assets.getFont("pixel32b");
 
-    GlyphLayout layout = new GlyphLayout();
+    layout = new GlyphLayout();
 
     for (int i = texts.length - 1; i >= 0; --i) {
       boxes[i] = new Rectangle();
@@ -98,7 +102,7 @@ public class MenuScreen implements Screen {
         } else {
           if (boxes[1].contains(screenX, screenY)) {
             System.out.println(texts[1]);
-
+            m_game.setScreen(m_game.screens.get("register"));
           } else {
             if (boxes[2].contains(screenX, screenY)) {
               System.out.println(texts[2]);
@@ -175,6 +179,9 @@ public class MenuScreen implements Screen {
     batch.begin();
 
     batch.draw(sprite_back, 0, 0);
+    
+    layout.setText(fontw, DatabaseDataManager.getInstance().getUser());
+    fontw.draw(batch, DatabaseDataManager.getInstance().getUser(), MyGame.WIDTH - 50 - layout.width, 50);
 
     fontw.draw(batch, texts[0], 50, 50);
     fontw.draw(batch, texts[1], 50, 50 + 35 * 1);
