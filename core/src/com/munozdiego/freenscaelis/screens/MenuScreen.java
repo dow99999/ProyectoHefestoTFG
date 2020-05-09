@@ -30,6 +30,7 @@ public class MenuScreen implements Screen {
   OrthographicCamera camera;
   SpriteBatch batch;
 
+  //the fonts we'll use
   BitmapFont fontw;
   BitmapFont fontb;
 
@@ -46,6 +47,7 @@ public class MenuScreen implements Screen {
     "Exit"
   };
   
+  //used to compute the dimensions of the text
   GlyphLayout layout;
   
   final Rectangle[] boxes = new Rectangle[texts.length];
@@ -61,6 +63,7 @@ public class MenuScreen implements Screen {
 
     layout = new GlyphLayout();
 
+    //setting the boxes where the user will click
     for (int i = texts.length - 1; i >= 0; --i) {
       boxes[i] = new Rectangle();
     }
@@ -80,6 +83,7 @@ public class MenuScreen implements Screen {
 
   @Override
   public void show() {
+    //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -89,6 +93,7 @@ public class MenuScreen implements Screen {
           System.out.println("camera(" + camera.position.x + "," + camera.position.y + ")");
         }
         
+        //testing on changing the position were the user clicked with a moved camera
         screenX += camera.position.x - camera.viewportWidth/2;
         screenY += camera.position.y - camera.viewportHeight/2;
         
@@ -140,6 +145,10 @@ public class MenuScreen implements Screen {
     });
   }
 
+  /**
+   * This method controls the camera movement, it is only a test,
+   * it won't be used in this screen
+   */
   public void processUserInput() {
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
       camera.translate(5 * Gdx.graphics.getDeltaTime() * 60, 0);
@@ -161,15 +170,16 @@ public class MenuScreen implements Screen {
       Gdx.app.exit();
     }
 
-    if (MyGame.DEBUG_MODE) {
-      //System.out.println("CameraPointing(" + camera.position.x + ", " + camera.position.y + ")");
-    }
+    //if (MyGame.DEBUG_MODE) {
+    //  System.out.println("CameraPointing(" + camera.position.x + ", " + camera.position.y + ")");
+    //}
   }
 
   @Override
   public void render(float f) {
     Gdx.gl.glClearColor(0F, 0F, 0F, 0F);
     Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+    //we process the user input before we draw
     processUserInput();
 
     camera.update();
@@ -204,6 +214,7 @@ public class MenuScreen implements Screen {
       System.out.println("i: " + i + ", il: " + i1 + "ratio(" + ratiox + "," + ratioy + ")");
     }
 
+    //when resizing the window we have to change the collider boxes' dimensions
     for (int x = 0; x < boxes.length; x++) {
       aux = boxes[x];
       aux.set(aux.x * ratiox,

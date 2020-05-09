@@ -30,7 +30,7 @@ public class MyGame extends Game {
     screens.put("menu-principal", new MenuScreen(this));
     screens.put("login", new LoginScreen(this));
     screens.put("register", new RegisterScreen(this));
-
+    
     setScreen(screens.get("menu-principal"));
   }
 

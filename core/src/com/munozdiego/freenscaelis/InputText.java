@@ -10,7 +10,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 /**
- *
+ *  This class can be used as an InputAdapter, it's specially made to
+ *  control text input from the user
+ * 
+ * It only supports Alphanumeric characters (uppercase and lowercase), the comma,
+ * the period and the space.
+ * It doesn't support ç nor ñ
+ * 
  * @author diego
  */
 public class InputText extends InputAdapter {
@@ -19,20 +25,36 @@ public class InputText extends InputAdapter {
   private String text = "";
   private boolean capsEnabled;
 
+  /**
+   * Initializes the Adapter with a limit of 200 characters and caps disabled
+   */
   public InputText() {
     super();
     limit = 200;
     capsEnabled = false;
   }
 
+  /**
+   * Method wich returns the text input the user has made
+   * @return String the string caught until now
+   */
   public String getText() {
     return text;
   }
 
+  /**
+   * Method that resets the saved text from the Adapter
+   */
   public void resetText() {
     text = "";
   }
 
+  /**
+   * Sets a maximum number of characters that will be saved in the Adapter,
+   * if the user tries to write when the maximum number of characters has been
+   * reached the adapter won't let the user write more
+   * @param l int maximum number of characters
+   */
   public void setLimit(int l) {
     limit = l;
   }
@@ -43,19 +65,20 @@ public class InputText extends InputAdapter {
       System.out.println("Key code -> " + Input.Keys.toString(keyCode));
     }
 
+    //caps enabled when pressing SHIFT
     if (Input.Keys.SHIFT_LEFT == keyCode || Input.Keys.SHIFT_RIGHT == keyCode) {
       capsEnabled = true;
     }
     if (Input.Keys.DEL == keyCode) {
       if (text.length() > 0) {
-        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) { //fast erase
           text = "";
         } else {
-          text = text.substring(0, text.length() - 1);
+          text = text.substring(0, text.length() - 1); //normal erase
         }
       }
     } else {
-      if (text.length() <= limit) {
+      if (text.length() <= limit) { //we will save another character only when the maximum length hasn't been reached
         if (capsEnabled) {
           switch (keyCode) {
             case Input.Keys.A:
@@ -280,14 +303,23 @@ public class InputText extends InputAdapter {
 
   @Override
   public boolean keyUp(int keyCode) {
+    //control of caps disabled
     if (Input.Keys.SHIFT_LEFT == keyCode || Input.Keys.SHIFT_RIGHT == keyCode) {
       capsEnabled = false;
     }
     return super.keyUp(keyCode);
   }
 
+  /**
+   * This class will provide util methods to process Strings
+   */
   public static class Utils {
 
+    /**
+     * Method to hide a text with *
+     * @param s String text to hide
+     * @return String hiden text
+     */
     public static String hideText(String s) {
       String aux = "";
       for (int i = s.length(); i > 0; --i) {

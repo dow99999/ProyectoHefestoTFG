@@ -12,9 +12,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author diego
@@ -26,6 +23,10 @@ public class DatabaseDataManager {
 
   private String m_user = "";
 
+  /**
+   * Method to get an instance of the DatabaseDataManager
+   * @return DatabaseDataManager the instance
+   */
   public static DatabaseDataManager getInstance() {
     if (m_instance == null) {
       m_instance = new DatabaseDataManager();
@@ -33,6 +34,9 @@ public class DatabaseDataManager {
     return m_instance;
   }
 
+  /**
+   * The constructor starts the connection with the external database
+   */
   public DatabaseDataManager() {
     String ip = "localhost";
     String port = "3306";
@@ -49,6 +53,10 @@ public class DatabaseDataManager {
     }
   }
 
+  /**
+   * This method us ised to retrieve the current logged user
+   * @return String name of the user
+   */
   public String getUser() { return m_user; }
   
   public void createUser(String user, String pass) {
@@ -63,6 +71,12 @@ public class DatabaseDataManager {
     }
   }
 
+  /**
+   * Method to check and log a user
+   * @param user String name of the user
+   * @param pass String password of the user(non encrypted)
+   * @return boolean true ? the user has been logged : the user doesn't exist / no connection to the database
+   */
   public boolean checkUserLogin(String user, String pass) {
     PreparedStatement ps;
     ResultSet rs;
@@ -87,6 +101,11 @@ public class DatabaseDataManager {
     return found;
   }
 
+  /**
+   * Method to parse a string to a MD5
+   * @param s String to be converted
+   * @return String MD5 of the original string
+   */
   private String stringToMD5(String s) {
     String generatedPassword = "null";
     try {

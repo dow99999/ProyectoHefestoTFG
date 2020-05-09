@@ -28,7 +28,8 @@ public class LoginScreen implements Screen {
   SpriteBatch batch;
   MyGame m_game;
   OrthographicCamera camera;
-
+  
+  //types of font used in the screen
   BitmapFont fontw;
   BitmapFont fontb;
 
@@ -39,19 +40,24 @@ public class LoginScreen implements Screen {
   String user = "";
   String pass = "";
   String passc = "";
-
+  
+  //used to compute the dimensions of the text we are showing
   GlyphLayout layout;
 
   String[] texts = new String[]{
     "Username. ",
     "Password. ",
-    "Login"
+    "Login",
+    "Type your username",
+    "Type your password"
   };
 
+  //Boxes where the user will click
   Rectangle ruser;
   Rectangle rpass;
   Rectangle rlogin;
 
+  //used to control in which field the user is writing
   boolean focus;
 
   public LoginScreen(MyGame g) {
@@ -70,22 +76,28 @@ public class LoginScreen implements Screen {
     ruser = new Rectangle();
     rpass = new Rectangle();
     rlogin = new Rectangle();
-
+    
+    //we set the boxes were the user will be able to click to change the input focus
+    layout.setText(fontw, texts[3]);
+    float widthAux = layout.width;
     layout.setText(fontw, texts[0]);
-    ruser.set(200, 300, layout.width, layout.height * -1);
+    ruser.set(200, 300, layout.width + widthAux, layout.height * -1);
+    layout.setText(fontw, texts[4]);
+    widthAux = layout.width;
     layout.setText(fontw, texts[1]);
-    rpass.set(200, 400, layout.width, layout.height * -1);
+    rpass.set(200, 400, layout.width + widthAux, layout.height * -1);
     layout.setText(fontw, texts[2]);
     rlogin.set(MyGame.WIDTH / 2 - layout.width / 2, 700, layout.width, layout.height * -1);
 
     focus = true;
 
+    //we add mouse input control to our textListener
     textListener = new InputText() {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (ruser.contains(screenX, screenY)) {
           focus = true;
-          textListener.resetText();
+          textListener.resetText(); //reset the text when clicking on the field
         } else {
           if (rpass.contains(screenX, screenY)) {
             focus = false;
@@ -101,11 +113,13 @@ public class LoginScreen implements Screen {
       }
     };
 
+    //the limit of characters we can enter in one field
     textListener.setLimit(10);
   }
 
   @Override
   public void show() {
+    //we set our listener to libGDX only when this screen is being shown
     Gdx.input.setInputProcessor(textListener);
   }
 
@@ -113,11 +127,13 @@ public class LoginScreen implements Screen {
   public void render(float delta) {
     camera.update();
     batch.setProjectionMatrix(camera.combined);
-
+    
+    //go back to the main menu if ESC is pressed
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       m_game.setScreen(m_game.screens.get("menu-principal"));
     }
 
+    //control field input
     if (focus) {
       user = textListener.getText();
     } else {
@@ -125,22 +141,24 @@ public class LoginScreen implements Screen {
       passc = InputText.Utils.hideText(pass);
     }
 
+    //start of the drawing process
     batch.begin();
 
     batch.draw(sprite_back, 0, 0);
 
     fontw.draw(batch, texts[0], 200, 300);
     layout.setText(fontw, texts[0]);
-    fontw.draw(batch, user.equals("") ? "Type your username" : user, 200 + layout.width, 300);
+    fontw.draw(batch, user.equals("") ? texts[3] : user, 200 + layout.width, 300);
 
     fontw.draw(batch, texts[1], 200, 400);
     layout.setText(fontw, texts[1]);
-    fontw.draw(batch, pass.equals("") ? "Type your password" : passc, 200 + layout.width, 400);
+    fontw.draw(batch, pass.equals("") ? texts[4] : passc, 200 + layout.width, 400);
 
     layout.setText(fontw, texts[2]);
     fontw.draw(batch, texts[2], MyGame.WIDTH / 2 - layout.width / 2, 700);
 
     batch.end();
+    //end of the drawing process
   }
 
   @Override
@@ -160,6 +178,7 @@ public class LoginScreen implements Screen {
 
   @Override
   public void hide() {
+    //reset the listener when this screen is no longer visible
     textListener.resetText();
   }
 
