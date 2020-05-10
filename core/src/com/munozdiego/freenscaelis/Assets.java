@@ -35,11 +35,23 @@ public class Assets {
      * Funcion que devuelve una animacion
      * @param path String directorio donde buscar
      * @param filename String prefijo del set de imagenes de la animacion
+     * @param num int numero de fotogramas
+     * @param ext String extension de cada fotograma (debe ser la misma para todos los fotogramas)
      * @param space float tiempo entre fotogramas
+     * @param flip boolean si hay que voltear la imagen horizontalmente o no
      * @return Animation<TextureRegion> la animacion
      */
-    public static Animation<TextureRegion> getAnimation(String path, String filename, float space){
-        return null;
+    public static Animation<TextureRegion> getAnimation(String path, String filename, int num, String ext, float space, boolean flip){
+      TextureRegion[] tr = new TextureRegion[num];
+      Sprite auxs;
+      
+      for(int i = 0; i < num; i++){
+        auxs = new Sprite(new Texture(Gdx.files.internal(path + filename + "_" + i + "." + ext)));
+        auxs.flip(flip, true);
+        tr[i] = new TextureRegion(auxs);
+      }
+      
+      return new Animation<>(space, tr);
     }
     
     /**
