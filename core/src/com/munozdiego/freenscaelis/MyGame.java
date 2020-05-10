@@ -1,5 +1,6 @@
 package com.munozdiego.freenscaelis;
 
+import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.screens.MenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
 import com.munozdiego.freenscaelis.screens.RegisterScreen;
+import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,12 +26,15 @@ public class MyGame extends Game {
     screens = new HashMap<>();
     batch = new SpriteBatch();
     Assets.init();
+    Assets.addFont("pixel32r", 32, Color.RED, "fonts/pixelart.otf");
+    Assets.addFont("pixel32y", 32, Color.YELLOW, "fonts/pixelart.otf");
     Assets.addFont("pixel32b", 32, Color.BLACK, "fonts/pixelart.otf");
     Assets.addFont("pixel32w", 32, Color.WHITE, "fonts/pixelart.otf");
 
     screens.put("menu-principal", new MenuScreen(this));
     screens.put("login", new LoginScreen(this));
     screens.put("register", new RegisterScreen(this));
+    screens.put("player-select", new SelectPlayerScreen(this));
     
     setScreen(screens.get("menu-principal"));
   }

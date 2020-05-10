@@ -30,23 +30,41 @@ public class Entidad{
   protected int[] stats;
   protected Sprite textura;
   protected Estado currentState;
+  protected String name;
+  protected float speed;
   protected Map<Estado, Animation<TextureRegion>> animaciones;
   protected Map<Estado, Rectangle> colliders;
   
   public Entidad(){
     stats = new int[2];
     inventario = new Item[10];
-    
+    name = "Name";
     animaciones = new HashMap<>();
     colliders = new HashMap<>();
   }
 
+  public float getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(float speed) {
+    this.speed = speed;
+  }
+  
   public Estado getCurrentState() {
     return currentState;
   }
 
   public void setCurrentState(Estado currentState) {
     this.currentState = currentState;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
   
   public float getPosx() {

@@ -14,9 +14,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.munozdiego.freenscaelis.Assets;
-import com.munozdiego.freenscaelis.DatabaseDataManager;
-import com.munozdiego.freenscaelis.InputText;
+import com.munozdiego.freenscaelis.utils.Assets;
+import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
+import com.munozdiego.freenscaelis.utils.InputText;
 import com.munozdiego.freenscaelis.MyGame;
 
 /**
