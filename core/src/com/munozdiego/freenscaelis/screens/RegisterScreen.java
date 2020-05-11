@@ -106,7 +106,7 @@ public class RegisterScreen implements Screen {
             if (rlogin.contains(screenX, screenY)) {
               if(user.length() > 0 && pass.length() > 0){
                 DatabaseDataManager.getInstance().createUser(user, pass);
-                m_game.setScreen(m_game.screens.get("menu-principal")); 
+                m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
               }
             }
           }
@@ -132,7 +132,7 @@ public class RegisterScreen implements Screen {
 
     //go back to the main menu if ESC is pressed
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.setScreen(m_game.screens.get("menu-principal"));
+      m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
     }
 
     //control field input
