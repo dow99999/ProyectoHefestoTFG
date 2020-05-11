@@ -83,17 +83,13 @@ public class CreatePlayerScreen implements Screen {
 
     pj_sword = new Personaje();
     pj_sword.setClase(Personaje.Clase.SWORD);
-    pj_sword.setCurrentState(Entidad.Estado.IDLE_RIGHT);
-    pj_sword.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Idle_Sword_Defence0", 4, "png", 0.17f, false));
-    pj_sword.getAnimaciones().put(Entidad.Estado.RUN_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Walk_Sword_Defence0", 4, "png", 0.17f, false));
+    pj_sword.init(Personaje.Clase.SWORD, 0);
     pj_sword.setPosx(posCol[0][0]);
     pj_sword.setPosy(posCol[0][1]);
 
     pj_scepter = new Personaje();
     pj_scepter.setClase(Personaje.Clase.SCEPTER);
-    pj_scepter.setCurrentState(Entidad.Estado.IDLE_RIGHT);
-    pj_scepter.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Scepter/Defence0/", "Player_Idle_Scepter_Defence0", 4, "png", 0.17f, false));
-    pj_scepter.getAnimaciones().put(Entidad.Estado.RUN_RIGHT, Assets.getAnimation("Sprites/Player/Scepter/Defence0/", "Player_Walk_Scepter_Defence0", 4, "png", 0.17f, false));
+    pj_scepter.init(Personaje.Clase.SCEPTER, 0);
     pj_scepter.setPosx(posCol[1][0]);
     pj_scepter.setPosy(posCol[1][1]);
 
