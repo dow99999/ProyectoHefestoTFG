@@ -67,12 +67,26 @@ public class Entidad{
     this.name = name;
   }
   
+  public float getCenterX(){
+    return animaciones.get(Estado.IDLE_RIGHT).getKeyFrame(0).getRegionWidth()/2;
+  }
+  
+  public float getCenterY(){
+    return animaciones.get(Estado.IDLE_RIGHT).getKeyFrame(0).getRegionHeight()/2;
+  }
+  
+  private void updateCollider(){
+    this.colliders.get(this.getCurrentState()).setX(posx+getCenterX());
+    this.colliders.get(this.getCurrentState()).setY(posy+getCenterY());
+  }
+  
   public float getPosx() {
     return posx;
   }
 
   public void setPosx(float posx) {
     this.posx = posx;
+    updateCollider();
   }
 
   public float getPosy() {
@@ -81,6 +95,7 @@ public class Entidad{
 
   public void setPosy(float posy) {
     this.posy = posy;
+    updateCollider();
   }
 
   public float getVida() {
