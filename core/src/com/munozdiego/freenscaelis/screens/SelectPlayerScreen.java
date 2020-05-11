@@ -84,6 +84,20 @@ public class SelectPlayerScreen implements Screen {
       boxes_player_selection[i] = new Rectangle();
     }
 
+    //setting the boxes where the user will click
+    for (int i = 0; i < 3; i++) {
+      layout.setText(fontw, userdata.getCharacters()[i] == null ? "" : userdata.getCharacters()[i].getName());
+      boxes_player_selection[i].set(posCol[i][0], posCol[i][1], layout.width, layout.height * -1);
+    }
+    for (int i = 3; i < 6; i++) {
+      layout.setText(fontw, texts[0]);
+      boxes_player_selection[i].set(posCol[i][0], posCol[i][1], layout.width, layout.height * -1);
+    }
+    layout.setText(fontw, texts[1]);
+    boxes_player_selection[6].set(posCol[6][0], posCol[6][1], layout.width, layout.height * -1);
+    layout.setText(fontw, texts[2]);
+    boxes_player_selection[7].set(posCol[7][0], posCol[7][1], layout.width, layout.height * -1);
+
     //sprite_back = Assets.getSprite("images/bg-re.png");
   }
 
@@ -91,23 +105,6 @@ public class SelectPlayerScreen implements Screen {
   public void show() {
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
-      public void init() {
-        //Doesn't work outside the adapter in this screen, don't know why
-        //setting the boxes where the user will click
-
-        for (int i = 0; i < 3; i++) {
-          layout.setText(fontw, userdata.getCharacters()[i] == null ? "" : userdata.getCharacters()[i].getName());
-          boxes_player_selection[i].set(posCol[i][0], posCol[i][1], layout.width, layout.height * -1);
-        }
-        for (int i = 3; i < 6; i++) {
-          layout.setText(fontw, texts[0]);
-          boxes_player_selection[i].set(posCol[i][0], posCol[i][1], layout.width, layout.height * -1);
-        }
-        layout.setText(fontw, texts[1]);
-        boxes_player_selection[6].set(posCol[6][0], posCol[6][1], layout.width, layout.height * -1);
-        layout.setText(fontw, texts[2]);
-        boxes_player_selection[7].set(posCol[7][0], posCol[7][1], layout.width, layout.height * -1);
-      }
 
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -116,9 +113,7 @@ public class SelectPlayerScreen implements Screen {
           System.out.println("Before Touch(" + screenX + "," + screenY + ")");
           System.out.println("camera(" + camera.position.x + "," + camera.position.y + ")");
         }
-        
-        init();
-        
+
         //testing on changing the position were the user clicked with a moved camera
         screenX += camera.position.x - camera.viewportWidth / 2;
         screenY += camera.position.y - camera.viewportHeight / 2;
@@ -128,60 +123,65 @@ public class SelectPlayerScreen implements Screen {
         }
 
         if (boxes_player_selection[0].contains(screenX, screenY)) {
-          if(MyGame.DEBUG_MODE)
+          if (MyGame.DEBUG_MODE) {
             System.out.println("player 0");
+          }
           pj = userdata.getCharacters()[0];
           userdata.selectCharacter(pj);
         } else {
           if (boxes_player_selection[1].contains(screenX, screenY)) {
-            if(MyGame.DEBUG_MODE)
+            if (MyGame.DEBUG_MODE) {
               System.out.println("player 1");
+            }
             pj = userdata.getCharacters()[1];
             userdata.selectCharacter(pj);
           } else {
             if (boxes_player_selection[2].contains(screenX, screenY)) {
-              if(MyGame.DEBUG_MODE)
+              if (MyGame.DEBUG_MODE) {
                 System.out.println("player 2");
+              }
               pj = userdata.getCharacters()[2];
               userdata.selectCharacter(pj);
             } else {
               if (boxes_player_selection[3].contains(screenX, screenY)) {
-                if(MyGame.DEBUG_MODE)
+                if (MyGame.DEBUG_MODE) {
                   System.out.println("erase 0");
-                if(userdata.getCurrentCharacter() == userdata.getCharacters()[0]){
+                }
+                if (userdata.getCurrentCharacter() == userdata.getCharacters()[0]) {
                   pj = null;
                   userdata.selectCharacter(null);
                 }
                 userdata.eraseCharacter(0);
               } else {
                 if (boxes_player_selection[4].contains(screenX, screenY)) {
-                  if(MyGame.DEBUG_MODE)
+                  if (MyGame.DEBUG_MODE) {
                     System.out.println("erase 1");
-                  if(userdata.getCurrentCharacter() == userdata.getCharacters()[1]){
+                  }
+                  if (userdata.getCurrentCharacter() == userdata.getCharacters()[1]) {
                     pj = null;
                     userdata.selectCharacter(null);
                   }
                   userdata.eraseCharacter(1);
                 } else {
                   if (boxes_player_selection[5].contains(screenX, screenY)) {
-                    if(MyGame.DEBUG_MODE)
+                    if (MyGame.DEBUG_MODE) {
                       System.out.println("erase 2");
-                    if(userdata.getCurrentCharacter() == userdata.getCharacters()[2]){
+                    }
+                    if (userdata.getCurrentCharacter() == userdata.getCharacters()[2]) {
                       pj = null;
                       userdata.selectCharacter(null);
                     }
                     userdata.eraseCharacter(2);
                   } else {
                     if (boxes_player_selection[6].contains(screenX, screenY)) {
-                      if(MyGame.DEBUG_MODE)
+                      if (MyGame.DEBUG_MODE) {
                         System.out.println("Create new");
-                      
-                      //TODO pantalla de creacion de personaje
-                      userdata.addCharacter(new Personaje());
+                      }
+                      m_game.setScreen(m_game.screens.get("player-create"));
                     } else {
                       if (boxes_player_selection[7].contains(screenX, screenY)) {
                         System.out.println("Start Game");
-                        if(pj != null){
+                        if (pj != null) {
                           //TODO pantalla de inicio
                         }
                       }
@@ -231,12 +231,8 @@ public class SelectPlayerScreen implements Screen {
       //batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
     }
 
-    for (int i = boxes_player_selection.length - 1; i >= 0; --i) {
-      boxes_player_selection[i] = new Rectangle();
-    }
-
     for (int i = 0; i < 3; i++) {
-      if(userdata.getCharacters()[i] == pj && pj != null){        
+      if (userdata.getCharacters()[i] == pj && pj != null) {
         fonty.draw(batch, userdata.getCharacters()[i] == null ? "" : userdata.getCharacters()[i].getName(), posCol[i][0], posCol[i][1]);
       } else {
         fontw.draw(batch, userdata.getCharacters()[i] == null ? "" : userdata.getCharacters()[i].getName(), posCol[i][0], posCol[i][1]);
