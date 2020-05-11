@@ -11,15 +11,10 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
@@ -58,9 +53,7 @@ public class MenuScreen implements Screen {
   GlyphLayout layout;
   
   final Rectangle[] boxes = new Rectangle[texts.length];
-  
-  Personaje pj;
-  Personaje pja;
+
   float stateTime;
   
   public MenuScreen(MyGame g) {
@@ -90,22 +83,6 @@ public class MenuScreen implements Screen {
     }
 
     sprite_back = Assets.getSprite("images/bg-re.png");
-    
-    pj = new Personaje();
-    //Sprites/Player/Sword/Defence0/Player_Idle_Sword_Defence0_0.png
-    pj.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence1/", "Player_Walk_Sword_Defence1", 4, "png", 0.17f, false));
-    pj.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Sword/Defence1/", "Player_Walk_Sword_Defence1", 4, "png", 0.17f, true));
-    stateTime = 0.1f;
-    pj.setPosx(100);
-    pj.setPosy(100);
-
-    pja = new Personaje();
-    //Sprites/Player/Sword/Defence0/Player_Idle_Sword_Defence0_0.png
-    pja.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Walk_Sword_Defence0", 4, "png", 0.17f, false));
-    pja.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Walk_Sword_Defence0", 4, "png", 0.17f, true));
-    //stateTime = 0.1f;
-    pja.setPosx(100);
-    pja.setPosy(100);
   }
 
   
@@ -192,43 +169,10 @@ public class MenuScreen implements Screen {
     if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
       camera.translate(0, 5 * Gdx.graphics.getDeltaTime() * 60);
     }
-    //movement player
-    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-      pj.setPosy(pj.getPosy() - 5 * Gdx.graphics.getDeltaTime() * 60);
-    }
-
-    if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-      pj.setPosy(pj.getPosy() + 5 * Gdx.graphics.getDeltaTime() * 60);
-      
-    }
-
-    if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-      pj.setCurrentState(Entidad.Estado.IDLE_RIGHT);
-      pj.setPosx(pj.getPosx() + 5 * Gdx.graphics.getDeltaTime() * 60);
-    }
-
-    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-      pj.setCurrentState(Entidad.Estado.IDLE_LEFT);
-      pj.setPosx(pj.getPosx() - 5 * Gdx.graphics.getDeltaTime() * 60);
-    }
-
+    
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       Gdx.app.exit();
     }
-    
-    if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-      camera.position.set(
-            camera.position.x + (pja.getPosx() - camera.position.x) * Gdx.graphics.getDeltaTime(),
-            camera.position.y + (pja.getPosy() - camera.position.y) * Gdx.graphics.getDeltaTime(),
-            0);
-    } else {
-      camera.position.set(
-              camera.position.x + (pj.getPosx() - camera.position.x) * Gdx.graphics.getDeltaTime(),
-              camera.position.y + (pj.getPosy() - camera.position.y) * Gdx.graphics.getDeltaTime(),
-              0);
-    }
-    
-    
     
     //if (MyGame.DEBUG_MODE) {
     //  System.out.println("CameraPointing(" + camera.position.x + ", " + camera.position.y + ")");
@@ -251,9 +195,6 @@ public class MenuScreen implements Screen {
     batch.begin();
 
     batch.draw(sprite_back, 0, 0);
-
-    batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
-    batch.draw(pja.getAnimaciones().get(pja.getCurrentState()).getKeyFrame(stateTime, true), pja.getPosx(), pja.getPosy());
 
     layout.setText(fontw, DatabaseDataManager.getInstance().getUser());
     fontw.draw(batch, DatabaseDataManager.getInstance().getUser(), MyGame.WIDTH - 50 - layout.width, 50);
