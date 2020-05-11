@@ -31,7 +31,7 @@ public class LoginScreen implements Screen {
   
   //types of font used in the screen
   BitmapFont fontw;
-  BitmapFont fontb;
+  BitmapFont fonty;
 
   Sprite sprite_back;
 
@@ -67,7 +67,7 @@ public class LoginScreen implements Screen {
 
     batch = new SpriteBatch();
     fontw = Assets.getFont("pixel32w");
-    fontb = Assets.getFont("pixel32b");
+    fonty = Assets.getFont("pixel32y");
 
     layout = new GlyphLayout();
 
@@ -132,6 +132,11 @@ public class LoginScreen implements Screen {
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
     }
+    
+    if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+      focus = !focus;
+      textListener.resetText();
+    }
 
     //control field input
     if (focus) {
@@ -146,14 +151,28 @@ public class LoginScreen implements Screen {
 
     batch.draw(sprite_back, 0, 0);
 
-    fontw.draw(batch, texts[0], 200, 300);
+    if(focus)
+      fonty.draw(batch, texts[0], 200, 300);
+    else
+      fontw.draw(batch, texts[0], 200, 300);
+    
     layout.setText(fontw, texts[0]);
-    fontw.draw(batch, user.equals("") ? texts[3] : user, 200 + layout.width, 300);
-
-    fontw.draw(batch, texts[1], 200, 400);
+    if(focus)
+      fonty.draw(batch, user.equals("") ? texts[3] : user, 200 + layout.width, 300);
+    else
+      fontw.draw(batch, user.equals("") ? texts[3] : user, 200 + layout.width, 300);
+      
+    if(focus)
+      fontw.draw(batch, texts[1], 200, 400);
+    else
+      fonty.draw(batch, texts[1], 200, 400);
+    
     layout.setText(fontw, texts[1]);
-    fontw.draw(batch, pass.equals("") ? texts[4] : passc, 200 + layout.width, 400);
-
+    if(focus)
+      fontw.draw(batch, pass.equals("") ? texts[4] : passc, 200 + layout.width, 400);
+    else
+      fonty.draw(batch, pass.equals("") ? texts[4] : passc, 200 + layout.width, 400);
+    
     layout.setText(fontw, texts[2]);
     fontw.draw(batch, texts[2], MyGame.WIDTH / 2 - layout.width / 2, 700);
 
@@ -185,7 +204,7 @@ public class LoginScreen implements Screen {
   @Override
   public void dispose() {
     textListener.resetText();
-    fontb.dispose();
+    fonty.dispose();
     fontw.dispose();
     batch.dispose();
   }
