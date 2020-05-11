@@ -113,6 +113,11 @@ public class SelectPlayerScreen implements Screen {
           System.out.println("Before Touch(" + screenX + "," + screenY + ")");
           System.out.println("camera(" + camera.position.x + "," + camera.position.y + ")");
         }
+        
+        for (int i = 0; i < 3; i++) {
+          layout.setText(fontw, userdata.getCharacters()[i] == null ? "" : userdata.getCharacters()[i].getName());
+          boxes_player_selection[i].set(posCol[i][0], posCol[i][1], layout.width, layout.height * -1);
+        }
 
         //testing on changing the position were the user clicked with a moved camera
         screenX += camera.position.x - camera.viewportWidth / 2;
@@ -127,6 +132,8 @@ public class SelectPlayerScreen implements Screen {
             System.out.println("player 0");
           }
           pj = userdata.getCharacters()[0];
+          pj.setPosx(500);
+          pj.setPosx(300);
           userdata.selectCharacter(pj);
         } else {
           if (boxes_player_selection[1].contains(screenX, screenY)) {
@@ -134,6 +141,8 @@ public class SelectPlayerScreen implements Screen {
               System.out.println("player 1");
             }
             pj = userdata.getCharacters()[1];
+            pj.setPosx(500);
+            pj.setPosx(300);
             userdata.selectCharacter(pj);
           } else {
             if (boxes_player_selection[2].contains(screenX, screenY)) {
@@ -141,6 +150,8 @@ public class SelectPlayerScreen implements Screen {
                 System.out.println("player 2");
               }
               pj = userdata.getCharacters()[2];
+              pj.setPosx(500);
+              pj.setPosx(300);
               userdata.selectCharacter(pj);
             } else {
               if (boxes_player_selection[3].contains(screenX, screenY)) {
@@ -228,7 +239,7 @@ public class SelectPlayerScreen implements Screen {
 
     //batch.draw(sprite_back, 0, 0);
     if (pj != null) {
-      //batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
+      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
     }
 
     for (int i = 0; i < 3; i++) {

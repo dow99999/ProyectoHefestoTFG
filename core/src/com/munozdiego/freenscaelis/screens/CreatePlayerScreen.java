@@ -233,7 +233,10 @@ public class CreatePlayerScreen implements Screen {
 
   @Override
   public void hide() {
-
+    pj_scepter.setCurrentState(Entidad.Estado.IDLE_RIGHT);
+    pj_sword.setCurrentState(Entidad.Estado.IDLE_RIGHT);
+    textAdapter.resetText();
+    selected = null;
   }
 
   @Override
