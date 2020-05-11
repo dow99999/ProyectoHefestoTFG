@@ -105,7 +105,7 @@ public class LoginScreen implements Screen {
           } else {
             if (rlogin.contains(screenX, screenY)) {
               if(DatabaseDataManager.getInstance().checkUserLogin(user, pass))
-                m_game.setScreen(m_game.screens.get("menu-principal"));
+                m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
             }
           }
         }
@@ -130,7 +130,7 @@ public class LoginScreen implements Screen {
     
     //go back to the main menu if ESC is pressed
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.setScreen(m_game.screens.get("menu-principal"));
+      m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
     }
 
     //control field input

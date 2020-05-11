@@ -131,15 +131,15 @@ public class MenuScreen implements Screen {
 
         if (boxes[0].contains(screenX, screenY)) {
           System.out.println(texts[0]);
-          m_game.setScreen(m_game.screens.get("login"));
+          m_game.showScreen(MyGame.CodeScreen.LOGIN);
         } else {
           if (boxes[1].contains(screenX, screenY)) {
             System.out.println(texts[1]);
-            m_game.setScreen(m_game.screens.get("register"));
+            m_game.showScreen(MyGame.CodeScreen.REGISTER);
           } else {
             if (boxes[2].contains(screenX, screenY)) {
               System.out.println(texts[2]);
-              m_game.setScreen(m_game.screens.get("player-select"));
+              m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
             } else {
               if (boxes[3].contains(screenX, screenY)) {
                 System.out.println(texts[3]);

@@ -153,7 +153,7 @@ public class CreatePlayerScreen implements Screen {
                 if(!textAdapter.getText().equals("")){
                   selected.setName(textAdapter.getText());
                   userdata.addCharacter(selected);
-                  m_game.setScreen(m_game.screens.get("player-select"));
+                  m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
                 }
               }
             }
@@ -178,7 +178,7 @@ public class CreatePlayerScreen implements Screen {
    */
   public void processUserInput() {
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.setScreen(m_game.screens.get("player-select"));
+      m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
     }
 
     //if (MyGame.DEBUG_MODE) {

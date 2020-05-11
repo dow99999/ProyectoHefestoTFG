@@ -188,12 +188,12 @@ public class SelectPlayerScreen implements Screen {
                       if (MyGame.DEBUG_MODE) {
                         System.out.println("Create new");
                       }
-                      m_game.setScreen(m_game.screens.get("player-create"));
+                      m_game.showScreen(MyGame.CodeScreen.CREATE_CHAR);
                     } else {
                       if (boxes_player_selection[7].contains(screenX, screenY)) {
                         System.out.println("Start Game");
                         if (pj != null) {
-                          //TODO pantalla de inicio
+                          m_game.showScreen(MyGame.CodeScreen.PUEBLO_INICIAL);
                         }
                       }
                     }
@@ -214,7 +214,7 @@ public class SelectPlayerScreen implements Screen {
    */
   public void processUserInput() {
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.setScreen(m_game.screens.get("menu-principal"));
+      m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
     }
 
     //if (MyGame.DEBUG_MODE) {
