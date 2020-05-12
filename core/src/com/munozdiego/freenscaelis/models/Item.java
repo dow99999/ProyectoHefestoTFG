@@ -10,9 +10,46 @@ package com.munozdiego.freenscaelis.models;
  * @author diego
  */
 public class Item {
-  private int[] stats;
-  
-  public Item(){
-    stats = new int[2];
+  int id;
+  String name;
+  int att;
+  int def;
+
+  public Item() {
   }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public int getAtt() {
+    return att;
+  }
+
+  public void setAtt(int att) {
+    this.att = att;
+  }
+
+  public int getDef() {
+    return def;
+  }
+
+  public void setDef(int def) {
+    this.def = def;
+  }
+
+  
+  
 }

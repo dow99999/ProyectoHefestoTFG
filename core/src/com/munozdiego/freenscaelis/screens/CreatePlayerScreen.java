@@ -21,6 +21,7 @@ import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.InputText;
+import com.munozdiego.freenscaelis.utils.LocalDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 
 /**
@@ -149,6 +150,7 @@ public class CreatePlayerScreen implements Screen {
                 if(!textAdapter.getText().equals("")){
                   selected.setName(textAdapter.getText());
                   userdata.addCharacter(selected);
+                  LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
                   m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
                 }
               }

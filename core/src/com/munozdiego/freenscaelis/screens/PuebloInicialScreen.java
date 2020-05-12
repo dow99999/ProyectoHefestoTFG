@@ -11,6 +11,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -59,6 +60,7 @@ public class PuebloInicialScreen implements Screen {
   //final Rectangle[] boxes = new Rectangle[texts.length];
   Personaje pj;
   float stateTime;
+  float attackTime;
 
   UserData userdata;
 
@@ -84,7 +86,7 @@ public class PuebloInicialScreen implements Screen {
     new Rectangle(0, 1316, 385, 76),
     new Rectangle(0, 1536, 385, 66)
   };
-  
+
   final Rectangle[] warpZones = new Rectangle[]{
     new Rectangle(1296, 0, 415, 61), //bosque norte
     new Rectangle(2578, 1391, 60, 144), //bosque este
@@ -189,57 +191,75 @@ public class PuebloInicialScreen implements Screen {
     float lastPos;
 
     //movement player
-    
-    if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-      pj.setCurrentState(
-              pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-              ? Entidad.Estado.RUN_RIGHT
-              : Entidad.Estado.RUN_LEFT);
-      lastPos = pj.getPosy();
-      pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-      if(ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))){
-        pj.setPosy(lastPos);
+    if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+
+      if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        pj.setCurrentState(
+                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                ? Entidad.Estado.RUN_RIGHT
+                : Entidad.Estado.RUN_LEFT);
+        lastPos = pj.getPosy();
+        pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+          pj.setPosy(lastPos);
+        }
+        moving = true;
       }
-      moving = true;
+
+      if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        pj.setCurrentState(
+                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                ? Entidad.Estado.RUN_RIGHT
+                : Entidad.Estado.RUN_LEFT);
+        lastPos = pj.getPosy();
+        pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+          pj.setPosy(lastPos);
+        }
+        moving = true;
+      }
+
+      if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
+        lastPos = pj.getPosx();
+        pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+          pj.setPosx(lastPos);
+        }
+        moving = true;
+      }
+
+      if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        pj.setCurrentState(Entidad.Estado.RUN_LEFT);
+        lastPos = pj.getPosx();
+        pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+          pj.setPosx(lastPos);
+        }
+        moving = true;
+      }
+
+      if (!moving) {
+        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                ? Entidad.Estado.IDLE_RIGHT
+                : Entidad.Estado.IDLE_LEFT);
+      }
+
+    } else {
+      attackTime += Gdx.graphics.getDeltaTime();
+      if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
+        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT 
+                ? Entidad.Estado.IDLE_RIGHT 
+                : Entidad.Estado.IDLE_LEFT);
+      }
     }
 
-    if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-      pj.setCurrentState(
-              pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-              ? Entidad.Estado.RUN_RIGHT
-              : Entidad.Estado.RUN_LEFT);
-      lastPos = pj.getPosy();
-      pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-      if(ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))){
-        pj.setPosy(lastPos);
-      }
-      moving = true;
-    }
-
-    if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-      pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
-      lastPos = pj.getPosx();
-      pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-      if(ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))){
-        pj.setPosx(lastPos);
-      }
-      moving = true;
-    }
-
-    if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-      pj.setCurrentState(Entidad.Estado.RUN_LEFT);
-      lastPos = pj.getPosx();
-      pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-      if(ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))){
-        pj.setPosx(lastPos);
-      }
-      moving = true;
-    }
-
-    if (!moving) {
-      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-              ? Entidad.Estado.IDLE_RIGHT
-              : Entidad.Estado.IDLE_LEFT);
+    if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT ||pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+              ? Entidad.Estado.ATT_RIGHT
+              : Entidad.Estado.ATT_LEFT);
+      attackTime = 0;
+      pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -292,8 +312,11 @@ public class PuebloInicialScreen implements Screen {
     batch.draw(sprite_muralla_detras, 0, 0);
     batch.draw(sprite_edificios, 0, 0);
 
-    batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
-
+    if(pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT)
+      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
+    else
+      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
+    
     batch.draw(sprite_muralla_delante, 0, 0);
     batch.draw(sprite_carteles, 0, 0);
     batch.end();

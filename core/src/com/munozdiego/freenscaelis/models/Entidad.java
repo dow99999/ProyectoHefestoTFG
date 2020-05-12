@@ -22,6 +22,8 @@ public class Entidad{
     IDLE_LEFT,
     RUN_RIGHT,
     RUN_LEFT,
+    ATT_RIGHT,
+    ATT_LEFT,
     DEAD
   }
   protected float posx, posy;
@@ -87,7 +89,8 @@ public class Entidad{
 
   public void setPosx(float posx) {
     this.posx = posx;
-    updateCollider();
+    if(!animaciones.isEmpty())
+      updateCollider();
   }
 
   public float getPosy() {
@@ -96,7 +99,8 @@ public class Entidad{
 
   public void setPosy(float posy) {
     this.posy = posy;
-    updateCollider();
+    if(!animaciones.isEmpty())
+      updateCollider();
   }
 
   public float getVida() {

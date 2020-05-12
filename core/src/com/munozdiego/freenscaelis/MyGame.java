@@ -6,11 +6,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.screens.CreatePlayerScreen;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
 import com.munozdiego.freenscaelis.screens.PuebloInicialScreen;
 import com.munozdiego.freenscaelis.screens.RegisterScreen;
 import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
+import com.munozdiego.freenscaelis.utils.LocalDataManager;
+import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +47,16 @@ public class MyGame extends Game {
     Assets.addFont("pixel32b", 32, Color.BLACK, "fonts/pixelart.otf");
     Assets.addFont("pixel32w", 32, Color.WHITE, "fonts/pixelart.otf");
 
+    //init list of local user's characters
+    UserData.getInstance().setCharacters(LocalDataManager.getInstance().retrievePlayerData());
+    
+    //init character's animations
+    for(int i = UserData.getInstance().getCharacters().length - 1; i >= 0 ; --i){
+      Personaje aux = UserData.getInstance().getCharacters()[i];
+      if(aux != null)
+        aux.init(aux.getClase(), 0);
+    }
+    
     screens.put(CodeScreen.MAIN_MENU, new MenuScreen(this));
     screens.put(CodeScreen.LOGIN, new LoginScreen(this));
     screens.put(CodeScreen.REGISTER, new RegisterScreen(this));
