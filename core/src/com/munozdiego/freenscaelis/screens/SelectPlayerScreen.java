@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Personaje;
+import com.munozdiego.freenscaelis.utils.LocalDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 
 /**
@@ -133,7 +134,7 @@ public class SelectPlayerScreen implements Screen {
           }
           pj = userdata.getCharacters()[0];
           pj.setPosx(500);
-          pj.setPosx(300);
+          pj.setPosy(500);
           userdata.selectCharacter(pj);
         } else {
           if (boxes_player_selection[1].contains(screenX, screenY)) {
@@ -142,7 +143,7 @@ public class SelectPlayerScreen implements Screen {
             }
             pj = userdata.getCharacters()[1];
             pj.setPosx(500);
-            pj.setPosx(300);
+            pj.setPosy(500);
             userdata.selectCharacter(pj);
           } else {
             if (boxes_player_selection[2].contains(screenX, screenY)) {
@@ -151,7 +152,7 @@ public class SelectPlayerScreen implements Screen {
               }
               pj = userdata.getCharacters()[2];
               pj.setPosx(500);
-              pj.setPosx(300);
+              pj.setPosy(500);
               userdata.selectCharacter(pj);
             } else {
               if (boxes_player_selection[3].contains(screenX, screenY)) {
@@ -163,6 +164,7 @@ public class SelectPlayerScreen implements Screen {
                   userdata.selectCharacter(null);
                 }
                 userdata.eraseCharacter(0);
+                LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
               } else {
                 if (boxes_player_selection[4].contains(screenX, screenY)) {
                   if (MyGame.DEBUG_MODE) {
@@ -173,6 +175,7 @@ public class SelectPlayerScreen implements Screen {
                     userdata.selectCharacter(null);
                   }
                   userdata.eraseCharacter(1);
+                  LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
                 } else {
                   if (boxes_player_selection[5].contains(screenX, screenY)) {
                     if (MyGame.DEBUG_MODE) {
@@ -183,6 +186,7 @@ public class SelectPlayerScreen implements Screen {
                       userdata.selectCharacter(null);
                     }
                     userdata.eraseCharacter(2);
+                    LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
                   } else {
                     if (boxes_player_selection[6].contains(screenX, screenY)) {
                       if (MyGame.DEBUG_MODE) {
