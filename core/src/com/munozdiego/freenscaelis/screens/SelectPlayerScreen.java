@@ -31,7 +31,7 @@ public class SelectPlayerScreen implements Screen {
   MyGame m_game;
   OrthographicCamera camera;
   SpriteBatch batch;
-
+  
   //the fonts we'll use
   BitmapFont fontw;
   BitmapFont fonty;
@@ -73,7 +73,7 @@ public class SelectPlayerScreen implements Screen {
     m_game = g;
     camera = new OrthographicCamera();
     camera.setToOrtho(true, 1920, 1080);
-
+    
     batch = new SpriteBatch();
     fontw = Assets.getFont("pixel32w");
     fonty = Assets.getFont("pixel32y");
@@ -258,7 +258,7 @@ public class SelectPlayerScreen implements Screen {
     }
     fontw.draw(batch, texts[1], posCol[6][0], posCol[6][1]);
     fontw.draw(batch, texts[2], posCol[7][0], posCol[7][1]);
-
+    
     batch.end();
   }
 

@@ -2,7 +2,7 @@
 <freenscaelis>
     <characters>
         <character>
-            <name>asd</name>
+            <name>Yo</name>
             <clase>SWORD</clase>
             <stats>
                 <stat>0</stat>
@@ -61,7 +61,7 @@
                 </item>
             </inventory>
             <posx>300</posx>
-            <posy>300</posy>
+            <posy>500</posy>
             <map>0</map>
         </character>
         <character>

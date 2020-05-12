@@ -51,6 +51,8 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.IDLE_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.speed = 5f;
         break;
@@ -66,6 +68,8 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.IDLE_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.speed = 4f;
         break;

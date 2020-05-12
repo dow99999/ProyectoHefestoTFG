@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.MyGame;
@@ -33,6 +35,7 @@ public class PuebloInicialScreen implements Screen {
   MyGame m_game;
   OrthographicCamera camera;
   SpriteBatch batch;
+  ShapeRenderer shape;
 
   //the fonts we'll use
   BitmapFont fontw;
@@ -63,6 +66,8 @@ public class PuebloInicialScreen implements Screen {
   float attackTime;
 
   UserData userdata;
+
+  boolean colliderdebug;
 
   final Rectangle[] colliders = new Rectangle[]{
     new Rectangle(384, 661, 670, 730),
@@ -98,6 +103,7 @@ public class PuebloInicialScreen implements Screen {
     m_game = g;
     camera = new OrthographicCamera();
     camera.setToOrtho(true, 1920, 1080);
+    shape = new ShapeRenderer();
 
     batch = new SpriteBatch();
     fontw = Assets.getFont("pixel32w");
@@ -106,6 +112,8 @@ public class PuebloInicialScreen implements Screen {
     layout = new GlyphLayout();
 
     userdata = UserData.getInstance();
+
+    colliderdebug = false;
 
     sprite_back = Assets.getSprite("maps/pueblo_principal/ciudad_principal_base.png");
     sprite_muralla_delante = Assets.getSprite("maps/pueblo_principal/ciudad_principal_muralla_delante.png");
@@ -248,14 +256,14 @@ public class PuebloInicialScreen implements Screen {
     } else {
       attackTime += Gdx.graphics.getDeltaTime();
       if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
-        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT 
-                ? Entidad.Estado.IDLE_RIGHT 
+        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+                ? Entidad.Estado.IDLE_RIGHT
                 : Entidad.Estado.IDLE_LEFT);
       }
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT ||pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
               ? Entidad.Estado.ATT_RIGHT
               : Entidad.Estado.ATT_LEFT);
       attackTime = 0;
@@ -265,6 +273,10 @@ public class PuebloInicialScreen implements Screen {
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
       //TODO menu de pausa
+    }
+
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
+      colliderdebug = !colliderdebug;
     }
 
     //TODO camera lock when outside the map
@@ -312,14 +324,36 @@ public class PuebloInicialScreen implements Screen {
     batch.draw(sprite_muralla_detras, 0, 0);
     batch.draw(sprite_edificios, 0, 0);
 
-    if(pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT)
+    if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
-    else
+    } else {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
-    
+    }
+
     batch.draw(sprite_muralla_delante, 0, 0);
     batch.draw(sprite_carteles, 0, 0);
+
     batch.end();
+
+    if (colliderdebug) {
+
+      shape.setProjectionMatrix(camera.combined);
+      if (MyGame.DEBUG_MODE) {
+        shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.setColor(Color.RED);
+        for (Rectangle r : colliders) {
+          shape.rect(r.x, r.y, r.width, r.height);
+        }
+        shape.setColor(Color.BLUE);
+        for (Rectangle r : warpZones) {
+          shape.rect(r.x, r.y, r.width, r.height);
+        }
+        shape.setColor(Color.GREEN);
+        Rectangle aux = pj.getColliders().get(pj.getCurrentState());
+        shape.rect(aux.x, aux.y, aux.width, aux.height);
+        shape.end();
+      }
+    }
   }
 
   @Override
