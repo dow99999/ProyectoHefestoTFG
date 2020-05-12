@@ -63,7 +63,26 @@ public class PuebloInicialScreen implements Screen {
   UserData userdata;
 
   final Rectangle[] colliders = new Rectangle[]{
-    new Rectangle(384, 661, 670, 730)
+    new Rectangle(384, 661, 670, 730),
+    new Rectangle(1056, 661, 239, 490),
+    new Rectangle(1440, 661, 239, 490),
+    new Rectangle(1679, 661, 623, 730),
+    new Rectangle(577, 1656, 478, 552),
+    new Rectangle(1055, 1909, 241, 297),
+    new Rectangle(1441, 1909, 241, 297),
+    new Rectangle(1681, 1656, 429, 552),
+    new Rectangle(383, 1535, 94, 901),
+    new Rectangle(383, 2436, 911, 58),
+    new Rectangle(1440, 2436, 863, 58),
+    new Rectangle(2208, 1535, 94, 901),
+    new Rectangle(1214, 0, 77, 680),
+    new Rectangle(1439, 0, 80, 666),
+    new Rectangle(2304, 1325, 334, 66),
+    new Rectangle(2304, 1538, 334, 80),
+    new Rectangle(1440, 2495, 65, 383),
+    new Rectangle(1220, 2496, 76, 383),
+    new Rectangle(0, 1316, 385, 76),
+    new Rectangle(0, 1536, 385, 66)
   };
 
   public PuebloInicialScreen(MyGame g) {
