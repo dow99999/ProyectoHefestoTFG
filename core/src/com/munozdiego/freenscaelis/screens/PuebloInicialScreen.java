@@ -84,6 +84,13 @@ public class PuebloInicialScreen implements Screen {
     new Rectangle(0, 1316, 385, 76),
     new Rectangle(0, 1536, 385, 66)
   };
+  
+  final Rectangle[] warpZones = new Rectangle[]{
+    new Rectangle(1296, 0, 415, 61), //bosque norte
+    new Rectangle(2578, 1391, 60, 144), //bosque este
+    new Rectangle(1295, 2821, 145, 57), //bosque sur
+    new Rectangle(0, 1391, 95, 145) //playa
+  };
 
   public PuebloInicialScreen(MyGame g) {
     m_game = g;
