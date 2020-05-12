@@ -76,8 +76,9 @@ public class Entidad{
   }
   
   private void updateCollider(){
-    this.colliders.get(this.getCurrentState()).setX(posx+getCenterX());
-    this.colliders.get(this.getCurrentState()).setY(posy+getCenterY());
+    Rectangle aux = this.colliders.get(this.getCurrentState()); 
+    aux.setX(posx+getCenterX()-(aux.getWidth()/2));
+    aux.setY(posy+(getCenterY()*1.5f));
   }
   
   public float getPosx() {

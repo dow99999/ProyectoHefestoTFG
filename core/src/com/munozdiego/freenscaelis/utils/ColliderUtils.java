@@ -18,18 +18,18 @@ public class ColliderUtils {
     boolean col = false;
     int i = 0;
   
-    //if(MyGame.DEBUG_MODE){
-    //  System.out.println("--------checkCollitions----------");
-    //  System.out.println(check.getX() + " " + check.getY() + " " + check.getWidth() + " " + check.getHeight());
-    //}
+    if(MyGame.DEBUG_MODE){
+      System.out.println("--------checkCollitions----------");
+      System.out.println(check.getX() + " " + check.getY() + " " + check.getWidth() + " " + check.getHeight());
+    }
     while(i < colliders.length && !col){
       col = check.overlaps(colliders[i]);
-      //if(MyGame.DEBUG_MODE)
-        //System.out.println(colliders[i].getX() + " " + colliders[i].getY() + " " + colliders[i].getWidth() + " " + colliders[i].getHeight());
+      if(MyGame.DEBUG_MODE)
+        System.out.println(colliders[i].getX() + " " + colliders[i].getY() + " " + colliders[i].getWidth() + " " + colliders[i].getHeight());
       i++;
     }
-    //if(MyGame.DEBUG_MODE)
-      //System.out.println("----------------------");
+    if(MyGame.DEBUG_MODE)
+      System.out.println("----------------------");
     
     
     return col;
