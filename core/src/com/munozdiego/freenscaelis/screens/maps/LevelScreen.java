@@ -25,6 +25,7 @@ import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
 import com.munozdiego.freenscaelis.utils.UserData;
+import java.util.Set;
 
 /**
  *
@@ -36,7 +37,7 @@ public class LevelScreen implements Screen {
   OrthographicCamera camera;
   SpriteBatch batch;
   ShapeRenderer shape;
-  
+
   //the fonts we'll use
   BitmapFont fontw;
   BitmapFont fontb;
@@ -62,11 +63,12 @@ public class LevelScreen implements Screen {
   UserData userdata;
 
   boolean colliderdebug;
+  boolean disableCameraLock;
 
   ScreenData screendata;
-  
+
   Rectangle[] colliders;
-  Rectangle[] warpZones;
+  Set<Rectangle> warpZones;
   Sprite[] layers;
 
   public LevelScreen(MyGame g) {
@@ -83,49 +85,18 @@ public class LevelScreen implements Screen {
 
     userdata = UserData.getInstance();
     screendata = ScreenData.getInstance();
-    
+
+    colliderdebug = false;
+    disableCameraLock = false;
+
+    initBoxes();
+  }
+
+  private void initBoxes() {
+
     colliders = screendata.getColliders();
     warpZones = screendata.getWarpZones();
     layers = screendata.getLayers();
-    
-    colliderdebug = false;
-
-    
-    
-    /*
-    //setting the boxes where the user will click
-    for (int i = texts.length - 1; i >= 0; --i) {
-      boxes[i] = new Rectangle();
-    }
-
-    layout.setText(fontw, texts[0]);
-    boxes[0].set(50, 50, layout.width, layout.height * -1);
-    layout.setText(fontw, texts[1]);
-    boxes[1].set(50, 50 + 35, layout.width, layout.height * -1);
-
-    for (int i = 0; i < 6; i++) {
-      layout.setText(fontw, texts[i + 2]);
-      boxes[i + 2].set(100, 750 + 35 * i, layout.width, layout.height * -1);
-    }
-
-    sprite_back = Assets.getSprite("images/bg-re.png");
-    
-    pj = new Personaje();
-    //Sprites/Player/Sword/Defence0/Player_Idle_Sword_Defence0_0.png
-    pj.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence1/", "Player_Walk_Sword_Defence1", 4, "png", 0.17f, false));
-    pj.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Sword/Defence1/", "Player_Walk_Sword_Defence1", 4, "png", 0.17f, true));
-    stateTime = 0.1f;
-    pj.setPosx(100);
-    pj.setPosy(100);
-
-    pja = new Personaje();
-    //Sprites/Player/Sword/Defence0/Player_Idle_Sword_Defence0_0.png
-    pja.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Walk_Sword_Defence0", 4, "png", 0.17f, false));
-    pja.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Sword/Defence0/", "Player_Walk_Sword_Defence0", 4, "png", 0.17f, true));
-    //stateTime = 0.1f;
-    pja.setPosx(100);
-    pja.setPosy(100);
-     */
   }
 
   @Override
@@ -179,7 +150,7 @@ public class LevelScreen implements Screen {
                 : Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosy();
         pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosy(lastPos);
         }
         moving = true;
@@ -192,7 +163,7 @@ public class LevelScreen implements Screen {
                 : Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosy();
         pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosy(lastPos);
         }
         moving = true;
@@ -202,7 +173,7 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
         moving = true;
@@ -212,7 +183,7 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState()))) {
+        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
         moving = true;
@@ -249,31 +220,61 @@ public class LevelScreen implements Screen {
     if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
       colliderdebug = !colliderdebug;
     }
+    
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+      disableCameraLock = !disableCameraLock;
+    }
+    
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+      System.out.println("Player position: " + pj.getPosx() + ", " + pj.getPosy());
+      System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
+    }
 
-    //TODO camera lock when outside the map
     float camx = camera.position.x + (pj.getPosx() + pj.getCenterX() - camera.position.x) * Gdx.graphics.getDeltaTime();
     float camy = camera.position.y + (pj.getPosy() + pj.getCenterY() - camera.position.y) * Gdx.graphics.getDeltaTime();
     int cameraBounds = ColliderUtils.cameraOutside(camx - camera.viewportWidth / 2, camy - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight, layers[0].getWidth(), layers[0].getHeight());
 
-    if (cameraBounds == 0) { //free camera movement
+    if (!disableCameraLock) {
+
+      if (cameraBounds == 0) { //free camera movement
+        camera.position.set(
+                camx,
+                camy,
+                0);
+      } else {
+        if (cameraBounds == 1) { //horizontal movement locked
+          camera.position.set(
+                  camera.position.x,
+                  camy,
+                  0);
+        } else {
+          if (cameraBounds == 2) { //vertical movement locked
+            camera.position.set(
+                    camx,
+                    camera.position.y,
+                    0);
+          }
+        }
+      }
+    } else {
       camera.position.set(
               camx,
               camy,
               0);
-    } else {
-      if (cameraBounds == 1) { //horizontal movement locked
-        camera.position.set(
-                camera.position.x,
-                camy,
-                0);
-      } else {
-        if (cameraBounds == 2) { //vertical movement locked
-          camera.position.set(
-                  camx,
-                  camera.position.y,
-                  0);
-        }
-      }
+    }
+  }
+
+  public void processWarpEnter() {
+    Rectangle warp = ColliderUtils.checkCollitions(warpZones, pj.getColliders().get(pj.getCurrentState()));
+    int auxMap;
+    if (warp != null) {
+      auxMap = screendata.getCurrentMapa();
+      screendata.setCurrentMapa(screendata.getWarpMap(warp));
+      camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
+      camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
+      pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
+      pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
+      initBoxes();
     }
   }
 
@@ -283,6 +284,7 @@ public class LevelScreen implements Screen {
     Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
     //we process the user input before we draw
     processUserInput();
+    processWarpEnter();
 
     stateTime += Gdx.graphics.getDeltaTime();
 
@@ -291,8 +293,9 @@ public class LevelScreen implements Screen {
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
-    for(int i = 0; i < screendata.getBaseLayers(); i++)
+    for (int i = 0; i < screendata.getBaseLayers(); i++) {
       batch.draw(layers[i], 0, 0);
+    }
 
     if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
@@ -300,8 +303,9 @@ public class LevelScreen implements Screen {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
     }
 
-    for(int i = screendata.getBaseLayers(); i < layers.length; i++)
+    for (int i = screendata.getBaseLayers(); i < layers.length; i++) {
       batch.draw(layers[i], 0, 0);
+    }
 
     batch.end();
 

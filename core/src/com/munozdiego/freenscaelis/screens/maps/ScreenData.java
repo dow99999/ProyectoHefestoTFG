@@ -7,7 +7,11 @@ package com.munozdiego.freenscaelis.screens.maps;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.munozdiego.freenscaelis.utils.Assets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  *
@@ -34,6 +38,8 @@ public class ScreenData {
 
   public ScreenData() {
     currentMapa = PUEBLO_INICIAL;
+    initWarpZones();
+    initWarpPositions();
   }
 
   private final Rectangle[][] colliders = new Rectangle[][]{
@@ -62,15 +68,21 @@ public class ScreenData {
     {}
   };
 
-  private final Rectangle[][] warpZones = new Rectangle[][]{
-    {
-      new Rectangle(1296, 0, 145, 61), //bosque norte
-      new Rectangle(2578, 1391, 60, 144), //bosque este
-      new Rectangle(1295, 2821, 145, 57), //bosque sur
-      new Rectangle(0, 1391, 95, 145) //playa
-    },
-    {}
-  };
+  private void initWarpZones() {
+    HashMap<Rectangle, Integer> aux;
+
+    aux = new HashMap<>();
+    aux.put(new Rectangle(1296, 0, 145, 61), BOSQUE_NORTE);
+    aux.put(new Rectangle(2578, 1391, 60, 144), BOSQUE_ESTE);
+    aux.put(new Rectangle(1295, 2821, 145, 57), BOSQUE_SUR);
+    aux.put(new Rectangle(0, 1391, 95, 145), PLAYA);
+    warpZones.put(PUEBLO_INICIAL, aux);
+    aux = new HashMap<>();
+    aux.put(new Rectangle(1296, 0, 145, 61), PUEBLO_INICIAL);
+    warpZones.put(BOSQUE_ESTE, aux);
+  }
+
+  private final HashMap<Integer, HashMap<Rectangle, Integer>> warpZones = new HashMap<>();
 
   private final Sprite[][] layers = new Sprite[][]{
     {
@@ -91,14 +103,87 @@ public class ScreenData {
     3,
     2
   };
-  
-  
+
+  private void initWarpPositions() {
+    HashMap<Integer, Vector2> aux;
+
+    //PUEBLO INICIAL
+    aux = new HashMap<>();
+    aux.put(BOSQUE_ESTE, new Vector2(71, 1705));
+    aux.put(BOSQUE_NORTE, new Vector2(0, 0));
+    aux.put(BOSQUE_SUR, new Vector2(0, 0));
+    aux.put(PLAYA, new Vector2(0, 0));
+    initPositionPj.put(PUEBLO_INICIAL, aux);
+
+    aux = new HashMap<>();
+    aux.put(BOSQUE_ESTE, new Vector2(970, 1785));
+    aux.put(BOSQUE_NORTE, new Vector2(0, 0));
+    aux.put(BOSQUE_SUR, new Vector2(0, 0));
+    aux.put(PLAYA, new Vector2(0, 0));
+    initPositionCamera.put(PUEBLO_INICIAL, aux);
+
+    //BOSQUE ESTE
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionPj.put(BOSQUE_ESTE, aux);
+
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionCamera.put(BOSQUE_ESTE, aux);
+
+    //BOSQUE NORTE
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionPj.put(BOSQUE_NORTE, aux);
+
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionCamera.put(BOSQUE_NORTE, aux);
+
+    //BOSQUE SUR
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionPj.put(BOSQUE_SUR, aux);
+
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionCamera.put(BOSQUE_SUR, aux);
+
+    //PLAYA
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionPj.put(PLAYA, aux);
+
+    aux = new HashMap<>();
+    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    initPositionCamera.put(PLAYA, aux);
+  }
+
+  private final HashMap<Integer, HashMap<Integer, Vector2>> initPositionPj = new HashMap<>();
+  private final HashMap<Integer, HashMap<Integer, Vector2>> initPositionCamera = new HashMap<>();
+
   public void setCurrentMapa(int m) {
     currentMapa = m;
   }
 
-  public Rectangle[] getWarpZones() {
-    return warpZones[currentMapa];
+  public int getCurrentMapa() {
+    return currentMapa;
+  }
+
+  public Set<Rectangle> getWarpZones() {
+    return warpZones.get(currentMapa).keySet();
+  }
+
+  public int getWarpMap(Rectangle warp) {
+    return warpZones.get(currentMapa).get(warp);
+  }
+  
+  public Vector2 getPjWarpPos(int from, int to){
+    return initPositionPj.get(from).get(to);
+  }
+  
+  public Vector2 getCameraWarpPos(int from, int to){
+    return initPositionCamera.get(from).get(to);
   }
 
   public Rectangle[] getColliders() {
@@ -108,8 +193,8 @@ public class ScreenData {
   public int getBaseLayers() {
     return baseLayers[currentMapa];
   }
-  
-  public Sprite[] getLayers(){
+
+  public Sprite[] getLayers() {
     return layers[currentMapa];
   }
 
