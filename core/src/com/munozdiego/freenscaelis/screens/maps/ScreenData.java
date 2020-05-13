@@ -78,7 +78,7 @@ public class ScreenData {
     aux.put(new Rectangle(0, 1391, 95, 145), PLAYA);
     warpZones.put(PUEBLO_INICIAL, aux);
     aux = new HashMap<>();
-    aux.put(new Rectangle(1296, 0, 145, 61), PUEBLO_INICIAL);
+    aux.put(new Rectangle(0, 1775, 57, 144), PUEBLO_INICIAL);
     warpZones.put(BOSQUE_ESTE, aux);
   }
 
@@ -124,11 +124,11 @@ public class ScreenData {
 
     //BOSQUE ESTE
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(2440, 1340));
     initPositionPj.put(BOSQUE_ESTE, aux);
 
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(1676, 1420));
     initPositionCamera.put(BOSQUE_ESTE, aux);
 
     //BOSQUE NORTE
