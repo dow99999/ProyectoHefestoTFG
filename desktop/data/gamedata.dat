@@ -2,70 +2,7 @@
 <freenscaelis>
     <characters>
         <character>
-            <name>Yo</name>
-            <clase>SWORD</clase>
-            <stats>
-                <stat>0</stat>
-                <stat>0</stat>
-            </stats>
-            <inventory>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-            </inventory>
-            <posx>500</posx>
-            <posy>500</posy>
-            <map>0</map>
-        </character>
-        <character>
-            <name>Danielito08</name>
+            <name>Diego</name>
             <clase>SWORD</clase>
             <stats>
                 <stat>0</stat>
@@ -128,66 +65,13 @@
             <map>0</map>
         </character>
         <character>
-            <name>MaaximusCP</name>
-            <clase>SWORD</clase>
-            <stats>
-                <stat>0</stat>
-                <stat>0</stat>
-            </stats>
-            <inventory>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-            </inventory>
-            <posx>300</posx>
-            <posy>300</posy>
+            <posx>0</posx>
+            <posy>0</posy>
+            <map>0</map>
+        </character>
+        <character>
+            <posx>0</posx>
+            <posy>0</posy>
             <map>0</map>
         </character>
     </characters>
