@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.munozdiego.freenscaelis.screens;
+package com.munozdiego.freenscaelis.screens.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -30,22 +30,16 @@ import com.munozdiego.freenscaelis.utils.UserData;
  *
  * @author diego
  */
-public class PuebloInicialScreen implements Screen {
+public class LevelScreen implements Screen {
 
   MyGame m_game;
   OrthographicCamera camera;
   SpriteBatch batch;
   ShapeRenderer shape;
-
+  
   //the fonts we'll use
   BitmapFont fontw;
   BitmapFont fontb;
-
-  Sprite sprite_back;
-  Sprite sprite_muralla_delante;
-  Sprite sprite_edificios;
-  Sprite sprite_muralla_detras;
-  Sprite sprite_carteles;
 
 //  final String[] texts = new String[]{
 //    "Log in",
@@ -69,37 +63,13 @@ public class PuebloInicialScreen implements Screen {
 
   boolean colliderdebug;
 
-  final Rectangle[] colliders = new Rectangle[]{
-    new Rectangle(384, 661, 670, 730),
-    new Rectangle(1056, 661, 239, 490),
-    new Rectangle(1440, 661, 239, 490),
-    new Rectangle(1679, 661, 623, 730),
-    new Rectangle(577, 1656, 478, 552),
-    new Rectangle(1055, 1909, 241, 297),
-    new Rectangle(1441, 1909, 241, 297),
-    new Rectangle(1681, 1656, 429, 552),
-    new Rectangle(383, 1535, 94, 901),
-    new Rectangle(383, 2436, 911, 58),
-    new Rectangle(1440, 2436, 863, 58),
-    new Rectangle(2208, 1535, 94, 901),
-    new Rectangle(1214, 0, 77, 680),
-    new Rectangle(1439, 0, 80, 666),
-    new Rectangle(2304, 1325, 334, 66),
-    new Rectangle(2304, 1538, 334, 80),
-    new Rectangle(1440, 2495, 65, 383),
-    new Rectangle(1220, 2496, 76, 383),
-    new Rectangle(0, 1316, 385, 76),
-    new Rectangle(0, 1536, 385, 66)
-  };
+  ScreenData screendata;
+  
+  Rectangle[] colliders;
+  Rectangle[] warpZones;
+  Sprite[] layers;
 
-  final Rectangle[] warpZones = new Rectangle[]{
-    new Rectangle(1296, 0, 145, 61), //bosque norte
-    new Rectangle(2578, 1391, 60, 144), //bosque este
-    new Rectangle(1295, 2821, 145, 57), //bosque sur
-    new Rectangle(0, 1391, 95, 145) //playa
-  };
-
-  public PuebloInicialScreen(MyGame g) {
+  public LevelScreen(MyGame g) {
     m_game = g;
     camera = new OrthographicCamera();
     camera.setToOrtho(true, 1920, 1080);
@@ -112,15 +82,16 @@ public class PuebloInicialScreen implements Screen {
     layout = new GlyphLayout();
 
     userdata = UserData.getInstance();
-
+    screendata = ScreenData.getInstance();
+    
+    colliders = screendata.getColliders();
+    warpZones = screendata.getWarpZones();
+    layers = screendata.getLayers();
+    
     colliderdebug = false;
 
-    sprite_back = Assets.getSprite("maps/pueblo_principal/ciudad_principal_base.png");
-    sprite_muralla_delante = Assets.getSprite("maps/pueblo_principal/ciudad_principal_muralla_delante.png");
-    sprite_edificios = Assets.getSprite("maps/pueblo_principal/ciudad_principal_edificios.png");
-    sprite_muralla_detras = Assets.getSprite("maps/pueblo_principal/ciudad_principal_muralla_detras.png");
-    sprite_carteles = Assets.getSprite("maps/pueblo_principal/ciudad_principal_carteles.png");
-
+    
+    
     /*
     //setting the boxes where the user will click
     for (int i = texts.length - 1; i >= 0; --i) {
@@ -162,8 +133,8 @@ public class PuebloInicialScreen implements Screen {
     pj = userdata.getCurrentCharacter();
     pj.init(pj.getClase(), 0);
 
-    camera.position.x = sprite_back.getWidth() / 2;
-    camera.position.y = sprite_back.getHeight() / 2;
+    camera.position.x = layers[0].getWidth() / 2;
+    camera.position.y = layers[0].getHeight() / 2;
 
     pj.setPosx(camera.position.x);
     pj.setPosy(camera.position.y);
@@ -282,7 +253,7 @@ public class PuebloInicialScreen implements Screen {
     //TODO camera lock when outside the map
     float camx = camera.position.x + (pj.getPosx() + pj.getCenterX() - camera.position.x) * Gdx.graphics.getDeltaTime();
     float camy = camera.position.y + (pj.getPosy() + pj.getCenterY() - camera.position.y) * Gdx.graphics.getDeltaTime();
-    int cameraBounds = ColliderUtils.cameraOutside(camx - camera.viewportWidth / 2, camy - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight, sprite_back.getWidth(), sprite_back.getHeight());
+    int cameraBounds = ColliderUtils.cameraOutside(camx - camera.viewportWidth / 2, camy - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight, layers[0].getWidth(), layers[0].getHeight());
 
     if (cameraBounds == 0) { //free camera movement
       camera.position.set(
@@ -320,9 +291,8 @@ public class PuebloInicialScreen implements Screen {
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
-    batch.draw(sprite_back, 0, 0);
-    batch.draw(sprite_muralla_detras, 0, 0);
-    batch.draw(sprite_edificios, 0, 0);
+    for(int i = 0; i < screendata.getBaseLayers(); i++)
+      batch.draw(layers[i], 0, 0);
 
     if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
@@ -330,8 +300,8 @@ public class PuebloInicialScreen implements Screen {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
     }
 
-    batch.draw(sprite_muralla_delante, 0, 0);
-    batch.draw(sprite_carteles, 0, 0);
+    for(int i = screendata.getBaseLayers(); i < layers.length; i++)
+      batch.draw(layers[i], 0, 0);
 
     batch.end();
 
@@ -379,6 +349,5 @@ public class PuebloInicialScreen implements Screen {
   @Override
   public void dispose() {
     batch.dispose();
-    sprite_back.getTexture().dispose();
   }
 }

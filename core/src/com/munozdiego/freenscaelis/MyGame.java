@@ -5,11 +5,10 @@ import com.munozdiego.freenscaelis.screens.MenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.screens.CreatePlayerScreen;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
-import com.munozdiego.freenscaelis.screens.PuebloInicialScreen;
+import com.munozdiego.freenscaelis.screens.maps.LevelScreen;
 import com.munozdiego.freenscaelis.screens.RegisterScreen;
 import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import com.munozdiego.freenscaelis.utils.LocalDataManager;
@@ -62,7 +61,7 @@ public class MyGame extends Game {
     screens.put(CodeScreen.REGISTER, new RegisterScreen(this));
     screens.put(CodeScreen.SELECT_CHAR, new SelectPlayerScreen(this));
     screens.put(CodeScreen.CREATE_CHAR, new CreatePlayerScreen(this));
-    screens.put(CodeScreen.PUEBLO_INICIAL, new PuebloInicialScreen(this));
+    screens.put(CodeScreen.PUEBLO_INICIAL, new LevelScreen(this));
     
     showScreen(CodeScreen.MAIN_MENU);
   }
