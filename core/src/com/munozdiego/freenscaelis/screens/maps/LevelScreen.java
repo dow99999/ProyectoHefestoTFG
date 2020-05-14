@@ -212,6 +212,15 @@ public class LevelScreen implements Screen {
             break;
         }
       }
+      
+      //hit player
+      pj.setInvTime(pj.getInvTime() - Gdx.graphics.getDeltaTime());
+      if(pj.getColliders().get(pj.getCurrentState()).overlaps(e.getColliders().get(e.getCurrentState()))){
+        if(pj.getInvTime() <= 0){
+          pj.resetInvTime();
+          pj.getStats()[0]--;
+        }
+      }
     }
   }
 

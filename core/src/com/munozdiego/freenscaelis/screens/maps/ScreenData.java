@@ -114,22 +114,6 @@ public class ScreenData {
     aux = new ArrayList<>();
     enemigos.put(PUEBLO_INICIAL, aux);
     aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
     aux = new ArrayList<>();
     enemigos.put(BOSQUE_ESTE, aux);
   }

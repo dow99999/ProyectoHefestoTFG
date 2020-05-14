@@ -23,10 +23,14 @@ public class Personaje extends Entidad {
   }
 
   private Clase clase;
-
+  private float invTime;
+  private float invTimef;
+  
   public Personaje() {
     super();
     super.setCurrentState(Estado.IDLE_RIGHT);
+    invTime = 0;
+    invTimef = 1;
   }
 
   public Clase getClase() {
@@ -77,4 +81,17 @@ public class Personaje extends Entidad {
         break;
     }
   }
+
+  public float getInvTime() {
+    return invTime;
+  }
+
+  public void setInvTime(float invTime) {
+    this.invTime = invTime;
+  }
+  
+  public void resetInvTime() {
+    this.invTime = this.invTimef;
+  }
+  
 }
