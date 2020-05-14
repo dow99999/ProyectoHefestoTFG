@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Entidad;
+import com.munozdiego.freenscaelis.models.HUD;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
 import com.munozdiego.freenscaelis.utils.UserData;
@@ -71,6 +72,8 @@ public class LevelScreen implements Screen {
   Set<Rectangle> warpZones;
   Sprite[] layers;
 
+  HUD health;
+
   public LevelScreen(MyGame g) {
     m_game = g;
     camera = new OrthographicCamera();
@@ -89,6 +92,15 @@ public class LevelScreen implements Screen {
     colliderdebug = false;
     disableCameraLock = false;
 
+    health = new HUD(camera);
+    health.getTextura_estatica_estados().put(0, Assets.getSprite("HUD/HP/Value/HP_Value_0.png"));
+    health.getTextura_estatica_estados().put(1, Assets.getSprite("HUD/HP/Value/HP_Value_1.png"));
+    health.getTextura_estatica_estados().put(2, Assets.getSprite("HUD/HP/Value/HP_Value_2.png"));
+    health.getTextura_estatica_estados().put(3, Assets.getSprite("HUD/HP/Value/HP_Value_3.png"));
+    health.getTextura_estatica_estados().put(4, Assets.getSprite("HUD/HP/Value/HP_Value_4.png"));
+    health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
+    health.setPosx(50);
+    health.setPosy(-50);
     initBoxes();
   }
 
@@ -217,17 +229,20 @@ public class LevelScreen implements Screen {
       //TODO menu de pausa
     }
 
-    if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
-      colliderdebug = !colliderdebug;
-    }
-    
-    if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-      disableCameraLock = !disableCameraLock;
-    }
-    
-    if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
-      System.out.println("Player position: " + pj.getPosx() + ", " + pj.getPosy());
-      System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
+    if (MyGame.DEBUG_MODE) {
+
+      if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
+        colliderdebug = !colliderdebug;
+      }
+
+      if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+        disableCameraLock = !disableCameraLock;
+      }
+
+      if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
+        System.out.println("Player position: " + pj.getPosx() + ", " + pj.getPosy());
+        System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
+      }
     }
 
     float camx = camera.position.x + (pj.getPosx() + pj.getCenterX() - camera.position.x) * Gdx.graphics.getDeltaTime();
@@ -307,6 +322,8 @@ public class LevelScreen implements Screen {
       batch.draw(layers[i], 0, 0);
     }
 
+    batch.draw(health.getTextura_estatica_estados().get((int)pj.getVida()), health.getPosx(), health.getPosy());
+    
     batch.end();
 
     if (colliderdebug) {
