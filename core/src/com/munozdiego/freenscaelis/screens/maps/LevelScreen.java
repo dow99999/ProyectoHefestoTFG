@@ -21,11 +21,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.MyGame;
+import com.munozdiego.freenscaelis.models.Enemigo;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.HUD;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
 import com.munozdiego.freenscaelis.utils.UserData;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -71,6 +73,7 @@ public class LevelScreen implements Screen {
   Rectangle[] colliders;
   Set<Rectangle> warpZones;
   Sprite[] layers;
+  ArrayList<Enemigo> enemigos;
 
   HUD health;
 
@@ -101,14 +104,14 @@ public class LevelScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
-    initBoxes();
+    initScreenData();
   }
 
-  private void initBoxes() {
-
+  private void initScreenData() {
     colliders = screendata.getColliders();
     warpZones = screendata.getWarpZones();
     layers = screendata.getLayers();
+    enemigos = screendata.getEnemigos();
   }
 
   @Override
@@ -143,6 +146,73 @@ public class LevelScreen implements Screen {
         return true;
       }
     });
+  }
+
+  public void processEnemies() {
+    float last;
+    for (Enemigo e : enemigos) {
+      //follow player
+      if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
+        if (pj.getPosx() > e.getPosx()) {
+          last = e.getPosx();
+          e.setCurrentState(Entidad.Estado.RUN_RIGHT);
+          e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+            e.setPosx(last);
+          }
+        } else {
+          last = e.getPosx();
+          e.setCurrentState(Entidad.Estado.RUN_LEFT);
+          e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+            e.setPosx(last);
+          }
+        }
+        if (pj.getPosy() > e.getPosy()) {
+          last = e.getPosy();
+          e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+            e.setPosy(last);
+          }
+        } else {
+          last = e.getPosy();
+          e.setPosy(e.getPosy() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+            e.setPosy(last);
+          }
+        }
+      } else { //or do wandering
+        e.setDirectionTime(e.getDirectionTime() - Gdx.graphics.getDeltaTime());
+        if (e.getDirectionTime() <= 0) {
+          e.setCurrentState((int) (Math.random() * 2) == 0 ? Entidad.Estado.RUN_LEFT : Entidad.Estado.RUN_RIGHT);
+          e.setDirection((int) (Math.random() * 3) - 1);
+          e.resetDirectionTime();
+        }
+
+        last = e.getPosy();
+        e.setPosy(e.getPosy() + e.getSpeed() * e.getDirection() * Gdx.graphics.getDeltaTime() * 60);
+        if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+          e.setPosy(last);
+        }
+
+        switch (e.getCurrentState()) {
+          case RUN_LEFT:
+            last = e.getPosx();
+            e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+              e.setPosx(last);
+            }
+            break;
+          case RUN_RIGHT:
+            last = e.getPosx();
+            e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+              e.setPosx(last);
+            }
+            break;
+        }
+      }
+    }
   }
 
   /**
@@ -289,7 +359,7 @@ public class LevelScreen implements Screen {
       camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
       pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
       pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
-      initBoxes();
+      initScreenData();
     }
   }
 
@@ -300,6 +370,7 @@ public class LevelScreen implements Screen {
     //we process the user input before we draw
     processUserInput();
     processWarpEnter();
+    processEnemies();
 
     stateTime += Gdx.graphics.getDeltaTime();
 
@@ -308,40 +379,62 @@ public class LevelScreen implements Screen {
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
+
+    //Drawing the scene
     for (int i = 0; i < screendata.getBaseLayers(); i++) {
       batch.draw(layers[i], 0, 0);
     }
 
+    //drawing user
     if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
     } else {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
     }
 
+    //drawing enemies
+    for (Enemigo e : enemigos) {
+      batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
+    }
+
     for (int i = screendata.getBaseLayers(); i < layers.length; i++) {
       batch.draw(layers[i], 0, 0);
     }
 
-    batch.draw(health.getTextura_estatica_estados().get((int)pj.getVida()), health.getPosx(), health.getPosy());
-    
+    //Drawing the HUD
+    batch.draw(health.getTextura_estatica_estados().get((int) pj.getStats()[0]), health.getPosx(), health.getPosy());
+
     batch.end();
 
+    //Drawing Debug tools
     if (colliderdebug) {
 
       shape.setProjectionMatrix(camera.combined);
       if (MyGame.DEBUG_MODE) {
         shape.begin(ShapeRenderer.ShapeType.Line);
-        shape.setColor(Color.RED);
+
+        shape.setColor(Color.ORANGE);
         for (Rectangle r : colliders) {
           shape.rect(r.x, r.y, r.width, r.height);
         }
+
         shape.setColor(Color.BLUE);
         for (Rectangle r : warpZones) {
           shape.rect(r.x, r.y, r.width, r.height);
         }
+
         shape.setColor(Color.GREEN);
         Rectangle aux = pj.getColliders().get(pj.getCurrentState());
         shape.rect(aux.x, aux.y, aux.width, aux.height);
+
+        for (Enemigo e : enemigos) {
+          aux = e.getColliders().get(e.getCurrentState());
+          shape.setColor(Color.RED);
+          shape.rect(aux.x, aux.y, aux.width, aux.height);
+          shape.setColor(Color.PURPLE);
+          shape.circle(aux.x, aux.y, e.getFollowRange());
+        }
+
         shape.end();
       }
     }
@@ -370,5 +463,6 @@ public class LevelScreen implements Screen {
   @Override
   public void dispose() {
     batch.dispose();
+    shape.dispose();
   }
 }

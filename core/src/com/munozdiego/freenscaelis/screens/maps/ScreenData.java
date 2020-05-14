@@ -8,6 +8,7 @@ package com.munozdiego.freenscaelis.screens.maps;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.munozdiego.freenscaelis.models.Enemigo;
 import com.munozdiego.freenscaelis.utils.Assets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class ScreenData {
     currentMapa = PUEBLO_INICIAL;
     initWarpZones();
     initWarpPositions();
+    initEnemiesPositions();
   }
 
   private final Rectangle[][] colliders = new Rectangle[][]{
@@ -103,6 +105,34 @@ public class ScreenData {
     3,
     2
   };
+
+  private final HashMap<Integer, ArrayList<Enemigo>> enemigos = new HashMap();
+
+  private void initEnemiesPositions() {
+    ArrayList<Enemigo> aux;
+    
+    aux = new ArrayList<>();
+    enemigos.put(PUEBLO_INICIAL, aux);
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
+    aux = new ArrayList<>();
+    enemigos.put(BOSQUE_ESTE, aux);
+  }
 
   private void initWarpPositions() {
     HashMap<Integer, Vector2> aux;
@@ -177,12 +207,16 @@ public class ScreenData {
   public int getWarpMap(Rectangle warp) {
     return warpZones.get(currentMapa).get(warp);
   }
-  
-  public Vector2 getPjWarpPos(int from, int to){
+
+  public ArrayList<Enemigo> getEnemigos() {
+    return enemigos.get(currentMapa);
+  }
+
+  public Vector2 getPjWarpPos(int from, int to) {
     return initPositionPj.get(from).get(to);
   }
-  
-  public Vector2 getCameraWarpPos(int from, int to){
+
+  public Vector2 getCameraWarpPos(int from, int to) {
     return initPositionCamera.get(from).get(to);
   }
 

@@ -55,7 +55,7 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.speed = 5f;
-        this.vida = 5;
+        this.stats[0] = 5;
         break;
       case SCEPTER:
         this.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Idle_Scepter_Defence" + playernum, 4, "png", 0.17f, true));
@@ -73,7 +73,7 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.speed = 4f;
-        this.vida = 5;
+        this.stats[0] = 5;
         break;
     }
   }

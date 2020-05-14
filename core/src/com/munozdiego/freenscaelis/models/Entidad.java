@@ -27,7 +27,6 @@ public class Entidad{
     DEAD
   }
   protected float posx, posy;
-  protected float vida;
   protected Item[] inventario;
   protected int[] stats;
   protected Sprite textura;
@@ -70,11 +69,11 @@ public class Entidad{
   }
   
   public float getCenterX(){
-    return animaciones.get(Estado.IDLE_RIGHT).getKeyFrame(0).getRegionWidth()/2;
+    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionWidth()/2;
   }
   
   public float getCenterY(){
-    return animaciones.get(Estado.IDLE_RIGHT).getKeyFrame(0).getRegionHeight()/2;
+    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionHeight()/2;
   }
   
   private void updateCollider(){
@@ -102,14 +101,6 @@ public class Entidad{
     this.posy = posy;
     if(!animaciones.isEmpty())
       updateCollider();
-  }
-
-  public float getVida() {
-    return vida;
-  }
-
-  public void setVida(float vida) {
-    this.vida = vida;
   }
 
   public Item[] getInventario() {
