@@ -28,6 +28,7 @@ import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
 import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -150,75 +151,101 @@ public class LevelScreen implements Screen {
 
   public void processEnemies() {
     float last;
-    for (Enemigo e : enemigos) {
+    pj.setInvTime(pj.getInvTime() - Gdx.graphics.getDeltaTime());
+    for (Iterator<Enemigo> iter = enemigos.iterator(); iter.hasNext();) {
+      Enemigo e = iter.next();
+      e.setInvTime(e.getInvTime() - Gdx.graphics.getDeltaTime());
       //follow player
-      if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
-        if (pj.getPosx() > e.getPosx()) {
-          last = e.getPosx();
-          e.setCurrentState(Entidad.Estado.RUN_RIGHT);
-          e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-            e.setPosx(last);
-          }
-        } else {
-          last = e.getPosx();
-          e.setCurrentState(Entidad.Estado.RUN_LEFT);
-          e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-            e.setPosx(last);
-          }
-        }
-        if (pj.getPosy() > e.getPosy()) {
-          last = e.getPosy();
-          e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-            e.setPosy(last);
-          }
-        } else {
-          last = e.getPosy();
-          e.setPosy(e.getPosy() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-            e.setPosy(last);
-          }
-        }
-      } else { //or do wandering
-        e.setDirectionTime(e.getDirectionTime() - Gdx.graphics.getDeltaTime());
-        if (e.getDirectionTime() <= 0) {
-          e.setCurrentState((int) (Math.random() * 2) == 0 ? Entidad.Estado.RUN_LEFT : Entidad.Estado.RUN_RIGHT);
-          e.setDirection((int) (Math.random() * 3) - 1);
-          e.resetDirectionTime();
-        }
+      if (e.getInvTime() <= 0) {
 
-        last = e.getPosy();
-        e.setPosy(e.getPosy() + e.getSpeed() * e.getDirection() * Gdx.graphics.getDeltaTime() * 60);
-        if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-          e.setPosy(last);
-        }
-
-        switch (e.getCurrentState()) {
-          case RUN_LEFT:
+        if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
+          if (pj.getPosx() > e.getPosx()) {
             last = e.getPosx();
+            e.setCurrentState(Entidad.Estado.RUN_RIGHT);
             e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
             if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
               e.setPosx(last);
             }
-            break;
-          case RUN_RIGHT:
+          } else {
             last = e.getPosx();
+            e.setCurrentState(Entidad.Estado.RUN_LEFT);
             e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
             if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
               e.setPosx(last);
             }
-            break;
+          }
+          if (pj.getPosy() > e.getPosy()) {
+            last = e.getPosy();
+            e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+              e.setPosy(last);
+            }
+          } else {
+            last = e.getPosy();
+            e.setPosy(e.getPosy() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+              e.setPosy(last);
+            }
+          }
+        } else { //or do wandering
+          e.setDirectionTime(e.getDirectionTime() - Gdx.graphics.getDeltaTime());
+          if (e.getDirectionTime() <= 0) {
+            e.setCurrentState((int) (Math.random() * 2) == 0 ? Entidad.Estado.RUN_LEFT : Entidad.Estado.RUN_RIGHT);
+            e.setDirection((int) (Math.random() * 3) - 1);
+            e.resetDirectionTime();
+          }
+
+          last = e.getPosy();
+          e.setPosy(e.getPosy() + e.getSpeed() * e.getDirection() * Gdx.graphics.getDeltaTime() * 60);
+          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+            e.setPosy(last);
+          }
+
+          switch (e.getCurrentState()) {
+            case RUN_LEFT:
+              last = e.getPosx();
+              e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+              if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+                e.setPosx(last);
+              }
+              break;
+            case RUN_RIGHT:
+              last = e.getPosx();
+              e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+              if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
+                e.setPosx(last);
+              }
+              break;
+          }
         }
       }
-      
+
       //hit player
-      pj.setInvTime(pj.getInvTime() - Gdx.graphics.getDeltaTime());
-      if(pj.getColliders().get(pj.getCurrentState()).overlaps(e.getColliders().get(e.getCurrentState()))){
-        if(pj.getInvTime() <= 0){
-          pj.resetInvTime();
-          pj.getStats()[0]--;
+      if (pj.getColliders().get(pj.getCurrentState()).overlaps(e.getColliders().get(e.getCurrentState()))) {
+        if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+          if (pj.getInvTime() <= 0) {
+            pj.resetInvTime();
+            if (pj.getStats()[0] > 0) {
+              pj.getStats()[0] -= e.getStats()[1];
+              if (pj.getStats()[0] < 0) {
+                pj.getStats()[0] = 0;
+              }
+            } else {
+              //TODO end game
+            }
+          }
+        } else {
+          if (e.getInvTime() <= 0) {
+            e.resetInvTime();
+            if (e.getStats()[0] > 0) {
+              e.getStats()[0] -= pj.getStats()[1];
+              if (e.getStats()[0] < 0) {
+                e.getStats()[0] = 0;
+              }
+            } else {
+              iter.remove();
+            }
+          }
         }
       }
     }
@@ -403,7 +430,11 @@ public class LevelScreen implements Screen {
 
     //drawing enemies
     for (Enemigo e : enemigos) {
-      batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
+      if (e.getInvTime() > 0) {
+        batch.draw(e.getAnimaciones().get(Entidad.Estado.DEAD).getKeyFrame(0, false), e.getPosx(), e.getPosy());
+      } else {
+        batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
+      }
     }
 
     for (int i = screendata.getBaseLayers(); i < layers.length; i++) {

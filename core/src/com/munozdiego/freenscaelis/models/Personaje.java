@@ -6,6 +6,7 @@
 package com.munozdiego.freenscaelis.models;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.munozdiego.freenscaelis.utils.Assets;
 
 /**
@@ -15,7 +16,9 @@ import com.munozdiego.freenscaelis.utils.Assets;
 public class Personaje extends Entidad {
 
   private final int COL_WIDTH = 40;
+  private final int COL_WIDTH_ATT = 80;
   private final int COL_HEIGHT = 35;
+  private final int COL_HEIGHT_ATT = 70;
   
   public enum Clase {
     SWORD,
@@ -55,11 +58,19 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.IDLE_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT_ATT));
+        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT_ATT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliderOffset().put(Entidad.Estado.IDLE_LEFT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.IDLE_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.RUN_LEFT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.RUN_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_LEFT, new Vector2(-25,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_RIGHT, new Vector2(25,0));
+        this.getColliderOffset().put(Entidad.Estado.DEAD, new Vector2(0,0));
         this.speed = 5f;
         this.stats[0] = 5;
+        this.stats[1] = 1;
         break;
       case SCEPTER:
         this.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Idle_Scepter_Defence" + playernum, 4, "png", 0.17f, true));
@@ -73,11 +84,19 @@ public class Personaje extends Entidad {
         this.getColliders().put(Entidad.Estado.IDLE_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
+        this.getColliderOffset().put(Entidad.Estado.IDLE_LEFT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.IDLE_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.RUN_LEFT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.RUN_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_LEFT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.DEAD, new Vector2(0,0));
         this.speed = 4f;
         this.stats[0] = 5;
+        this.stats[1] = 1;
         break;
     }
   }

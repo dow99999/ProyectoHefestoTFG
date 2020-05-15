@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +17,9 @@ import java.util.Map;
  *
  * @author diego
  */
-public class Entidad{
-  public enum Estado{
+public class Entidad {
+
+  public enum Estado {
     IDLE_RIGHT,
     IDLE_LEFT,
     RUN_RIGHT,
@@ -33,15 +35,17 @@ public class Entidad{
   protected Estado currentState;
   protected String name;
   protected float speed;
+  protected Map<Estado, Vector2> colliderOffset;
   protected Map<Estado, Animation<TextureRegion>> animaciones;
   protected Map<Estado, Rectangle> colliders;
-  
-  public Entidad(){
+
+  public Entidad() {
     stats = new int[2];
     inventario = new Item[10];
     name = "Name";
     animaciones = new HashMap<>();
     colliders = new HashMap<>();
+    colliderOffset = new HashMap<>();
   }
 
   public float getSpeed() {
@@ -51,7 +55,7 @@ public class Entidad{
   public void setSpeed(float speed) {
     this.speed = speed;
   }
-  
+
   public Estado getCurrentState() {
     return currentState;
   }
@@ -67,30 +71,31 @@ public class Entidad{
   public void setName(String name) {
     this.name = name;
   }
-  
-  public float getCenterX(){
-    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionWidth()/2;
+
+  public float getCenterX() {
+    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionWidth() / 2;
   }
-  
-  public float getCenterY(){
-    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionHeight()/2;
+
+  public float getCenterY() {
+    return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionHeight() / 2;
   }
-  
-  private void updateCollider(){
-    for(Rectangle aux : this.colliders.values()){
-      aux.setX(posx+getCenterX()-(aux.getWidth()/2));
-      aux.setY(posy+(getCenterY()*1.5f));
-    } 
+
+  private void updateCollider() {
+    for (Estado aux : this.colliders.keySet()) {
+      colliders.get(aux).setX(posx + colliderOffset.get(aux).x + getCenterX() - (colliders.get(aux).getWidth() / 2));
+      colliders.get(aux).setY(posy + colliderOffset.get(aux).y + getCenterY() + (animaciones.get(aux).getKeyFrame(0).getRegionHeight() / 2) - colliders.get(aux).getHeight());
+    }
   }
-  
+
   public float getPosx() {
     return posx;
   }
 
   public void setPosx(float posx) {
     this.posx = posx;
-    if(!animaciones.isEmpty())
+    if (!animaciones.isEmpty()) {
       updateCollider();
+    }
   }
 
   public float getPosy() {
@@ -99,8 +104,9 @@ public class Entidad{
 
   public void setPosy(float posy) {
     this.posy = posy;
-    if(!animaciones.isEmpty())
+    if (!animaciones.isEmpty()) {
       updateCollider();
+    }
   }
 
   public Item[] getInventario() {
@@ -138,10 +144,13 @@ public class Entidad{
   public Map<Estado, Rectangle> getColliders() {
     return colliders;
   }
+  
+  public Map<Estado, Vector2> getColliderOffset() {
+    return colliderOffset;
+  }
 
   public void setColliders(Map<Estado, Rectangle> colliders) {
     this.colliders = colliders;
   }
-  
-  
+
 }
