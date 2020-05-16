@@ -67,7 +67,7 @@ public class PauseScreen implements Screen {
 
     layout.setText(fontw, texts[0]);
     boxes[0].set(50, 50, layout.width, layout.height * -1);
-    layout.setText(fontw, texts[0]);
+    layout.setText(fontw, texts[1]);
     boxes[1].set(MyGame.WIDTH/2 + layout.width/2, 800, layout.width, layout.height * -1);
   }
 
