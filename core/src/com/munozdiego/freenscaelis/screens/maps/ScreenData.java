@@ -85,7 +85,23 @@ public class ScreenData {
       new Rectangle(4019,1620,776,1501),
       new Rectangle(3208,2105,304,305),
       new Rectangle(3204,2422,165,234)
-    }
+    },
+    {
+      new Rectangle(0,0,384,3837),
+      new Rectangle(88,3064,814,775),
+      new Rectangle(518,0,787,1070),
+      new Rectangle(516,1191,784,942),
+      new Rectangle(1300,1481,668,646),
+      new Rectangle(1309,0,657,495),
+      new Rectangle(1189,2248,1114,1589),
+      new Rectangle(2437,2248,734,1590),
+      new Rectangle(3174,3066,1249,772),
+      new Rectangle(4411,0,384,3833),
+      new Rectangle(1960,0,1214,2127),
+      new Rectangle(3175,0,1239,1112)
+    },
+    {},
+    {}
   };
 
   private void initWarpZones() {
@@ -97,10 +113,16 @@ public class ScreenData {
     aux.put(new Rectangle(1295, 2821, 145, 57), BOSQUE_SUR);
     aux.put(new Rectangle(0, 1391, 95, 145), PLAYA);
     warpZones.put(PUEBLO_INICIAL, aux);
+    
     aux = new HashMap<>();
     aux.put(new Rectangle(0, 1775, 57, 144), PUEBLO_INICIAL);
     aux.put(new Rectangle(4702, 1502, 93, 130), PUEBLO_INICIAL); //TODO cambio a mapa final
     warpZones.put(BOSQUE_ESTE, aux);
+    
+    aux = new HashMap<>();
+    aux.put(new Rectangle(2303, 3782, 145, 58), PUEBLO_INICIAL);
+    aux.put(new Rectangle(392, 18, 124, 80), PUEBLO_INICIAL); //TODO cambio a mapa cueva
+    warpZones.put(BOSQUE_NORTE, aux);
   }
 
   private final HashMap<Integer, HashMap<Rectangle, Integer>> warpZones = new HashMap<>();
@@ -117,11 +139,19 @@ public class ScreenData {
       Assets.getSprite("maps/bosque_este/bosque_este_base.png"),
       Assets.getSprite("maps/bosque_este/bosque_este_vegetacion.png"),
       Assets.getSprite("maps/bosque_este/bosque_este_arboles.png")
-    }
+    },
+    {
+      Assets.getSprite("maps/bosque_norte/bosque_norte_base.png"),
+      Assets.getSprite("maps/bosque_norte/bosque_norte_vegetacion.png"),
+      Assets.getSprite("maps/bosque_norte/bosque_norte_arboles.png")
+    },
+    {},
+    {}
   };
 
   private final int[] baseLayers = new int[]{
     3,
+    2,
     2
   };
 
@@ -132,6 +162,7 @@ public class ScreenData {
     
     aux = new ArrayList<>();
     enemigos.put(PUEBLO_INICIAL, aux);
+    
     aux = new ArrayList<>();
     aux.add(new Enemigo(3626, 2725, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(3301, 2730, Enemigo.Tipo.SLIME));
@@ -146,27 +177,48 @@ public class ScreenData {
     aux.add(new Enemigo(1956, 3275, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(2246, 2994, Enemigo.Tipo.SLIME));
     enemigos.put(BOSQUE_ESTE, aux);
+    
+    aux = new ArrayList<>();
+    aux.add(new Enemigo(3379, 1279, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4137, 1370, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4041, 1651, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3759, 1929, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4156, 2107, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3834, 2275, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3395, 2476, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3544, 2722, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3584, 2752, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4025, 2736, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(601, 2338, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(883, 2478, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(641, 2690, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1497, 727, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1631, 880, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1514, 1158, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1750, 1252, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1651, 1004, Enemigo.Tipo.SLIME));
+    enemigos.put(BOSQUE_NORTE, aux);
   }
 
   private void initWarpPositions() {
     HashMap<Integer, Vector2> aux;
 
-    //PUEBLO INICIAL
+    //FROM PUEBLO INICIAL
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(71, 1705));
-    aux.put(BOSQUE_NORTE, new Vector2(0, 0));
+    aux.put(BOSQUE_NORTE, new Vector2(2304, 3550));
     aux.put(BOSQUE_SUR, new Vector2(0, 0));
     aux.put(PLAYA, new Vector2(0, 0));
     initPositionPj.put(PUEBLO_INICIAL, aux);
 
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(970, 1785));
-    aux.put(BOSQUE_NORTE, new Vector2(0, 0));
+    aux.put(BOSQUE_NORTE, new Vector2(2384, 3297));
     aux.put(BOSQUE_SUR, new Vector2(0, 0));
     aux.put(PLAYA, new Vector2(0, 0));
     initPositionCamera.put(PUEBLO_INICIAL, aux);
 
-    //BOSQUE ESTE
+    //FROM BOSQUE ESTE
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(2440, 1340));
     initPositionPj.put(BOSQUE_ESTE, aux);
@@ -175,16 +227,16 @@ public class ScreenData {
     aux.put(PUEBLO_INICIAL, new Vector2(1676, 1420));
     initPositionCamera.put(BOSQUE_ESTE, aux);
 
-    //BOSQUE NORTE
+    //FROM BOSQUE NORTE
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(1285, 15));
     initPositionPj.put(BOSQUE_NORTE, aux);
 
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(1365, 545));
     initPositionCamera.put(BOSQUE_NORTE, aux);
 
-    //BOSQUE SUR
+    //FROM BOSQUE SUR
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
     initPositionPj.put(BOSQUE_SUR, aux);
@@ -193,7 +245,7 @@ public class ScreenData {
     aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
     initPositionCamera.put(BOSQUE_SUR, aux);
 
-    //PLAYA
+    //FROM PLAYA
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
     initPositionPj.put(PLAYA, aux);
