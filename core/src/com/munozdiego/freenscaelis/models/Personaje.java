@@ -25,10 +25,15 @@ public class Personaje extends Entidad {
     SCEPTER
   }
 
+  private float camx;
+  private float camy;
+  
   private Clase clase;
   private float invTime;
   private float invTimef;
   
+  private int mapa;
+          
   public Personaje() {
     super();
     super.setCurrentState(Estado.IDLE_RIGHT);
@@ -111,6 +116,30 @@ public class Personaje extends Entidad {
   
   public void resetInvTime() {
     this.invTime = this.invTimef;
+  }
+
+  public float getCamx() {
+    return camx;
+  }
+
+  public void setCamx(float camx) {
+    this.camx = camx;
+  }
+
+  public float getCamy() {
+    return camy;
+  }
+
+  public void setCamy(float camy) {
+    this.camy = camy;
+  }
+
+  public int getMapa() {
+    return mapa;
+  }
+
+  public void setMapa(int mapa) {
+    this.mapa = mapa;
   }
   
 }

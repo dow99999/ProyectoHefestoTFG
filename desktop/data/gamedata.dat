@@ -5,8 +5,8 @@
             <name>Diego</name>
             <clase>SWORD</clase>
             <stats>
-                <stat>0</stat>
-                <stat>0</stat>
+                <stat>3</stat>
+                <stat>1</stat>
             </stats>
             <inventory>
                 <item>
@@ -60,18 +60,24 @@
                     <def>0</def>
                 </item>
             </inventory>
-            <posx>300</posx>
-            <posy>500</posy>
+            <posx>226</posx>
+            <posy>1705</posy>
+            <camx>970</camx>
+            <camy>1785</camy>
+            <map>1</map>
+        </character>
+        <character>
+            <posx>0</posx>
+            <posy>0</posy>
+            <camx>0</camx>
+            <camy>0</camy>
             <map>0</map>
         </character>
         <character>
             <posx>0</posx>
             <posy>0</posy>
-            <map>0</map>
-        </character>
-        <character>
-            <posx>0</posx>
-            <posy>0</posy>
+            <camx>0</camx>
+            <camy>0</camy>
             <map>0</map>
         </character>
     </characters>

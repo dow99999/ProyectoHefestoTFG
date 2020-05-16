@@ -34,6 +34,10 @@ public class UserData {
   }
 
   public void setCharacters(Personaje[] p) {
+    for(Personaje a : p){
+      if(a != null)
+        a.init(a.getClase(), 0);
+    }
     characters = p;
   }
 
@@ -57,7 +61,8 @@ public class UserData {
     if (!error) {
       while (i < characters.length && !done) {
         if (characters[i] == null) {
-          characters[i] = p;
+          characters[i] = p; //ojo con la posicion guardada TODO
+          p.init(p.getClase(), 0);
           done = true;
         }
         i++;

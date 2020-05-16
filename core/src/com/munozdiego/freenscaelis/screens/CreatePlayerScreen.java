@@ -85,20 +85,15 @@ public class CreatePlayerScreen implements Screen {
     pj_sword = new Personaje();
     pj_sword.setClase(Personaje.Clase.SWORD);
     pj_sword.init(Personaje.Clase.SWORD, 0);
-    pj_sword.setPosx(posCol[0][0]);
-    pj_sword.setPosy(posCol[0][1]);
 
     pj_scepter = new Personaje();
     pj_scepter.setClase(Personaje.Clase.SCEPTER);
     pj_scepter.init(Personaje.Clase.SCEPTER, 0);
-    pj_scepter.setPosx(posCol[1][0]);
-    pj_scepter.setPosy(posCol[1][1]);
 
     for (int i = boxes_player_selection.length - 1; i >= 0; --i) {
       boxes_player_selection[i] = new Rectangle();
     }
 
-    //Doesn't work outside the adapter in this screen, don't know why
     //setting the boxes where the user will click
     for (int i = 0; i < 2; i++) {
       boxes_player_selection[i].set(posCol[i][0], posCol[i][1], pj_scepter.getAnimaciones().get(Entidad.Estado.IDLE_RIGHT).getKeyFrame(0).getRegionWidth(), pj_scepter.getAnimaciones().get(Entidad.Estado.IDLE_RIGHT).getKeyFrame(0).getRegionHeight());
@@ -149,6 +144,8 @@ public class CreatePlayerScreen implements Screen {
               if (selected != null) {
                 if(!textAdapter.getText().equals("")){
                   selected.setName(textAdapter.getText());
+                  selected.setPosx(1320);
+                  selected.setPosy(1440);
                   userdata.addCharacter(selected);
                   LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
                   m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
@@ -200,8 +197,8 @@ public class CreatePlayerScreen implements Screen {
     batch.begin();
 
     //batch.draw(sprite_back, 0, 0);
-    batch.draw(pj_sword.getAnimaciones().get(pj_sword.getCurrentState()).getKeyFrame(stateTime, true), pj_sword.getPosx(), pj_sword.getPosy());
-    batch.draw(pj_scepter.getAnimaciones().get(pj_scepter.getCurrentState()).getKeyFrame(stateTime, true), pj_scepter.getPosx(), pj_scepter.getPosy());
+    batch.draw(pj_sword.getAnimaciones().get(pj_sword.getCurrentState()).getKeyFrame(stateTime, true), posCol[0][0], posCol[0][1]);
+    batch.draw(pj_scepter.getAnimaciones().get(pj_scepter.getCurrentState()).getKeyFrame(stateTime, true), posCol[1][0], posCol[1][1]);
 
     layout.setText(fontw, texts[0]);
     fontw.draw(batch, texts[0], camera.viewportWidth/2 - layout.width/2, 100);

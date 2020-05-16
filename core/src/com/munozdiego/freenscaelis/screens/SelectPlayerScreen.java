@@ -133,8 +133,6 @@ public class SelectPlayerScreen implements Screen {
             System.out.println("player 0");
           }
           pj = userdata.getCharacters()[0];
-          pj.setPosx(500);
-          pj.setPosy(500);
           userdata.selectCharacter(pj);
         } else {
           if (boxes_player_selection[1].contains(screenX, screenY)) {
@@ -142,8 +140,6 @@ public class SelectPlayerScreen implements Screen {
               System.out.println("player 1");
             }
             pj = userdata.getCharacters()[1];
-            pj.setPosx(500);
-            pj.setPosy(500);
             userdata.selectCharacter(pj);
           } else {
             if (boxes_player_selection[2].contains(screenX, screenY)) {
@@ -151,8 +147,6 @@ public class SelectPlayerScreen implements Screen {
                 System.out.println("player 2");
               }
               pj = userdata.getCharacters()[2];
-              pj.setPosx(500);
-              pj.setPosy(500);
               userdata.selectCharacter(pj);
             } else {
               if (boxes_player_selection[3].contains(screenX, screenY)) {
@@ -197,7 +191,7 @@ public class SelectPlayerScreen implements Screen {
                       if (boxes_player_selection[7].contains(screenX, screenY)) {
                         System.out.println("Start Game");
                         if (pj != null) {
-                          m_game.showScreen(MyGame.CodeScreen.PUEBLO_INICIAL);
+                          m_game.showScreen(MyGame.CodeScreen.LEVELS);
                         }
                       }
                     }
@@ -243,7 +237,7 @@ public class SelectPlayerScreen implements Screen {
 
     //batch.draw(sprite_back, 0, 0);
     if (pj != null) {
-      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
+      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), 500, 500);
     }
 
     for (int i = 0; i < 3; i++) {

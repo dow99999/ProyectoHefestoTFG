@@ -68,6 +68,7 @@ public class LevelScreen implements Screen {
 
   boolean colliderdebug;
   boolean disableCameraLock;
+  boolean disableSmoothCamera;
 
   ScreenData screendata;
 
@@ -95,6 +96,7 @@ public class LevelScreen implements Screen {
 
     colliderdebug = false;
     disableCameraLock = false;
+    disableSmoothCamera = false;
 
     health = new HUD(camera);
     health.getTextura_estatica_estados().put(0, Assets.getSprite("HUD/HP/Value/HP_Value_0.png"));
@@ -105,7 +107,6 @@ public class LevelScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
-    initScreenData();
   }
 
   private void initScreenData() {
@@ -118,14 +119,14 @@ public class LevelScreen implements Screen {
   @Override
   public void show() {
     pj = userdata.getCurrentCharacter();
-    pj.init(pj.getClase(), 0);
 
-    camera.position.x = layers[0].getWidth() / 2;
-    camera.position.y = layers[0].getHeight() / 2;
-
-    pj.setPosx(camera.position.x);
-    pj.setPosy(camera.position.y);
-
+    camera.position.x = pj.getCamx();
+    camera.position.y = pj.getCamy();
+    
+    screendata.setCurrentMapa(pj.getMapa());
+    initScreenData();
+    
+    
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
@@ -331,8 +332,7 @@ public class LevelScreen implements Screen {
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
-      //TODO menu de pausa
+      m_game.showScreen(MyGame.CodeScreen.PAUSE);
     }
 
     if (MyGame.DEBUG_MODE) {
@@ -345,14 +345,19 @@ public class LevelScreen implements Screen {
         disableCameraLock = !disableCameraLock;
       }
 
+      if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+        disableSmoothCamera = !disableSmoothCamera;
+      }
+      
       if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
         System.out.println("Player position: " + pj.getPosx() + ", " + pj.getPosy());
         System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
       }
     }
 
-    float camx = camera.position.x + (pj.getPosx() + pj.getCenterX() - camera.position.x) * Gdx.graphics.getDeltaTime();
-    float camy = camera.position.y + (pj.getPosy() + pj.getCenterY() - camera.position.y) * Gdx.graphics.getDeltaTime();
+    float camx = disableSmoothCamera ? pj.getPosx() + pj.getCenterX() : camera.position.x + (pj.getPosx() + pj.getCenterX() - camera.position.x) * Gdx.graphics.getDeltaTime();
+    float camy = disableSmoothCamera ? pj.getPosy() + pj.getCenterY() : camera.position.y + (pj.getPosy() + pj.getCenterY() - camera.position.y) * Gdx.graphics.getDeltaTime();
+
     int cameraBounds = ColliderUtils.cameraOutside(camx - camera.viewportWidth / 2, camy - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight, layers[0].getWidth(), layers[0].getHeight());
 
     if (!disableCameraLock) {
@@ -383,6 +388,8 @@ public class LevelScreen implements Screen {
               camy,
               0);
     }
+    pj.setCamx(camera.position.x);
+    pj.setCamy(camera.position.y);
   }
 
   public void processWarpEnter() {
@@ -395,6 +402,7 @@ public class LevelScreen implements Screen {
       camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
       pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
       pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
+      pj.setMapa(screendata.getCurrentMapa());
       initScreenData();
     }
   }

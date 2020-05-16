@@ -67,7 +67,25 @@ public class ScreenData {
       new Rectangle(0, 1316, 385, 76),
       new Rectangle(0, 1536, 385, 66)
     },
-    {}
+    {
+      new Rectangle(0,0,629,1791),
+      new Rectangle(0,1918,628,232),
+      new Rectangle(0,2161,2696,638),
+      new Rectangle(756,1144,691,889),
+      new Rectangle(1287,469,489,1037),
+      new Rectangle(1780,1049,918,450),
+      new Rectangle(1622,1624,1076,541),
+      new Rectangle(626,0,4172,371),
+      new Rectangle(1912,349,2886,570),
+      new Rectangle(2831,928,1966,570),
+      new Rectangle(2437,2803,256,186),
+      new Rectangle(2436,3109,2361,409),
+      new Rectangle(0,3538,4795,300),
+      new Rectangle(0,2784,1825,767),
+      new Rectangle(4019,1620,776,1501),
+      new Rectangle(3208,2105,304,305),
+      new Rectangle(3204,2422,165,234)
+    }
   };
 
   private void initWarpZones() {
@@ -81,6 +99,7 @@ public class ScreenData {
     warpZones.put(PUEBLO_INICIAL, aux);
     aux = new HashMap<>();
     aux.put(new Rectangle(0, 1775, 57, 144), PUEBLO_INICIAL);
+    aux.put(new Rectangle(4702, 1502, 93, 130), PUEBLO_INICIAL); //TODO cambio a mapa final
     warpZones.put(BOSQUE_ESTE, aux);
   }
 
@@ -113,8 +132,19 @@ public class ScreenData {
     
     aux = new ArrayList<>();
     enemigos.put(PUEBLO_INICIAL, aux);
-    aux.add(new Enemigo(1552, 1425, Enemigo.Tipo.SLIME));
     aux = new ArrayList<>();
+    aux.add(new Enemigo(3626, 2725, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3301, 2730, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(2906, 2470, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(2951, 2000, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3241, 1830, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3371, 1750, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3676, 1925, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1086, 660, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(891, 700, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(986, 545, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1956, 3275, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(2246, 2994, Enemigo.Tipo.SLIME));
     enemigos.put(BOSQUE_ESTE, aux);
   }
 

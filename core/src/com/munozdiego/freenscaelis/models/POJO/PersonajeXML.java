@@ -36,6 +36,10 @@ public class PersonajeXML implements Serializable {
   @XmlElement()
   int posy;
   @XmlElement()
+  int camx;
+  @XmlElement()
+  int camy;
+  @XmlElement()
   int map;
 
   public Personaje getPersonaje() {
@@ -46,8 +50,10 @@ public class PersonajeXML implements Serializable {
     aux.setStats(stats);
     aux.setInventario(ItemXML.parseItemXMLArray(inventory));
     aux.setPosx(posx);
-    aux.setPosy(posx);
-    //TODO mapa
+    aux.setPosy(posy);
+    aux.setCamx(camx);
+    aux.setCamy(camy);
+    aux.setMapa(map);
 
     return name == null ? null : aux;
   }
@@ -64,17 +70,21 @@ public class PersonajeXML implements Serializable {
       inventory = ItemXML.parseItemArray(p.getInventario());
       posx = (int) p.getPosx();
       posy = (int) p.getPosy();
-      //TODO Map
+      camx = (int) p.getCamx();
+      camy = (int) p.getCamy();
+      map = p.getMapa();
     }
   }
 
-  public PersonajeXML(String name, Personaje.Clase clase, int[] stats, ItemXML[] inventory, int posx, int posy, int map) {
+  public PersonajeXML(String name, Personaje.Clase clase, int[] stats, ItemXML[] inventory, int posx, int posy, int camx, int camy, int map) {
     this.name = name;
     this.clase = clase;
     this.stats = stats;
     this.inventory = inventory;
     this.posx = posx;
     this.posy = posy;
+    this.camx = camx;
+    this.camy = camy;
     this.map = map;
   }
 
@@ -124,6 +134,22 @@ public class PersonajeXML implements Serializable {
 
   public void setPosy(int posy) {
     this.posy = posy;
+  }
+
+  public int getCamx() {
+    return camx;
+  }
+
+  public void setCamx(int camx) {
+    this.camx = camx;
+  }
+
+  public int getCamy() {
+    return camy;
+  }
+
+  public void setCamy(int camy) {
+    this.camy = camy;
   }
 
   public int getMap() {
