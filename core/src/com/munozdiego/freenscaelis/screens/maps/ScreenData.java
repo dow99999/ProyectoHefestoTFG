@@ -68,39 +68,53 @@ public class ScreenData {
       new Rectangle(0, 1536, 385, 66)
     },
     {
-      new Rectangle(0,0,629,1791),
-      new Rectangle(0,1918,628,232),
-      new Rectangle(0,2161,2696,638),
-      new Rectangle(756,1144,691,889),
-      new Rectangle(1287,469,489,1037),
-      new Rectangle(1780,1049,918,450),
-      new Rectangle(1622,1624,1076,541),
-      new Rectangle(626,0,4172,371),
-      new Rectangle(1912,349,2886,570),
-      new Rectangle(2831,928,1966,570),
-      new Rectangle(2437,2803,256,186),
-      new Rectangle(2436,3109,2361,409),
-      new Rectangle(0,3538,4795,300),
-      new Rectangle(0,2784,1825,767),
-      new Rectangle(4019,1620,776,1501),
-      new Rectangle(3208,2105,304,305),
-      new Rectangle(3204,2422,165,234)
+      new Rectangle(0, 0, 629, 1791),
+      new Rectangle(0, 1918, 628, 232),
+      new Rectangle(0, 2161, 2696, 638),
+      new Rectangle(756, 1144, 691, 889),
+      new Rectangle(1287, 469, 489, 1037),
+      new Rectangle(1780, 1049, 918, 450),
+      new Rectangle(1622, 1624, 1076, 541),
+      new Rectangle(626, 0, 4172, 371),
+      new Rectangle(1912, 349, 2886, 570),
+      new Rectangle(2831, 928, 1966, 570),
+      new Rectangle(2437, 2803, 256, 186),
+      new Rectangle(2436, 3109, 2361, 409),
+      new Rectangle(0, 3538, 4795, 300),
+      new Rectangle(0, 2784, 1825, 767),
+      new Rectangle(4019, 1620, 776, 1501),
+      new Rectangle(3208, 2105, 304, 305),
+      new Rectangle(3204, 2422, 165, 234)
     },
     {
-      new Rectangle(0,0,384,3837),
-      new Rectangle(88,3064,814,775),
-      new Rectangle(518,0,787,1070),
-      new Rectangle(516,1191,784,942),
-      new Rectangle(1300,1481,668,646),
-      new Rectangle(1309,0,657,495),
-      new Rectangle(1189,2248,1114,1589),
-      new Rectangle(2437,2248,734,1590),
-      new Rectangle(3174,3066,1249,772),
-      new Rectangle(4411,0,384,3833),
-      new Rectangle(1960,0,1214,2127),
-      new Rectangle(3175,0,1239,1112)
+      new Rectangle(0, 0, 384, 3837),
+      new Rectangle(88, 3064, 814, 775),
+      new Rectangle(518, 0, 787, 1070),
+      new Rectangle(516, 1191, 784, 942),
+      new Rectangle(1300, 1481, 668, 646),
+      new Rectangle(1309, 0, 657, 495),
+      new Rectangle(1189, 2248, 1114, 1589),
+      new Rectangle(2437, 2248, 734, 1590),
+      new Rectangle(3174, 3066, 1249, 772),
+      new Rectangle(4411, 0, 384, 3833),
+      new Rectangle(1960, 0, 1214, 2127),
+      new Rectangle(3175, 0, 1239, 1112)
     },
-    {},
+    {
+      new Rectangle(0, 0, 2359, 1118),
+      new Rectangle(0, 1110, 533, 1716),
+      new Rectangle(0, 2826, 2409, 1008),
+      new Rectangle(1382, 1239, 972, 1463),
+      new Rectangle(2356, 1485, 722, 1004),
+      new Rectangle(2534, 2501, 2264, 1333),
+      new Rectangle(2495, 0, 2303, 389),
+      new Rectangle(4363, 1359, 435, 1136),
+      new Rectangle(2496, 400, 729, 549),
+      new Rectangle(2484, 955, 1121, 403),
+      new Rectangle(3735, 951, 1059, 392),
+      new Rectangle(4124, 402, 670, 541),
+      new Rectangle(2355, 2488, 177, 214)
+    },
     {}
   };
 
@@ -113,16 +127,21 @@ public class ScreenData {
     aux.put(new Rectangle(1295, 2821, 145, 57), BOSQUE_SUR);
     aux.put(new Rectangle(0, 1391, 95, 145), PLAYA);
     warpZones.put(PUEBLO_INICIAL, aux);
-    
+
     aux = new HashMap<>();
     aux.put(new Rectangle(0, 1775, 57, 144), PUEBLO_INICIAL);
     aux.put(new Rectangle(4702, 1502, 93, 130), PUEBLO_INICIAL); //TODO cambio a mapa final
     warpZones.put(BOSQUE_ESTE, aux);
-    
+
     aux = new HashMap<>();
     aux.put(new Rectangle(2303, 3782, 145, 58), PUEBLO_INICIAL);
     aux.put(new Rectangle(392, 18, 124, 80), PUEBLO_INICIAL); //TODO cambio a mapa cueva
     warpZones.put(BOSQUE_NORTE, aux);
+
+    aux = new HashMap<>();
+    aux.put(new Rectangle(2350, 0, 144, 60), PUEBLO_INICIAL);
+    aux.put(new Rectangle(2399, 3784, 144, 50), PUEBLO_INICIAL); //TODO cambio a mapa madera
+    warpZones.put(BOSQUE_SUR, aux);
   }
 
   private final HashMap<Integer, HashMap<Rectangle, Integer>> warpZones = new HashMap<>();
@@ -145,12 +164,16 @@ public class ScreenData {
       Assets.getSprite("maps/bosque_norte/bosque_norte_vegetacion.png"),
       Assets.getSprite("maps/bosque_norte/bosque_norte_arboles.png")
     },
-    {},
+    {
+      Assets.getSprite("maps/bosque_sur/bosque_sur_base.png"),
+      Assets.getSprite("maps/bosque_sur/bosque_sur_vegetacion.png")
+    },
     {}
   };
 
   private final int[] baseLayers = new int[]{
     3,
+    2,
     2,
     2
   };
@@ -159,10 +182,10 @@ public class ScreenData {
 
   private void initEnemiesPositions() {
     ArrayList<Enemigo> aux;
-    
+
     aux = new ArrayList<>();
     enemigos.put(PUEBLO_INICIAL, aux);
-    
+
     aux = new ArrayList<>();
     aux.add(new Enemigo(3626, 2725, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(3301, 2730, Enemigo.Tipo.SLIME));
@@ -177,7 +200,7 @@ public class ScreenData {
     aux.add(new Enemigo(1956, 3275, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(2246, 2994, Enemigo.Tipo.SLIME));
     enemigos.put(BOSQUE_ESTE, aux);
-    
+
     aux = new ArrayList<>();
     aux.add(new Enemigo(3379, 1279, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(4137, 1370, Enemigo.Tipo.SLIME));
@@ -198,6 +221,26 @@ public class ScreenData {
     aux.add(new Enemigo(1750, 1252, Enemigo.Tipo.SLIME));
     aux.add(new Enemigo(1651, 1004, Enemigo.Tipo.SLIME));
     enemigos.put(BOSQUE_NORTE, aux);
+
+    aux = new ArrayList<>();
+    aux.add(new Enemigo(666, 1252, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(811, 1334, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1150, 1633, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(783, 1915, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(1212, 2420, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(785, 2597, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(747, 2193, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4118, 2108, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3305, 2318, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3381, 2031, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3855, 1722, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3383, 1586, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(4118, 1520, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3384, 501, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3676, 576, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3929, 828, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3505, 737, Enemigo.Tipo.SLIME));
+    enemigos.put(BOSQUE_SUR, aux);
   }
 
   private void initWarpPositions() {
@@ -207,14 +250,14 @@ public class ScreenData {
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(71, 1705));
     aux.put(BOSQUE_NORTE, new Vector2(2304, 3550));
-    aux.put(BOSQUE_SUR, new Vector2(0, 0));
+    aux.put(BOSQUE_SUR, new Vector2(2344, 10));
     aux.put(PLAYA, new Vector2(0, 0));
     initPositionPj.put(PUEBLO_INICIAL, aux);
 
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(970, 1785));
     aux.put(BOSQUE_NORTE, new Vector2(2384, 3297));
-    aux.put(BOSQUE_SUR, new Vector2(0, 0));
+    aux.put(BOSQUE_SUR, new Vector2(2424, 540));
     aux.put(PLAYA, new Vector2(0, 0));
     initPositionCamera.put(PUEBLO_INICIAL, aux);
 
@@ -238,11 +281,11 @@ public class ScreenData {
 
     //FROM BOSQUE SUR
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(1285, 2620));
     initPositionPj.put(BOSQUE_SUR, aux);
 
     aux = new HashMap<>();
-    aux.put(PUEBLO_INICIAL, new Vector2(0, 0));
+    aux.put(PUEBLO_INICIAL, new Vector2(1365, 2340));
     initPositionCamera.put(BOSQUE_SUR, aux);
 
     //FROM PLAYA

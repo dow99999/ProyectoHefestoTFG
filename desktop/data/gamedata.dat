@@ -5,7 +5,7 @@
             <name>Diego</name>
             <clase>SWORD</clase>
             <stats>
-                <stat>5</stat>
+                <stat>0</stat>
                 <stat>1</stat>
             </stats>
             <inventory>
@@ -61,9 +61,9 @@
                 </item>
             </inventory>
             <posx>1285</posx>
-            <posy>100</posy>
+            <posy>2065</posy>
             <camx>1365</camx>
-            <camy>542</camy>
+            <camy>2145</camy>
             <map>0</map>
         </character>
         <character>
