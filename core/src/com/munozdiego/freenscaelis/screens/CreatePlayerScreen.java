@@ -146,6 +146,8 @@ public class CreatePlayerScreen implements Screen {
                   selected.setName(textAdapter.getText());
                   selected.setPosx(1320);
                   selected.setPosy(1440);
+                  selected.setCamx(1320);
+                  selected.setCamy(1440);
                   userdata.addCharacter(selected);
                   LocalDataManager.getInstance().savePlayerData(userdata.getCharacters());
                   m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
