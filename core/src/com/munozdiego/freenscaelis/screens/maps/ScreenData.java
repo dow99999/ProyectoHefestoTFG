@@ -131,7 +131,20 @@ public class ScreenData {
       new Rectangle(749, 4883, 220, 362)
     },
     {},
-    {},
+    {
+      new Rectangle(383, 0, 2016, 180),
+      new Rectangle(2543, 0, 1126, 183),
+      new Rectangle(3666, 0, 1128, 3658),
+      new Rectangle(0, 0, 383, 3552),
+      new Rectangle(385, 3551, 4409, 287),
+      new Rectangle(720, 766, 190, 230),
+      new Rectangle(1296, 1918, 190, 230),
+      new Rectangle(3216, 1343, 190, 230),
+      new Rectangle(2832, 2831, 190, 230),
+      new Rectangle(1006, 2926, 290, 230),
+      new Rectangle(2207, 1053, 290, 230),
+      new Rectangle(2207, 2206, 290, 230)
+    },
     {
       new Rectangle(0, 230, 382, 1352),
       new Rectangle(0, 1583, 1151, 569),
@@ -192,6 +205,7 @@ public class ScreenData {
     warpZones.put(CUEVA, aux);
 
     aux = new HashMap<>();
+    aux.put(new Rectangle(2400, 0, 143, 53), BOSQUE_SUR);
     warpZones.put(MADERA, aux);
 
     aux = new HashMap<>();
@@ -233,7 +247,12 @@ public class ScreenData {
       Assets.getSprite("maps/playa/playa_copas.png")
     },
     {},
-    {},
+    {
+      Assets.getSprite("maps/madera/madera_base.png"),
+      Assets.getSprite("maps/madera/madera_back.png"),
+      Assets.getSprite("maps/madera/madera_vegetacion.png"),
+      Assets.getSprite("maps/madera/madera_front.png")
+    },
     {
       Assets.getSprite("maps/cueva/cueva_base.png"),
       Assets.getSprite("maps/cueva/cueva_back.png"),
@@ -249,7 +268,7 @@ public class ScreenData {
     2,
     3,
     0,
-    0,
+    3,
     2,
     0,};
 
@@ -332,6 +351,7 @@ public class ScreenData {
     enemigos.put(CUEVA, aux);
 
     aux = new ArrayList<>();
+    aux.add(new Enemigo(1473, 1211, Enemigo.Tipo.BOSS_SLIME));
     enemigos.put(MADERA, aux);
 
     aux = new ArrayList<>();
@@ -385,12 +405,12 @@ public class ScreenData {
     //FROM BOSQUE SUR
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(1285, 2620));
-    aux.put(MADERA, new Vector2(0, 0));
+    aux.put(MADERA, new Vector2(2400, 45));
     initPositionPj.put(BOSQUE_SUR, aux);
 
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(1365, 2340));
-    aux.put(MADERA, new Vector2(0, 0));
+    aux.put(MADERA, new Vector2(2480, 540));
     initPositionCamera.put(BOSQUE_SUR, aux);
 
     //FROM PLAYA
@@ -413,9 +433,11 @@ public class ScreenData {
 
     //FROM MADERA
     aux = new HashMap<>();
+    aux.put(BOSQUE_SUR, new Vector2(2389, 3589));
     initPositionPj.put(MADERA, aux);
 
     aux = new HashMap<>();
+    aux.put(BOSQUE_SUR, new Vector2(2469, 3299));
     initPositionCamera.put(MADERA, aux);
 
     //FROM LABERINTO
