@@ -160,7 +160,7 @@ public class LevelScreen implements Screen {
       if (e.getInvTime() <= 0) {
 
         if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
-          if (pj.getPosx() > e.getPosx()) {
+          if (pj.getPosx() + pj.getCenterX() > e.getPosx() + e.getCenterX()) {
             last = e.getPosx();
             e.setCurrentState(Entidad.Estado.RUN_RIGHT);
             e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
@@ -175,7 +175,7 @@ public class LevelScreen implements Screen {
               e.setPosx(last);
             }
           }
-          if (pj.getPosy() > e.getPosy()) {
+          if (pj.getPosy() + pj.getCenterY() > e.getPosy() + e.getCenterY()) {
             last = e.getPosy();
             e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
             if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
