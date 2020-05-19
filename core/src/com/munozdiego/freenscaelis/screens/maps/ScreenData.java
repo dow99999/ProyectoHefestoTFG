@@ -130,7 +130,47 @@ public class ScreenData {
       new Rectangle(753, 6868, 344, 326),
       new Rectangle(749, 4883, 220, 362)
     },
-    {},
+    {
+      new Rectangle(0, 266, 411, 1416),
+      new Rectangle(496, 357, 732, 627),
+      new Rectangle(1231, 359, 527, 240),
+      new Rectangle(496, 1079, 1067, 623),
+      new Rectangle(1561, 1417, 195, 285),
+      new Rectangle(1314, 695, 526, 288),
+      new Rectangle(1846, 357, 773, 630),
+      new Rectangle(2629, 359, 423, 288),
+      new Rectangle(1646, 1078, 190, 247),
+      new Rectangle(1837, 1078, 398, 624),
+      new Rectangle(2703, 743, 93, 245),
+      new Rectangle(2797, 743, 259, 2737),
+      new Rectangle(2319, 1082, 392, 1102),
+      new Rectangle(689, 1799, 1637, 382),
+      new Rectangle(692, 2187, 730, 763),
+      new Rectangle(1506, 2282, 1212, 336),
+      new Rectangle(2460, 2618, 251, 862),
+      new Rectangle(1419, 2710, 956, 240),
+      new Rectangle(690, 3048, 1778, 431),
+      new Rectangle(0, 1813, 605, 1760),
+      new Rectangle(0, 3573, 4717, 265),
+      new Rectangle(3050, 3094, 1586, 383),
+      new Rectangle(4338, 2328, 301, 762),
+      new Rectangle(3137, 2614, 1114, 384),
+      new Rectangle(3856, 1992, 397, 624),
+      new Rectangle(3772, 1993, 82, 528),
+      new Rectangle(3138, 1367, 633, 1151),
+      new Rectangle(3139, 550, 587, 719),
+      new Rectangle(3726, 839, 82, 432),
+      new Rectangle(3805, 460, 303, 810),
+      new Rectangle(4100, 457, 696, 139),
+      new Rectangle(4572, 603, 224, 90),
+      new Rectangle(4195, 694, 601, 1008),
+      new Rectangle(3858, 1365, 393, 530),
+      new Rectangle(4257, 1991, 80, 239),
+      new Rectangle(4340, 1802, 370, 428),
+      new Rectangle(4717, 1799, 79, 2039),
+      new Rectangle(3132, 264, 1664, 189),
+      new Rectangle(0, 0, 4796, 262)
+    },
     {
       new Rectangle(383, 0, 2016, 180),
       new Rectangle(2543, 0, 1126, 183),
@@ -209,6 +249,8 @@ public class ScreenData {
     warpZones.put(MADERA, aux);
 
     aux = new HashMap<>();
+    aux.put(new Rectangle(0, 1680, 55, 144), BOSQUE_ESTE);
+    aux.put(new Rectangle(4738, 1704, 58, 95), FINAL);
     warpZones.put(LABERINTO, aux);
 
     aux = new HashMap<>();
@@ -246,7 +288,10 @@ public class ScreenData {
       Assets.getSprite("maps/playa/playa_arboles.png"),
       Assets.getSprite("maps/playa/playa_copas.png")
     },
-    {},
+    {
+      Assets.getSprite("maps/montanas/montanas_base.png"),
+      Assets.getSprite("maps/montanas/montanas_vegetacion.png")
+    },
     {
       Assets.getSprite("maps/madera/madera_base.png"),
       Assets.getSprite("maps/madera/madera_back.png"),
@@ -258,19 +303,21 @@ public class ScreenData {
       Assets.getSprite("maps/cueva/cueva_back.png"),
       Assets.getSprite("maps/cueva/cueva_front.png")
     },
-    {}
+    {
+    
+    }
   };
 
   private final int[] baseLayers = new int[]{
-    3,
-    2,
-    2,
-    2,
-    3,
-    0,
-    3,
-    2,
-    0,};
+    3, //PUEBLO
+    2, //ESTE
+    2, //NORTE
+    2, //SUR
+    3, //PLAYA
+    1, //LABERINTO
+    3, //MADERA
+    2, //CUEVA
+    0};//FINAL
 
   private final HashMap<Integer, ArrayList<Enemigo>> enemigos = new HashMap();
 
@@ -383,12 +430,12 @@ public class ScreenData {
     //FROM BOSQUE ESTE
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(2440, 1340));
-    aux.put(LABERINTO, new Vector2(0, 0));
+    aux.put(LABERINTO, new Vector2(60, 1615));
     initPositionPj.put(BOSQUE_ESTE, aux);
 
     aux = new HashMap<>();
     aux.put(PUEBLO_INICIAL, new Vector2(1676, 1420));
-    aux.put(LABERINTO, new Vector2(0, 0));
+    aux.put(LABERINTO, new Vector2(961, 1695));
     initPositionCamera.put(BOSQUE_ESTE, aux);
 
     //FROM BOSQUE NORTE
@@ -442,9 +489,11 @@ public class ScreenData {
 
     //FROM LABERINTO
     aux = new HashMap<>();
+    aux.put(BOSQUE_ESTE, new Vector2(4560, 1420));
     initPositionPj.put(LABERINTO, aux);
 
     aux = new HashMap<>();
+    aux.put(BOSQUE_ESTE, new Vector2(3835, 1500));
     initPositionCamera.put(LABERINTO, aux);
 
     //FROM FINAL
