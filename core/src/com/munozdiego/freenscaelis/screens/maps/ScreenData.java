@@ -208,7 +208,17 @@ public class ScreenData {
       new Rectangle(2400, 578, 238, 178),
       new Rectangle(2976, 963, 238, 178)
     },
-    {}
+    {
+      new Rectangle(0,0,1613,1661),
+      new Rectangle(1615,0,1135,985),
+      new Rectangle(2750,0,592,1615),
+      new Rectangle(3342,0,1231,462),
+      new Rectangle(4573,0,221,3838),
+      new Rectangle(0,1750,1613,2087),
+      new Rectangle(1612,2327,1135,1510),
+      new Rectangle(2752,1701,592,2127),
+      new Rectangle(3340,3284,1231,553)
+    }
   };
 
   private void initWarpZones() {
@@ -254,6 +264,7 @@ public class ScreenData {
     warpZones.put(LABERINTO, aux);
 
     aux = new HashMap<>();
+    aux.put(new Rectangle(0, 1665, 48, 85), LABERINTO);
     warpZones.put(FINAL, aux);
 
   }
@@ -304,7 +315,8 @@ public class ScreenData {
       Assets.getSprite("maps/cueva/cueva_front.png")
     },
     {
-    
+      Assets.getSprite("maps/final/ciudad_final_base.png"),
+      Assets.getSprite("maps/final/ciudad_final_vegetacion.png")
     }
   };
 
@@ -317,7 +329,7 @@ public class ScreenData {
     1, //LABERINTO
     3, //MADERA
     2, //CUEVA
-    0};//FINAL
+    2};//FINAL
 
   private final HashMap<Integer, ArrayList<Enemigo>> enemigos = new HashMap();
 
@@ -405,6 +417,7 @@ public class ScreenData {
     enemigos.put(LABERINTO, aux);
 
     aux = new ArrayList<>();
+    aux.add(new Enemigo(3977, 2083, Enemigo.Tipo.BOSS_SKELETON));
     enemigos.put(FINAL, aux);
 
   }
@@ -490,17 +503,21 @@ public class ScreenData {
     //FROM LABERINTO
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(4560, 1420));
+    aux.put(FINAL, new Vector2(40, 1565));
     initPositionPj.put(LABERINTO, aux);
 
     aux = new HashMap<>();
     aux.put(BOSQUE_ESTE, new Vector2(3835, 1500));
+    aux.put(FINAL, new Vector2(961, 1645));
     initPositionCamera.put(LABERINTO, aux);
 
     //FROM FINAL
     aux = new HashMap<>();
+    aux.put(LABERINTO, new Vector2(4605, 1620));
     initPositionPj.put(FINAL, aux);
 
     aux = new HashMap<>();
+    aux.put(LABERINTO, new Vector2(3838, 1700));
     initPositionCamera.put(FINAL, aux);
 
   }

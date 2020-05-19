@@ -60,11 +60,11 @@
                     <def>0</def>
                 </item>
             </inventory>
-            <posx>4585</posx>
-            <posy>1420</posy>
-            <camx>3835</camx>
-            <camy>1500</camy>
-            <map>1</map>
+            <posx>4605</posx>
+            <posy>1619</posy>
+            <camx>3838</camx>
+            <camy>1699</camy>
+            <map>5</map>
         </character>
         <character>
             <posx>0</posx>
