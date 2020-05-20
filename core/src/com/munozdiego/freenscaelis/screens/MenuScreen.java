@@ -19,8 +19,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
-import com.munozdiego.freenscaelis.models.Entidad;
-import com.munozdiego.freenscaelis.models.Personaje;
 
 /**
  *
@@ -116,10 +114,13 @@ public class MenuScreen implements Screen {
           } else {
             if (boxes[2].contains(screenX, screenY)) {
               System.out.println(texts[2]);
+              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = false;
               m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
             } else {
               if (boxes[3].contains(screenX, screenY)) {
                 System.out.println(texts[3]);
+              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
+                m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
               } else {
                 if (boxes[4].contains(screenX, screenY)) {
                   System.out.println(texts[4]);

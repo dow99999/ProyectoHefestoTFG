@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.munozdiego.freenscaelis.models.Personaje;
+import com.munozdiego.freenscaelis.screens.ConnectScreen;
 import com.munozdiego.freenscaelis.screens.CreatePlayerScreen;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
 import com.munozdiego.freenscaelis.screens.PauseScreen;
@@ -31,10 +32,11 @@ public class MyGame extends Game {
     SELECT_CHAR,
     CREATE_CHAR,
     LEVELS,
-    PAUSE
+    PAUSE,
+    CONNECT
   }
 
-  private Map<CodeScreen, Screen> screens;
+  public Map<CodeScreen, Screen> screens;
 
   public void showScreen(CodeScreen s) {
     setScreen(screens.get(s));
@@ -68,6 +70,7 @@ public class MyGame extends Game {
     screens.put(CodeScreen.CREATE_CHAR, new CreatePlayerScreen(this));
     screens.put(CodeScreen.LEVELS, new LevelScreen(this));
     screens.put(CodeScreen.PAUSE, new PauseScreen(this));
+    screens.put(CodeScreen.CONNECT, new ConnectScreen(this));
     showScreen(CodeScreen.MAIN_MENU);
 
   }

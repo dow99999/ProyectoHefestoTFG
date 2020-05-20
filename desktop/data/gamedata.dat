@@ -5,7 +5,7 @@
             <name>Diego</name>
             <clase>SWORD</clase>
             <stats>
-                <stat>0</stat>
+                <stat>5</stat>
                 <stat>1</stat>
             </stats>
             <inventory>
@@ -60,17 +60,75 @@
                     <def>0</def>
                 </item>
             </inventory>
-            <posx>1664</posx>
-            <posy>2085</posy>
-            <camx>1679</camx>
-            <camy>2163</camy>
+            <posx>1302</posx>
+            <posy>2024</posy>
+            <camx>1382</camx>
+            <camy>2104</camy>
             <map>0</map>
         </character>
         <character>
-            <posx>0</posx>
-            <posy>0</posy>
-            <camx>0</camx>
-            <camy>0</camy>
+            <name>UwU</name>
+            <clase>SCEPTER</clase>
+            <stats>
+                <stat>5</stat>
+                <stat>1</stat>
+            </stats>
+            <inventory>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+                <item>
+                    <id>0</id>
+                    <att>0</att>
+                    <def>0</def>
+                </item>
+            </inventory>
+            <posx>1320</posx>
+            <posy>1440</posy>
+            <camx>1320</camx>
+            <camy>1440</camy>
             <map>0</map>
         </character>
         <character>

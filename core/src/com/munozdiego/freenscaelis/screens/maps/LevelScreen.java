@@ -25,11 +25,15 @@ import com.munozdiego.freenscaelis.models.Enemigo;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.HUD;
 import com.munozdiego.freenscaelis.models.Personaje;
+import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
+import com.munozdiego.freenscaelis.utils.SocketDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -61,6 +65,7 @@ public class LevelScreen implements Screen {
 
   //final Rectangle[] boxes = new Rectangle[texts.length];
   Personaje pj;
+  Personaje pj2;
   float stateTime;
   float attackTime;
 
@@ -69,6 +74,8 @@ public class LevelScreen implements Screen {
   boolean colliderdebug;
   boolean disableCameraLock;
   boolean disableSmoothCamera;
+
+  boolean multi;
 
   ScreenData screendata;
 
@@ -119,13 +126,37 @@ public class LevelScreen implements Screen {
   @Override
   public void show() {
     pj = userdata.getCurrentCharacter();
+    multi = ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi;
 
-    camera.position.x = pj.getCamx();
-    camera.position.y = pj.getCamy();
-    
-    screendata.setCurrentMapa(pj.getMapa());
-    initScreenData();
-    
+    if (multi) {
+      synchronized (SocketDataManager.lastInstance) {
+        pj2 = SocketDataManager.lastInstance.pj2;
+        while (pj2 == null) {
+          try {
+            SocketDataManager.lastInstance.wait();
+          } catch (InterruptedException ex) {
+          }
+          pj2 = SocketDataManager.lastInstance.pj2;
+          System.out.println("getting player...");
+        }
+        pj2.init(pj2.getClase(), 1);
+        if (SocketDataManager.lastInstance.main) {
+          pj2.setMapa(pj.getMapa());
+          pj2.setPosx(pj.getPosx());
+          pj2.setPosy(pj.getPosy());
+        } else {
+          pj.setMapa(pj2.getMapa());
+          pj.setPosx(pj2.getPosx());
+          pj.setPosy(pj2.getPosy());
+        }
+      }
+    }
+
+      camera.position.x = pj.getCamx();
+      camera.position.y = pj.getCamy();
+
+      screendata.setCurrentMapa(pj.getMapa());
+      initScreenData();
     
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
@@ -148,6 +179,7 @@ public class LevelScreen implements Screen {
         return true;
       }
     });
+
   }
 
   public void processEnemies() {
@@ -348,7 +380,7 @@ public class LevelScreen implements Screen {
       if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
         disableSmoothCamera = !disableSmoothCamera;
       }
-      
+
       if (Gdx.input.isKeyJustPressed(Input.Keys.F4)) {
         System.out.println("Player position: " + pj.getPosx() + ", " + pj.getPosy());
         System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
@@ -429,6 +461,15 @@ public class LevelScreen implements Screen {
       batch.draw(layers[i], 0, 0);
     }
 
+    if (multi) {
+      //drawing user 2
+      if (pj2.getCurrentState() != Entidad.Estado.ATT_LEFT && pj2.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+        batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(stateTime, true), pj2.getPosx(), pj2.getPosy());
+      } else {
+        batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(attackTime, true), pj2.getPosx(), pj2.getPosy());
+      }
+    }
+
     //drawing user
     if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
@@ -480,7 +521,7 @@ public class LevelScreen implements Screen {
           shape.setColor(Color.RED);
           shape.rect(aux.x, aux.y, aux.width, aux.height);
           shape.setColor(Color.PURPLE);
-          shape.circle(aux.x + aux.getHeight()/2, aux.y + aux.getHeight()/2, e.getFollowRange());
+          shape.circle(aux.x + aux.getHeight() / 2, aux.y + aux.getHeight() / 2, e.getFollowRange());
         }
 
         shape.end();

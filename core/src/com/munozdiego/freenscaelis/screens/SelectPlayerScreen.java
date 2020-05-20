@@ -28,6 +28,8 @@ import com.munozdiego.freenscaelis.utils.UserData;
  */
 public class SelectPlayerScreen implements Screen {
 
+  public boolean multi;
+  
   MyGame m_game;
   OrthographicCamera camera;
   SpriteBatch batch;
@@ -39,6 +41,7 @@ public class SelectPlayerScreen implements Screen {
 
   Sprite sprite_back;
 
+  
   final String[] texts = new String[]{
     "Erase",
     "Create New",
@@ -191,7 +194,11 @@ public class SelectPlayerScreen implements Screen {
                       if (boxes_player_selection[7].contains(screenX, screenY)) {
                         System.out.println("Start Game");
                         if (pj != null) {
-                          m_game.showScreen(MyGame.CodeScreen.LEVELS);
+                          if(multi){
+                            m_game.showScreen(MyGame.CodeScreen.CONNECT);
+                          } else{
+                            m_game.showScreen(MyGame.CodeScreen.LEVELS);
+                          }
                         }
                       }
                     }
