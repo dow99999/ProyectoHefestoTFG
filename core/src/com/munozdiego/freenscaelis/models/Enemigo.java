@@ -28,13 +28,13 @@ public class Enemigo extends Entidad {
 
   //TODO colliders
   private final Rectangle goblin = new Rectangle(0, 0, 20, 50);
-  private final Rectangle skeleton = new Rectangle(0, 0, 0, 0);
+  private final Rectangle skeleton = new Rectangle(0, 0, 40, 80);
   private final Rectangle slime = new Rectangle(0, 0, 80, 50);
   private final Rectangle boss_goblin = new Rectangle(0, 0, 80, 130);
-  private final Rectangle boss_slime = new Rectangle(0, 0, 0, 0);
-  private final Rectangle boss_skeleton = new Rectangle(0, 0, 0, 0);
-  private final Rectangle obstacle_skeleton = new Rectangle(0, 0, 0, 0);
-  private final Rectangle obstacle_slime = new Rectangle(0, 0, 0, 0);
+  private final Rectangle boss_slime = new Rectangle(0, 0, 290, 130);
+  private final Rectangle boss_skeleton = new Rectangle(0, 0, 240, 160);
+  private final Rectangle obstacle_skeleton = new Rectangle(0, 0, 45, 50);
+  private final Rectangle obstacle_slime = new Rectangle(0, 0, 40, 40);
 
   private float followRangePow;
   private float followRange;
@@ -132,14 +132,14 @@ public class Enemigo extends Entidad {
         getColliders().put(Estado.RUN_LEFT, boss_skeleton);
         getColliders().put(Estado.RUN_RIGHT, boss_skeleton);
         getColliders().put(Estado.DEAD, new Rectangle(0, 0, 0, 0));
-        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
+        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, -40));
+        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -40));
+        getColliderOffset().put(Estado.DEAD, new Vector2(0, -40));
         this.speed = 3;
         this.stats[0] = 40;
         this.stats[1] = 40;
-        followRangePow = 200 * 200;
-        followRange = 200;
+        followRangePow = 600 * 600;
+        followRange = 600;
         directionTimef = 5;
         invTimef = 1;
         break;
@@ -148,14 +148,14 @@ public class Enemigo extends Entidad {
         getColliders().put(Estado.RUN_LEFT, boss_slime);
         getColliders().put(Estado.RUN_RIGHT, boss_slime);
         getColliders().put(Estado.DEAD, new Rectangle(0, 0, 0, 0));
-        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
+        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, -90));
+        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -90));
+        getColliderOffset().put(Estado.DEAD, new Vector2(0, -90));
         this.speed = 2;
         this.stats[0] = 60;
         this.stats[1] = 60;
-        followRangePow = 200 * 200;
-        followRange = 200;
+        followRangePow = 800 * 800;
+        followRange = 800;
         directionTimef = 5;
         invTimef = 1;
         break;
@@ -164,9 +164,9 @@ public class Enemigo extends Entidad {
         getColliders().put(Estado.RUN_LEFT, obstacle_skeleton);
         getColliders().put(Estado.RUN_RIGHT, obstacle_skeleton);
         getColliders().put(Estado.DEAD, new Rectangle(0, 0, 0, 0));
-        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
+        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, -130));
+        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -130));
+        getColliderOffset().put(Estado.DEAD, new Vector2(0, -130));
         this.speed = 0;
         this.stats[0] = 1;
         this.stats[1] = 1;
@@ -180,9 +180,9 @@ public class Enemigo extends Entidad {
         getColliders().put(Estado.RUN_LEFT, obstacle_slime);
         getColliders().put(Estado.RUN_RIGHT, obstacle_slime);
         getColliders().put(Estado.DEAD, new Rectangle(0, 0, 0, 0));
-        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, 0));
-        getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
+        getColliderOffset().put(Estado.RUN_LEFT, new Vector2(0, -80));
+        getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -80));
+        getColliderOffset().put(Estado.DEAD, new Vector2(0, -80));
         this.speed = 0;
         this.stats[0] = 1;
         this.stats[1] = 1;
