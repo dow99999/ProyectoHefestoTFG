@@ -79,7 +79,7 @@ public class InputText extends InputAdapter {
         }
       }
     } else {
-      if (text.length() <= limit) { //we will save another character only when the maximum length hasn't been reached
+      if (text.length() < limit) { //we will save another character only when the maximum length hasn't been reached
         if (capsEnabled) {
           switch (keyCode) {
             case Input.Keys.A:
