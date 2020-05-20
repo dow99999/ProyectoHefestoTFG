@@ -340,17 +340,17 @@ public class ScreenData {
     enemigos.put(PUEBLO_INICIAL, aux);
 
     aux = new ArrayList<>();
-    aux.add(new Enemigo(3626, 2725, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3626, 2725, Enemigo.Tipo.SKELETON));
     aux.add(new Enemigo(3301, 2730, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(2906, 2470, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(2951, 2000, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(2906, 2470, Enemigo.Tipo.SKELETON));
+    aux.add(new Enemigo(2951, 2000, Enemigo.Tipo.SKELETON));
     aux.add(new Enemigo(3241, 1830, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(3371, 1750, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(3676, 1925, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(3371, 1750, Enemigo.Tipo.SKELETON));
+    aux.add(new Enemigo(3676, 1925, Enemigo.Tipo.SKELETON));
     aux.add(new Enemigo(1086, 660, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(891, 700, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(986, 545, Enemigo.Tipo.SLIME));
-    aux.add(new Enemigo(1956, 3275, Enemigo.Tipo.SLIME));
+    aux.add(new Enemigo(891, 700, Enemigo.Tipo.SKELETON));
+    aux.add(new Enemigo(986, 545, Enemigo.Tipo.SKELETON));
+    aux.add(new Enemigo(1956, 3275, Enemigo.Tipo.SKELETON));
     aux.add(new Enemigo(2246, 2994, Enemigo.Tipo.SLIME));
     enemigos.put(BOSQUE_ESTE, aux);
 

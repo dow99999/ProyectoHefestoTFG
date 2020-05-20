@@ -480,7 +480,7 @@ public class LevelScreen implements Screen {
           shape.setColor(Color.RED);
           shape.rect(aux.x, aux.y, aux.width, aux.height);
           shape.setColor(Color.PURPLE);
-          shape.circle(aux.x, aux.y, e.getFollowRange());
+          shape.circle(aux.x + aux.getHeight()/2, aux.y + aux.getHeight()/2, e.getFollowRange());
         }
 
         shape.end();
