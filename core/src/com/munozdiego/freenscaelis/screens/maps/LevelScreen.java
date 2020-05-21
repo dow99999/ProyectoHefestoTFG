@@ -127,7 +127,6 @@ public class LevelScreen implements Screen {
   public void show() {
     pj = userdata.getCurrentCharacter();
     multi = ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi;
-
     if (multi) {
       synchronized (SocketDataManager.lastInstance) {
         pj2 = SocketDataManager.lastInstance.pj2;
@@ -137,7 +136,6 @@ public class LevelScreen implements Screen {
           } catch (InterruptedException ex) {
           }
           pj2 = SocketDataManager.lastInstance.pj2;
-          System.out.println("getting player...");
         }
         pj2.init(pj2.getClase(), 1);
         if (SocketDataManager.lastInstance.main) {
@@ -152,12 +150,12 @@ public class LevelScreen implements Screen {
       }
     }
 
-      camera.position.x = pj.getCamx();
-      camera.position.y = pj.getCamy();
+    camera.position.x = pj.getCamx();
+    camera.position.y = pj.getCamy();
 
-      screendata.setCurrentMapa(pj.getMapa());
-      initScreenData();
-    
+    screendata.setCurrentMapa(pj.getMapa());
+    initScreenData();
+
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
@@ -427,15 +425,33 @@ public class LevelScreen implements Screen {
   public void processWarpEnter() {
     Rectangle warp = ColliderUtils.checkCollitions(warpZones, pj.getColliders().get(pj.getCurrentState()));
     int auxMap;
-    if (warp != null) {
-      auxMap = screendata.getCurrentMapa();
-      screendata.setCurrentMapa(screendata.getWarpMap(warp));
-      camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
-      camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
-      pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
-      pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
-      pj.setMapa(screendata.getCurrentMapa());
-      initScreenData();
+
+    if (multi) {
+      Rectangle warp2 = ColliderUtils.checkCollitions(warpZones, pj2.getColliders().get(pj2.getCurrentState()));
+      if (warp != null && warp == warp2) {
+        try {
+          Thread.sleep(50); //esperamos 3 fotogramas
+        } catch (InterruptedException ex) {}
+        auxMap = screendata.getCurrentMapa();
+        screendata.setCurrentMapa(screendata.getWarpMap(warp));
+        camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
+        camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
+        pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
+        pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
+        pj.setMapa(screendata.getCurrentMapa());
+        initScreenData();
+      }
+    } else {
+      if (warp != null) {
+        auxMap = screendata.getCurrentMapa();
+        screendata.setCurrentMapa(screendata.getWarpMap(warp));
+        camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
+        camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
+        pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
+        pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
+        pj.setMapa(screendata.getCurrentMapa());
+        initScreenData();
+      }
     }
   }
 
@@ -515,6 +531,10 @@ public class LevelScreen implements Screen {
         shape.setColor(Color.GREEN);
         Rectangle aux = pj.getColliders().get(pj.getCurrentState());
         shape.rect(aux.x, aux.y, aux.width, aux.height);
+
+        shape.setColor(Color.GREEN);
+        Rectangle aux2 = pj2.getColliders().get(pj2.getCurrentState());
+        shape.rect(aux2.x, aux2.y, aux2.width, aux2.height);
 
         for (Enemigo e : enemigos) {
           aux = e.getColliders().get(e.getCurrentState());

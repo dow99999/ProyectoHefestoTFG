@@ -5,17 +5,12 @@
  */
 package com.munozdiego.freenscaelis.utils;
 
-import com.badlogic.gdx.Gdx;
-import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.Personaje;
-import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
