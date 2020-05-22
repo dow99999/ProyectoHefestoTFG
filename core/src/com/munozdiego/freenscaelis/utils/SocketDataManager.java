@@ -46,7 +46,7 @@ public class SocketDataManager extends Thread {
         sendPlayerInfo();
         getPlayerInfo();
         Thread.sleep(1000/60);
-      } while (true);
+      } while (true); //TODO stop this
 
     } catch (IOException ex) {
     } catch (InterruptedException ex) {

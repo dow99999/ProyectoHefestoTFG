@@ -26,7 +26,9 @@ public class Enemigo extends Entidad {
     OBSTACLE_SLIME
   }
 
-  //TODO colliders
+  
+  public Tipo tipo;
+  
   private final Rectangle goblin = new Rectangle(0, 0, 20, 50);
   private final Rectangle skeleton = new Rectangle(0, 0, 40, 80);
   private final Rectangle slime = new Rectangle(0, 0, 80, 50);
@@ -55,6 +57,7 @@ public class Enemigo extends Entidad {
     super();
     super.setCurrentState(Estado.RUN_LEFT);
     init(t);
+    tipo = t;
     directionTime = 0;
     invTime = 0;
     setPosx(x);
@@ -212,6 +215,10 @@ public class Enemigo extends Entidad {
 
   public float getDirectionTime() {
     return directionTime;
+  }
+  
+  public float getDirectionTimeF() {
+    return directionTimef;
   }
 
   public void setDirectionTime(float directionTime) {

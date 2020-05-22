@@ -59,7 +59,7 @@ public class Entidad {
   public Estado getCurrentState() {
     return currentState;
   }
-
+  
   public void setCurrentState(Estado currentState) {
     this.currentState = currentState;
   }
