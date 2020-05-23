@@ -25,6 +25,7 @@ public class SocketDataManager extends Thread {
   String ip;
   Personaje pj;
   public Personaje pj2;
+  long timeBetween = (1000 * 3) / 60;
 
   public SocketDataManager(Personaje aje, String ip) {
     pj = aje;
@@ -45,7 +46,8 @@ public class SocketDataManager extends Thread {
       do {
         sendPlayerInfo();
         getPlayerInfo();
-        Thread.sleep(1000/60);
+        Thread.sleep(timeBetween);
+        //Thread.sleep(200); //test lag
       } while (true); //TODO stop this
 
     } catch (IOException ex) {
@@ -54,9 +56,11 @@ public class SocketDataManager extends Thread {
   }
 
   public void sendPlayerInfo() throws IOException {
-      out.writeFloat(pj.getPosx());
-      out.writeFloat(pj.getPosy());
-      out.writeInt(pj.getCurrentState().ordinal());
+    out.writeFloat(pj.getPosx());
+    out.writeFloat(pj.getPosy());
+    out.writeInt(pj.getCurrentState().ordinal());
+    out.writeInt(pj.getvDir());
+    System.out.println("sent: " + pj.getvDir());
   }
 
   public void sendPlayerInfoInit() throws IOException {
@@ -67,9 +71,13 @@ public class SocketDataManager extends Thread {
   }
 
   public void getPlayerInfo() throws IOException {
-    pj2.setPosx(in.readFloat());
-    pj2.setPosy(in.readFloat());
-    pj2.setCurrentState(Entidad.Estado.values()[in.readInt()]);
+    synchronized (pj2) {
+      pj2.setPosx(in.readFloat());
+      pj2.setPosy(in.readFloat());
+      pj2.setCurrentState(Entidad.Estado.values()[in.readInt()]);
+      pj2.setvDir(in.readInt());
+      System.out.println("got: " + pj2.getvDir());
+    }
   }
 
   public void getPlayerInfoInit() throws IOException {
@@ -78,7 +86,7 @@ public class SocketDataManager extends Thread {
     pj2.setPosx(in.readFloat());
     pj2.setPosy(in.readFloat());
     pj2.setMapa(in.readInt());
-    synchronized(lastInstance){
+    synchronized (lastInstance) {
       lastInstance.notifyAll();
     }
   }

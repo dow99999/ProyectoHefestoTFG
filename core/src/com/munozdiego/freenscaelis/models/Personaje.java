@@ -33,6 +33,8 @@ public class Personaje extends Entidad {
   private float invTimef;
   
   private int mapa;
+  
+  private int vDir;
           
   public Personaje() {
     super();
@@ -140,6 +142,14 @@ public class Personaje extends Entidad {
 
   public void setMapa(int mapa) {
     this.mapa = mapa;
+  }
+
+  public int getvDir() {
+    return vDir;
+  }
+
+  public void setvDir(int vDir) {
+    this.vDir = vDir;
   }
   
 }

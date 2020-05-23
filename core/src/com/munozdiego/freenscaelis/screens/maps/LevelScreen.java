@@ -32,8 +32,6 @@ import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -76,7 +74,8 @@ public class LevelScreen implements Screen {
   boolean disableSmoothCamera;
 
   boolean multi;
-
+  boolean initialized = false;
+  
   ScreenData screendata;
 
   Rectangle[] colliders;
@@ -136,7 +135,7 @@ public class LevelScreen implements Screen {
   public void show() {
     pj = userdata.getCurrentCharacter();
     multi = ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi;
-    if (multi) {
+    if (multi && !initialized) {
       synchronized (SocketDataManager.lastInstance) {
         pj2 = SocketDataManager.lastInstance.pj2;
         while (pj2 == null) {
@@ -159,6 +158,7 @@ public class LevelScreen implements Screen {
       }
     }
 
+    initialized = true;
     camera.position.x = pj.getCamx();
     camera.position.y = pj.getCamy();
 
@@ -364,10 +364,11 @@ public class LevelScreen implements Screen {
   public void processUserInput() {
     boolean moving = false;
     float lastPos;
+    attackTime += Gdx.graphics.getDeltaTime();
 
     //movement player
     if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-
+      pj.setvDir(0);
       if (Gdx.input.isKeyPressed(Input.Keys.W)) {
         pj.setCurrentState(
                 pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
@@ -375,9 +376,12 @@ public class LevelScreen implements Screen {
                 : Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosy();
         pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        pj.setvDir(-2);
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+          pj.setvDir(0);
           pj.setPosy(lastPos);
         }
+        System.out.println("W: " + pj.getvDir());
         moving = true;
       }
 
@@ -388,9 +392,12 @@ public class LevelScreen implements Screen {
                 : Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosy();
         pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        pj.setvDir(2);
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+          pj.setvDir(0);
           pj.setPosy(lastPos);
         }
+        System.out.println("S: " + pj.getvDir());
         moving = true;
       }
 
@@ -398,9 +405,12 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if(pj.getvDir() != 0)
+          pj.setvDir(pj.getvDir()/2);
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
+        System.out.println("D: " + pj.getvDir());
         moving = true;
       }
 
@@ -408,9 +418,12 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+        if(pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1)
+          pj.setvDir(pj.getvDir()/2);
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
+        System.out.println("A: " + pj.getvDir());
         moving = true;
       }
 
@@ -421,7 +434,6 @@ public class LevelScreen implements Screen {
       }
 
     } else {
-      attackTime += Gdx.graphics.getDeltaTime();
       if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
         pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
                 ? Entidad.Estado.IDLE_RIGHT
@@ -429,7 +441,7 @@ public class LevelScreen implements Screen {
       }
     }
 
-    if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration()) + 0.2f)) {
       pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
               ? Entidad.Estado.ATT_RIGHT
               : Entidad.Estado.ATT_LEFT);
@@ -496,8 +508,40 @@ public class LevelScreen implements Screen {
     }
     pj.setCamx(camera.position.x);
     pj.setCamy(camera.position.y);
+    
+    System.out.println("end process: " + pj.getvDir());
   }
 
+  public void guessSecondPlayerPos(){
+    if(pj2.getCurrentState() == Entidad.Estado.RUN_LEFT){
+      synchronized(pj2){
+        System.out.println("GUESS: " + pj2.getvDir());
+        if(pj2.getvDir() != 2 && pj2.getvDir() != -2)
+          pj2.setPosx(pj2.getPosx() - pj2.getSpeed());
+      }
+    } else {
+      if(pj2.getCurrentState() == Entidad.Estado.RUN_RIGHT){
+        synchronized(pj2){
+          if(pj2.getvDir() != 2 && pj2.getvDir() != -2)
+            pj2.setPosx(pj2.getPosx() + pj2.getSpeed());
+        }
+      }
+    }
+    synchronized(pj2){
+      switch (pj2.getvDir()) {
+        case 2:
+          pj2.setPosy(pj2.getPosy() + pj2.getSpeed());
+          break;
+        case -2:
+          pj2.setPosy(pj2.getPosy() + pj2.getSpeed() * -1);
+          break;
+        default:        
+          pj2.setPosy(pj2.getPosy() + pj2.getSpeed() * pj2.getvDir());
+          break;
+      }
+    }
+  }
+  
   public void processWarpEnter() {
     Rectangle warp = ColliderUtils.checkCollitions(warpZones, pj.getColliders().get(pj.getCurrentState()));
     int auxMap;
@@ -539,8 +583,10 @@ public class LevelScreen implements Screen {
     //we process the user input before we draw
     processUserInput();
     processWarpEnter();
+    if(multi){
+      guessSecondPlayerPos();
+    }
     processEnemies();
-
     stateTime += Gdx.graphics.getDeltaTime();
 
     camera.update();
