@@ -21,23 +21,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.MyGame;
-import com.munozdiego.freenscaelis.models.Enemigo;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.HUD;
 import com.munozdiego.freenscaelis.models.Personaje;
-import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import com.munozdiego.freenscaelis.utils.ColliderUtils;
 import com.munozdiego.freenscaelis.utils.SocketDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  *
  * @author diego
  */
-public class LevelScreen implements Screen {
+public class ArenaScreen implements Screen {
 
   MyGame m_game;
   OrthographicCamera camera;
@@ -48,16 +43,6 @@ public class LevelScreen implements Screen {
   BitmapFont fontw;
   BitmapFont fontb;
 
-//  final String[] texts = new String[]{
-//    "Log in",
-//    "Register",
-//    "One player",
-//    "Two players",
-//    "Player vs player",
-//    "Configuration",
-//    "Credits",
-//    "Exit"
-//  };
   //used to compute the dimensions of the text
   GlyphLayout layout;
 
@@ -74,28 +59,16 @@ public class LevelScreen implements Screen {
   boolean disableSmoothCamera;
   boolean disableMultiPosGuess;
 
-  boolean multi;
   boolean initialized = false;
-  
+
   ScreenData screendata;
 
   Rectangle[] colliders;
-  Set<Rectangle> warpZones;
   Sprite[] layers;
-  ArrayList<Enemigo> enemigos;
 
   HUD health;
 
-  private int[][] enemyDir = new int[][]{
-    {1, 1},
-    {0, 0},
-    {1, -1},
-    {0, -1},
-    {0, 1},
-    {1, 0}
-  };
-
-  public LevelScreen(MyGame g) {
+  public ArenaScreen(MyGame g) {
     m_game = g;
     camera = new OrthographicCamera();
     camera.setToOrtho(true, 1920, 1080);
@@ -114,7 +87,7 @@ public class LevelScreen implements Screen {
     disableCameraLock = false;
     disableSmoothCamera = false;
     disableMultiPosGuess = false;
-    
+
     health = new HUD(camera);
     health.getTextura_estatica_estados().put(0, Assets.getSprite("HUD/HP/Value/HP_Value_0.png"));
     health.getTextura_estatica_estados().put(1, Assets.getSprite("HUD/HP/Value/HP_Value_1.png"));
@@ -128,16 +101,13 @@ public class LevelScreen implements Screen {
 
   private void initScreenData() {
     colliders = screendata.getColliders();
-    warpZones = screendata.getWarpZones();
     layers = screendata.getLayers();
-    enemigos = screendata.getEnemigos();
   }
 
   @Override
   public void show() {
     pj = userdata.getCurrentCharacter();
-    multi = ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi;
-    if (multi && !initialized) {
+    if (!initialized) {
       synchronized (SocketDataManager.lastInstance) {
         pj2 = SocketDataManager.lastInstance.pj2;
         while (pj2 == null) {
@@ -148,15 +118,15 @@ public class LevelScreen implements Screen {
           pj2 = SocketDataManager.lastInstance.pj2;
         }
         pj2.init(pj2.getClase(), 1);
-        if (SocketDataManager.lastInstance.main) {
-          pj2.setMapa(pj.getMapa());
-          pj2.setPosx(pj.getPosx());
-          pj2.setPosy(pj.getPosy());
-        } else {
-          pj.setMapa(pj2.getMapa());
-          pj.setPosx(pj2.getPosx());
-          pj.setPosy(pj2.getPosy());
-        }
+
+        pj2.setMapa(pj.getMapa());
+        pj2.setPosx(pj.getPosx());
+        pj2.setPosy(pj.getPosy());
+
+        pj.setMapa(pj2.getMapa());
+        pj.setPosx(pj2.getPosx());
+        pj.setPosy(pj2.getPosy());
+
       }
     }
 
@@ -192,171 +162,42 @@ public class LevelScreen implements Screen {
   }
 
   public void processEnemies() {
-    float last;
-    int rand;
-    boolean wandering;
-    boolean hit;
-    boolean wandering2;
-    boolean hit2;
-
     pj.setInvTime(pj.getInvTime() - Gdx.graphics.getDeltaTime());
-    for (Iterator<Enemigo> iter = enemigos.iterator(); iter.hasNext();) {
-      wandering = true;
-      wandering2 = true;
-      hit = false;
-      hit2 = false;
-      Enemigo e = iter.next();
-      e.setInvTime(e.getInvTime() - Gdx.graphics.getDeltaTime());
-      //follow player
-      if (e.getInvTime() <= 0) {
+    pj2.setInvTime(pj2.getInvTime() - Gdx.graphics.getDeltaTime());
 
-        if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
-          wandering = false;
-          if (pj.getPosx() + pj.getCenterX() > e.getPosx() + e.getCenterX()) {
-            last = e.getPosx();
-            e.setCurrentState(Entidad.Estado.RUN_RIGHT);
-            e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosx(last);
-            }
-          } else {
-            last = e.getPosx();
-            e.setCurrentState(Entidad.Estado.RUN_LEFT);
-            e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosx(last);
-            }
-          }
-          if (pj.getPosy() + pj.getCenterY() > e.getPosy() + e.getCenterY()) {
-            last = e.getPosy();
-            e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosy(last);
-            }
-          } else {
-            last = e.getPosy();
-            e.setPosy(e.getPosy() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosy(last);
-            }
-          }
-        }
+    //hit player
+    if (pj.getColliders().get(pj.getCurrentState()).overlaps(pj2.getColliders().get(pj2.getCurrentState()))) {
+      if (!((pj2.getCurrentState() == Entidad.Estado.ATT_LEFT || pj2.getCurrentState() == Entidad.Estado.ATT_RIGHT)
+              && (pj.getCurrentState() == Entidad.Estado.ATT_LEFT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT))) {
 
-        if (multi && ((pj2.getPosx() - e.getPosx()) * (pj2.getPosx() - e.getPosx()) + (pj2.getPosy() - e.getPosy()) * (pj2.getPosy() - e.getPosy()) <= e.getFollowRangePow())) {
-          wandering2 = false;
-          if (pj2.getPosx() + pj2.getCenterX() > e.getPosx() + e.getCenterX()) {
-            last = e.getPosx();
-            e.setCurrentState(Entidad.Estado.RUN_RIGHT);
-            e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosx(last);
-            }
-          } else {
-            last = e.getPosx();
-            e.setCurrentState(Entidad.Estado.RUN_LEFT);
-            e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosx(last);
-            }
-          }
-          if (pj2.getPosy() + pj2.getCenterY() > e.getPosy() + e.getCenterY()) {
-            last = e.getPosy();
-            e.setPosy(e.getPosy() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosy(last);
-            }
-          } else {
-            last = e.getPosy();
-            e.setPosy(e.getPosy() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-            if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-              e.setPosy(last);
-            }
-          }
-        }
-
-        if (wandering && wandering2) { //or do wandering
-          //e.setDirectionTime(e.getDirectionTime() - Gdx.graphics.getDeltaTime());
-          //if (e.getDirectionTime() <= 0) {
-          rand = getSyncRandom((enemyDir.length + e.tipo.ordinal()), e.getDirectionTimeF()) % (enemyDir.length - 1);
-          e.setCurrentState(enemyDir[rand][0] == 0 ? Entidad.Estado.RUN_LEFT : Entidad.Estado.RUN_RIGHT);
-          e.setDirection(enemyDir[rand][1]);
-          //}
-
-          last = e.getPosy();
-          e.setPosy(e.getPosy() + e.getSpeed() * e.getDirection() * Gdx.graphics.getDeltaTime() * 60);
-          if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-            e.setPosy(last);
-          }
-          switch (e.getCurrentState()) {
-            case RUN_LEFT:
-              last = e.getPosx();
-              e.setPosx(e.getPosx() - e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-              if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-                e.setPosx(last);
-              }
-              break;
-            case RUN_RIGHT:
-              last = e.getPosx();
-              e.setPosx(e.getPosx() + e.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-              if (ColliderUtils.checkCollitions(colliders, e.getColliders().get(e.getCurrentState())) != null) {
-                e.setPosx(last);
-              }
-              break;
-          }
-        }
-      }
-
-      //hit player
-      if (pj.getColliders().get(pj.getCurrentState()).overlaps(e.getColliders().get(e.getCurrentState()))) {
-        hit = true;
-        if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-          hit = false;
+        if ((pj2.getCurrentState() == Entidad.Estado.ATT_LEFT || pj2.getCurrentState() == Entidad.Estado.ATT_RIGHT)) {
           if (pj.getInvTime() <= 0) {
             pj.resetInvTime();
             if (pj.getStats()[0] > 0) {
-              pj.getStats()[0] -= e.getStats()[1];
+              pj.getStats()[0] -= pj2.getStats()[1];
               if (pj.getStats()[0] < 0) {
                 pj.getStats()[0] = 0;
               }
             } else {
-              //TODO end game
+              //TODO pj die
             }
           }
-        }
-      }
-
-      if (multi && pj2.getColliders().get(pj2.getCurrentState()).overlaps(e.getColliders().get(e.getCurrentState()))) {
-        hit2 = true;
-        if (pj2.getCurrentState() != Entidad.Estado.ATT_LEFT && pj2.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-          hit2 = false;
-          if (pj2.getInvTime() <= 0) {
-            pj2.resetInvTime();
-            if (pj2.getStats()[0] > 0) {
-              pj2.getStats()[0] -= e.getStats()[1];
-              if (pj2.getStats()[0] < 0) {
-                pj2.getStats()[0] = 0;
+        } else {
+          if ((pj.getCurrentState() == Entidad.Estado.ATT_LEFT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT)) {
+            if (pj2.getInvTime() <= 0) {
+              pj2.resetInvTime();
+              if (pj2.getStats()[0] > 0) {
+                pj2.getStats()[0] -= pj.getStats()[1];
+                if (pj2.getStats()[0] < 0) {
+                  pj2.getStats()[0] = 0;
+                }
+              } else {
+                //TODO pj2 die
               }
-            } else {
-              //TODO end game
             }
           }
         }
       }
-
-      if (hit || hit2) {
-        if (e.getInvTime() <= 0) {
-          e.resetInvTime();
-          if (e.getStats()[0] > 0) {
-              e.getStats()[0] -= hit ? pj.getStats()[1] : pj2.getStats()[1];
-            if (e.getStats()[0] < 0) {
-              e.getStats()[0] = 0;
-            }
-          } else {
-            iter.remove();
-          }
-        }
-      }
-
     }
   }
 
@@ -383,7 +224,6 @@ public class LevelScreen implements Screen {
           pj.setvDir(0);
           pj.setPosy(lastPos);
         }
-        System.out.println("W: " + pj.getvDir());
         moving = true;
       }
 
@@ -399,7 +239,6 @@ public class LevelScreen implements Screen {
           pj.setvDir(0);
           pj.setPosy(lastPos);
         }
-        System.out.println("S: " + pj.getvDir());
         moving = true;
       }
 
@@ -407,12 +246,12 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if(pj.getvDir() != 0)
-          pj.setvDir(pj.getvDir()/2);
+        if (pj.getvDir() != 0) {
+          pj.setvDir(pj.getvDir() / 2);
+        }
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
-        System.out.println("D: " + pj.getvDir());
         moving = true;
       }
 
@@ -420,12 +259,12 @@ public class LevelScreen implements Screen {
         pj.setCurrentState(Entidad.Estado.RUN_LEFT);
         lastPos = pj.getPosx();
         pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if(pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1)
-          pj.setvDir(pj.getvDir()/2);
+        if (pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1) {
+          pj.setvDir(pj.getvDir() / 2);
+        }
         if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
           pj.setPosx(lastPos);
         }
-        System.out.println("A: " + pj.getvDir());
         moving = true;
       }
 
@@ -514,26 +353,25 @@ public class LevelScreen implements Screen {
     }
     pj.setCamx(camera.position.x);
     pj.setCamy(camera.position.y);
-    
-    System.out.println("end process: " + pj.getvDir());
   }
 
-  public void guessSecondPlayerPos(){
-    if(pj2.getCurrentState() == Entidad.Estado.RUN_LEFT){
-      synchronized(pj2){
-        System.out.println("GUESS: " + pj2.getvDir());
-        if(pj2.getvDir() != 2 && pj2.getvDir() != -2)
+  public void guessSecondPlayerPos() {
+    if (pj2.getCurrentState() == Entidad.Estado.RUN_LEFT) {
+      synchronized (pj2) {
+        if (pj2.getvDir() != 2 && pj2.getvDir() != -2) {
           pj2.setPosx(pj2.getPosx() - pj2.getSpeed());
+        }
       }
     } else {
-      if(pj2.getCurrentState() == Entidad.Estado.RUN_RIGHT){
-        synchronized(pj2){
-          if(pj2.getvDir() != 2 && pj2.getvDir() != -2)
+      if (pj2.getCurrentState() == Entidad.Estado.RUN_RIGHT) {
+        synchronized (pj2) {
+          if (pj2.getvDir() != 2 && pj2.getvDir() != -2) {
             pj2.setPosx(pj2.getPosx() + pj2.getSpeed());
+          }
         }
       }
     }
-    synchronized(pj2){
+    synchronized (pj2) {
       switch (pj2.getvDir()) {
         case 2:
           pj2.setPosy(pj2.getPosy() + pj2.getSpeed());
@@ -541,43 +379,9 @@ public class LevelScreen implements Screen {
         case -2:
           pj2.setPosy(pj2.getPosy() + pj2.getSpeed() * -1);
           break;
-        default:        
+        default:
           pj2.setPosy(pj2.getPosy() + pj2.getSpeed() * pj2.getvDir());
           break;
-      }
-    }
-  }
-  
-  public void processWarpEnter() {
-    Rectangle warp = ColliderUtils.checkCollitions(warpZones, pj.getColliders().get(pj.getCurrentState()));
-    int auxMap;
-
-    if (multi) {
-      Rectangle warp2 = ColliderUtils.checkCollitions(warpZones, pj2.getColliders().get(pj2.getCurrentState()));
-      if (warp != null && warp == warp2) {
-        try {
-          Thread.sleep(50); //esperamos 3 fotogramas
-        } catch (InterruptedException ex) {
-        }
-        auxMap = screendata.getCurrentMapa();
-        screendata.setCurrentMapa(screendata.getWarpMap(warp));
-        camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
-        camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
-        pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
-        pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
-        pj.setMapa(screendata.getCurrentMapa());
-        initScreenData();
-      }
-    } else {
-      if (warp != null) {
-        auxMap = screendata.getCurrentMapa();
-        screendata.setCurrentMapa(screendata.getWarpMap(warp));
-        camera.position.x = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).x;
-        camera.position.y = screendata.getCameraWarpPos(auxMap, screendata.getCurrentMapa()).y;
-        pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
-        pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
-        pj.setMapa(screendata.getCurrentMapa());
-        initScreenData();
       }
     }
   }
@@ -586,12 +390,11 @@ public class LevelScreen implements Screen {
   public void render(float f) {
     Gdx.gl.glClearColor(0F, 0F, 0F, 0F);
     Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+    
     //we process the user input before we draw
     processUserInput();
-    processWarpEnter();
-    if(multi && !disableMultiPosGuess){
-      guessSecondPlayerPos();
-    }
+    guessSecondPlayerPos();
+
     processEnemies();
     stateTime += Gdx.graphics.getDeltaTime();
 
@@ -606,13 +409,11 @@ public class LevelScreen implements Screen {
       batch.draw(layers[i], 0, 0);
     }
 
-    if (multi) {
-      //drawing user 2
-      if (pj2.getCurrentState() != Entidad.Estado.ATT_LEFT && pj2.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-        batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(stateTime, true), pj2.getPosx(), pj2.getPosy());
-      } else {
-        batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(attackTime, true), pj2.getPosx(), pj2.getPosy());
-      }
+    //drawing user 2
+    if (pj2.getCurrentState() != Entidad.Estado.ATT_LEFT && pj2.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+      batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(stateTime, true), pj2.getPosx(), pj2.getPosy());
+    } else {
+      batch.draw(pj2.getAnimaciones().get(pj2.getCurrentState()).getKeyFrame(attackTime, true), pj2.getPosx(), pj2.getPosy());
     }
 
     //drawing user
@@ -620,15 +421,6 @@ public class LevelScreen implements Screen {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
     } else {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
-    }
-
-    //drawing enemies
-    for (Enemigo e : enemigos) {
-      if (e.getInvTime() > 0) {
-        batch.draw(e.getAnimaciones().get(Entidad.Estado.DEAD).getKeyFrame(0, false), e.getPosx(), e.getPosy());
-      } else {
-        batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
-      }
     }
 
     for (int i = screendata.getBaseLayers(); i < layers.length; i++) {
@@ -652,38 +444,17 @@ public class LevelScreen implements Screen {
           shape.rect(r.x, r.y, r.width, r.height);
         }
 
-        shape.setColor(Color.BLUE);
-        for (Rectangle r : warpZones) {
-          shape.rect(r.x, r.y, r.width, r.height);
-        }
-
         shape.setColor(Color.GREEN);
         Rectangle aux = pj.getColliders().get(pj.getCurrentState());
         shape.rect(aux.x, aux.y, aux.width, aux.height);
 
-        if (multi) {
-          shape.setColor(Color.GREEN);
-          Rectangle aux2 = pj2.getColliders().get(pj2.getCurrentState());
-          shape.rect(aux2.x, aux2.y, aux2.width, aux2.height);
-        }
-
-        for (Enemigo e : enemigos) {
-          aux = e.getColliders().get(e.getCurrentState());
-          shape.setColor(Color.RED);
-          shape.rect(aux.x, aux.y, aux.width, aux.height);
-          shape.setColor(Color.PURPLE);
-          shape.circle(aux.x + aux.getHeight() / 2, aux.y + aux.getHeight() / 2, e.getFollowRange());
-        }
+        shape.setColor(Color.RED);
+        Rectangle aux2 = pj2.getColliders().get(pj2.getCurrentState());
+        shape.rect(aux2.x, aux2.y, aux2.width, aux2.height);
 
         shape.end();
       }
     }
-  }
-
-  private int getSyncRandom(double numbers, double speed) {
-    int out = (int) (((((System.currentTimeMillis() / (100.0 * speed)) % 10.0) / 10.0)
-            * (numbers + 1.0)));
-    return out;
   }
 
   @Override

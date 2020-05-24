@@ -24,8 +24,9 @@ public class SocketDataManager extends Thread {
   public boolean main;
   String ip;
   Personaje pj;
+  public Socket cs;
   public Personaje pj2;
-  long timeBetween = (1000 * 3) / 60;
+  long timeBetween = (1000 * 5) / 60;
 
   public SocketDataManager(Personaje aje, String ip) {
     pj = aje;
@@ -36,7 +37,7 @@ public class SocketDataManager extends Thread {
   public void connect() {
 
     try {
-      Socket cs = new Socket(ip, 27827);
+      cs = new Socket(ip, 27827);
       in = new DataInputStream(cs.getInputStream());
       out = new DataOutputStream(cs.getOutputStream());
 
@@ -60,7 +61,6 @@ public class SocketDataManager extends Thread {
     out.writeFloat(pj.getPosy());
     out.writeInt(pj.getCurrentState().ordinal());
     out.writeInt(pj.getvDir());
-    System.out.println("sent: " + pj.getvDir());
   }
 
   public void sendPlayerInfoInit() throws IOException {
@@ -76,7 +76,6 @@ public class SocketDataManager extends Thread {
       pj2.setPosy(in.readFloat());
       pj2.setCurrentState(Entidad.Estado.values()[in.readInt()]);
       pj2.setvDir(in.readInt());
-      System.out.println("got: " + pj2.getvDir());
     }
   }
 

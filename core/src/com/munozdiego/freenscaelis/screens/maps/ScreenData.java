@@ -28,7 +28,8 @@ public class ScreenData {
           LABERINTO = 5,
           MADERA = 6,
           CUEVA = 7,
-          FINAL = 8;
+          FINAL = 8,
+          ARENA = 9;
 
   private static ScreenData instance;
 
@@ -218,6 +219,8 @@ public class ScreenData {
       new Rectangle(1612,2327,1135,1510),
       new Rectangle(2752,1701,592,2127),
       new Rectangle(3340,3284,1231,553)
+    },
+    {
     }
   };
 
@@ -317,6 +320,9 @@ public class ScreenData {
     {
       Assets.getSprite("maps/final/ciudad_final_base.png"),
       Assets.getSprite("maps/final/ciudad_final_vegetacion.png")
+    },
+    {
+      
     }
   };
 
@@ -329,7 +335,8 @@ public class ScreenData {
     1, //LABERINTO
     3, //MADERA
     2, //CUEVA
-    2};//FINAL
+    2, //FINAL
+    2};//ARENA
 
   private final HashMap<Integer, ArrayList<Enemigo>> enemigos = new HashMap();
 
