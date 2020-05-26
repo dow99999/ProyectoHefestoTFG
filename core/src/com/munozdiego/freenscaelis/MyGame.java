@@ -14,6 +14,7 @@ import com.munozdiego.freenscaelis.screens.PauseScreen;
 import com.munozdiego.freenscaelis.screens.maps.LevelScreen;
 import com.munozdiego.freenscaelis.screens.RegisterScreen;
 import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
+import com.munozdiego.freenscaelis.screens.maps.ArenaScreen;
 import com.munozdiego.freenscaelis.utils.LocalDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class MyGame extends Game {
     CREATE_CHAR,
     LEVELS,
     PAUSE,
-    CONNECT
+    CONNECT,
+    PVP
   }
 
   public Map<CodeScreen, Screen> screens;
@@ -71,6 +73,7 @@ public class MyGame extends Game {
     screens.put(CodeScreen.LEVELS, new LevelScreen(this));
     screens.put(CodeScreen.PAUSE, new PauseScreen(this));
     screens.put(CodeScreen.CONNECT, new ConnectScreen(this));
+    screens.put(CodeScreen.PVP, new ArenaScreen(this));
     showScreen(CodeScreen.MAIN_MENU);
 
   }

@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
-import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
 import com.munozdiego.freenscaelis.utils.InputText;
 import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.utils.SocketDataManager;
@@ -80,8 +79,7 @@ public class ConnectScreen implements Screen {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (connect.contains(screenX, screenY)) {
-          new SocketDataManager(UserData.getInstance().getCurrentCharacter(), ip).start();
-          m_game.showScreen(MyGame.CodeScreen.LEVELS);
+          conect(((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp);
         }
         return super.touchDown(screenX, screenY, pointer, button);
       }
@@ -91,8 +89,27 @@ public class ConnectScreen implements Screen {
     textListener.setLimit(15);
   }
 
+  public void conect(boolean pvp) {
+    texts[2] = "Waiting for the other player...";
+    if (SocketDataManager.lastInstance != null) {
+      if (SocketDataManager.lastInstance.isAlive()) {
+        SocketDataManager.lastInstance.interrupt();
+      }
+    }
+    System.out.println("connect");
+    new SocketDataManager(UserData.getInstance().getCurrentCharacter(), ip).start();
+
+    if (!pvp) {
+      m_game.showScreen(MyGame.CodeScreen.LEVELS);
+    } else {
+      m_game.showScreen(MyGame.CodeScreen.PVP);
+    }
+  }
+
   @Override
   public void show() {
+    texts[2] = "Connect";
+
     //we set our listener to libGDX only when this screen is being shown
     Gdx.input.setInputProcessor(textListener);
   }
@@ -106,7 +123,7 @@ public class ConnectScreen implements Screen {
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
     }
-    
+
     ip = textListener.getText();
 
     //start of the drawing process
@@ -115,12 +132,13 @@ public class ConnectScreen implements Screen {
     batch.draw(sprite_back, 0, 0);
 
     fonty.draw(batch, texts[0], 300, 300);
-    
-    if(ip.equals(""))
+
+    if (ip.equals("")) {
       fonty.draw(batch, texts[1], 360, 300);
-    else
+    } else {
       fonty.draw(batch, ip, 360, 300);
-    
+    }
+
     layout.setText(fontw, texts[2]);
     fontw.draw(batch, texts[2], MyGame.WIDTH / 2 - layout.width / 2, 700);
 

@@ -5,6 +5,7 @@
  */
 package com.munozdiego.freenscaelis.utils;
 
+import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Entidad;
 import com.munozdiego.freenscaelis.models.Personaje;
 import java.io.DataInputStream;
@@ -22,6 +23,7 @@ public class SocketDataManager extends Thread {
   DataOutputStream out;
   DataInputStream in;
   public boolean main;
+  private boolean running;
   String ip;
   Personaje pj;
   public Socket cs;
@@ -31,6 +33,7 @@ public class SocketDataManager extends Thread {
   public SocketDataManager(Personaje aje, String ip) {
     pj = aje;
     this.ip = ip;
+    running = true;
     lastInstance = this;
   }
 
@@ -49,7 +52,7 @@ public class SocketDataManager extends Thread {
         getPlayerInfo();
         Thread.sleep(timeBetween);
         //Thread.sleep(200); //test lag
-      } while (true); //TODO stop this
+      } while (running); //TODO stop this
 
     } catch (IOException ex) {
     } catch (InterruptedException ex) {
@@ -71,12 +74,10 @@ public class SocketDataManager extends Thread {
   }
 
   public void getPlayerInfo() throws IOException {
-    synchronized (pj2) {
       pj2.setPosx(in.readFloat());
       pj2.setPosy(in.readFloat());
       pj2.setCurrentState(Entidad.Estado.values()[in.readInt()]);
       pj2.setvDir(in.readInt());
-    }
   }
 
   public void getPlayerInfoInit() throws IOException {
@@ -93,5 +94,19 @@ public class SocketDataManager extends Thread {
   @Override
   public void run() {
     connect();
+  }
+  
+  @Override
+  public void interrupt(){
+    running = false;
+    try {
+      in.close();
+      out.close();
+      cs.close();
+    } catch (IOException ex) {
+      if(MyGame.DEBUG_MODE)
+        System.out.println("InterruptError: " + ex);
+    }
+    super.interrupt();
   }
 }

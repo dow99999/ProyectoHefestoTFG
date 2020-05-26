@@ -29,6 +29,7 @@ import com.munozdiego.freenscaelis.utils.UserData;
 public class SelectPlayerScreen implements Screen {
 
   public boolean multi;
+  public boolean pvp;
   
   MyGame m_game;
   OrthographicCamera camera;
@@ -196,7 +197,7 @@ public class SelectPlayerScreen implements Screen {
                         if (pj != null) {
                           if(multi){
                             m_game.showScreen(MyGame.CodeScreen.CONNECT);
-                          } else{
+                          } else {
                             m_game.showScreen(MyGame.CodeScreen.LEVELS);
                           }
                         }

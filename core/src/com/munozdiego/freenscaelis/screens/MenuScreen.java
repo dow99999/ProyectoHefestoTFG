@@ -120,11 +120,14 @@ public class MenuScreen implements Screen {
               if (boxes[3].contains(screenX, screenY)) {
                 System.out.println(texts[3]);
               ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
+              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = false;
                 m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
               } else {
                 if (boxes[4].contains(screenX, screenY)) {
                   System.out.println(texts[4]);
-
+                  ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
+                  ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = true;
+                  m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
                 } else {
                   if (boxes[5].contains(screenX, screenY)) {
                     System.out.println(texts[5]);

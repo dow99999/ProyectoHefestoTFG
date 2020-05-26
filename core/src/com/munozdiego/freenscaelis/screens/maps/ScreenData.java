@@ -322,7 +322,9 @@ public class ScreenData {
       Assets.getSprite("maps/final/ciudad_final_vegetacion.png")
     },
     {
-      
+      Assets.getSprite("maps/arena/arena_base.png"),
+      Assets.getSprite("maps/arena/arena_atras.png"),
+      Assets.getSprite("maps/arena/arena_delante.png")
     }
   };
 

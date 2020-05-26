@@ -119,14 +119,24 @@ public class ArenaScreen implements Screen {
         }
         pj2.init(pj2.getClase(), 1);
 
-        pj2.setMapa(pj.getMapa());
-        pj2.setPosx(pj.getPosx());
-        pj2.setPosy(pj.getPosy());
-
-        pj.setMapa(pj2.getMapa());
-        pj.setPosx(pj2.getPosx());
-        pj.setPosy(pj2.getPosy());
-
+        pj.setMapa(ScreenData.ARENA);
+        pj2.setMapa(ScreenData.ARENA);
+        
+        if(SocketDataManager.lastInstance.main){
+          pj.setPosx(1656);
+          pj2.setPosx(381);
+          pj.setCamx(1196);
+          pj.setCamy(579);
+        } else {
+          pj.setPosx(381);
+          pj2.setPosx(1656);
+          pj.setCamx(961);
+          pj.setCamy(579);
+        }
+        
+        pj.setPosy(500);
+        pj2.setPosy(500);
+        
       }
     }
 
@@ -291,7 +301,8 @@ public class ArenaScreen implements Screen {
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-      m_game.showScreen(MyGame.CodeScreen.PAUSE);
+      SocketDataManager.lastInstance.interrupt();
+      m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
     }
 
     if (MyGame.DEBUG_MODE) {
