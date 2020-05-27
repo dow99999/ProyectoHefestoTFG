@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -86,6 +88,15 @@ public class LevelScreen implements Screen {
 
   HUD health;
 
+  Music currentbg;
+  
+  Sound hit_pj;
+  Sound hit_sk;
+  Sound hit_gb;
+  Sound hit_sl;
+  Sound att;
+  Sound enemy_death;
+  
   private int[][] enemyDir = new int[][]{
     {1, 1},
     {0, 0},
@@ -124,6 +135,13 @@ public class LevelScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
+    
+    hit_pj = Assets.getSound("hit_pj");
+    hit_sl = Assets.getSound("hit_sl");
+    hit_gb = Assets.getSound("hit_gb");
+    hit_sk = Assets.getSound("hit_sk");
+    att = Assets.getSound("attack");
+    enemy_death = Assets.getSound("enemy_death");
   }
 
   private void initScreenData() {
@@ -165,6 +183,7 @@ public class LevelScreen implements Screen {
     camera.position.y = pj.getCamy();
 
     screendata.setCurrentMapa(pj.getMapa());
+    setBgMusic(pj.getMapa());
     initScreenData();
 
     //setting of the InputProcessor we'll use in this screen
@@ -313,6 +332,7 @@ public class LevelScreen implements Screen {
           hit = false;
           if (pj.getInvTime() <= 0) {
             pj.resetInvTime();
+            hit_pj.play();
             if (pj.getStats()[0] > 0) {
               pj.getStats()[0] -= e.getStats()[1];
               if (pj.getStats()[0] < 0) {
@@ -348,10 +368,27 @@ public class LevelScreen implements Screen {
           e.resetInvTime();
           if (e.getStats()[0] > 0) {
             e.getStats()[0] -= hit ? pj.getStats()[1] : pj2.getStats()[1];
+            switch(e.tipo){
+              case GOBLIN:
+              case BOSS_GOBLIN:
+                hit_gb.play();
+                break;
+              case SKELETON:
+              case BOSS_SKELETON:
+                hit_sk.play();
+                break;
+              case SLIME:
+              case BOSS_SLIME:
+                hit_sl.play();
+                break;
+              default:
+                hit_sl.play();
+            }
             if (e.getStats()[0] < 0) {
               e.getStats()[0] = 0;
             }
           } else {
+            enemy_death.play();
             iter.remove();
           }
         }
@@ -450,6 +487,7 @@ public class LevelScreen implements Screen {
               ? Entidad.Estado.ATT_RIGHT
               : Entidad.Estado.ATT_LEFT);
       attackTime = 0;
+      att.play();
       pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
     }
 
@@ -556,7 +594,7 @@ public class LevelScreen implements Screen {
       Rectangle warp2 = ColliderUtils.checkCollitions(warpZones, pj2.getColliders().get(pj2.getCurrentState()));
       if (warp != null && warp == warp2) {
         try {
-          Thread.sleep(50); //esperamos 3 fotogramas
+          Thread.sleep(200); //esperamos 12 fotogramas
         } catch (InterruptedException ex) {
         }
         auxMap = screendata.getCurrentMapa();
@@ -566,6 +604,7 @@ public class LevelScreen implements Screen {
         pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
         pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
         pj.setMapa(screendata.getCurrentMapa());
+        setBgMusic(pj.getMapa());
         initScreenData();
       }
     } else {
@@ -577,6 +616,7 @@ public class LevelScreen implements Screen {
         pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
         pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
         pj.setMapa(screendata.getCurrentMapa());
+        setBgMusic(pj.getMapa());
         initScreenData();
       }
     }
@@ -710,5 +750,14 @@ public class LevelScreen implements Screen {
   public void dispose() {
     batch.dispose();
     shape.dispose();
+  }
+
+  private void setBgMusic(int map) {
+    if(currentbg != null)
+      currentbg.stop();
+    currentbg = Assets.getMusic(String.valueOf(map));
+    currentbg.setLooping(true);
+    currentbg.setVolume(0.3f);
+    currentbg.play();
   }
 }

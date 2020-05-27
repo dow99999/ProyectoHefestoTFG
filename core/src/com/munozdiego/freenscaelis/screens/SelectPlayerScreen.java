@@ -198,6 +198,7 @@ public class SelectPlayerScreen implements Screen {
                           if(multi){
                             m_game.showScreen(MyGame.CodeScreen.CONNECT);
                           } else {
+                            Assets.getMusic(MyGame.CodeScreen.MAIN_MENU.name()).stop();
                             m_game.showScreen(MyGame.CodeScreen.LEVELS);
                           }
                         }

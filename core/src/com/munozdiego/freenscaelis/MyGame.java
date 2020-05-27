@@ -15,6 +15,7 @@ import com.munozdiego.freenscaelis.screens.maps.LevelScreen;
 import com.munozdiego.freenscaelis.screens.RegisterScreen;
 import com.munozdiego.freenscaelis.screens.SelectPlayerScreen;
 import com.munozdiego.freenscaelis.screens.maps.ArenaScreen;
+import com.munozdiego.freenscaelis.screens.maps.ScreenData;
 import com.munozdiego.freenscaelis.utils.LocalDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 import java.util.HashMap;
@@ -52,6 +53,27 @@ public class MyGame extends Game {
     Assets.addFont("pixel32b", 32, Color.BLACK, "fonts/pixelart.otf");
     Assets.addFont("pixel32w", 32, Color.WHITE, "fonts/pixelart.otf");
 
+    Assets.addMusic(MyGame.CodeScreen.MAIN_MENU.name(), "audio/music/menu_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.PUEBLO_INICIAL), "audio/music/town_st.wav");
+    Assets.addMusic(String.valueOf(ScreenData.BOSQUE_ESTE), "audio/music/forest_st.wav");
+    Assets.addMusic(String.valueOf(ScreenData.BOSQUE_NORTE), "audio/music/forest_st.wav");
+    Assets.addMusic(String.valueOf(ScreenData.BOSQUE_SUR), "audio/music/forest_st.wav");
+    Assets.addMusic(String.valueOf(ScreenData.PLAYA), "audio/music/beach_st.wav");
+    Assets.addMusic(String.valueOf(ScreenData.CUEVA), "audio/music/final_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.FINAL), "audio/music/final_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.LABERINTO), "audio/music/final_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.MADERA), "audio/music/final_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.ARENA), "audio/music/arena_st.mp3");
+    
+    Assets.addSound("click", "audio/sounds/click.wav");
+    Assets.addSound("type", "audio/sounds/type.wav");
+    Assets.addSound("attack", "audio/sounds/att.wav");
+    Assets.addSound("hit_pj", "audio/sounds/hit_pj.wav");
+    Assets.addSound("hit_gb", "audio/sounds/hit_gb.wav");
+    Assets.addSound("hit_sk", "audio/sounds/hit_sk.wav");
+    Assets.addSound("hit_sl", "audio/sounds/hit_slime.wav");
+    Assets.addSound("enemy_death", "audio/sounds/mob_death.wav");
+    
     Assets.init();
 
     //init list of local user's characters

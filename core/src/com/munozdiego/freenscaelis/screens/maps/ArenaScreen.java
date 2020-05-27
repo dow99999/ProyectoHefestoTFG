@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -65,6 +67,11 @@ public class ArenaScreen implements Screen {
 
   Rectangle[] colliders;
   Sprite[] layers;
+  
+  Music bg;
+  
+  Sound att;
+  Sound hit;
 
   HUD health;
 
@@ -97,6 +104,12 @@ public class ArenaScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
+    
+    bg = Assets.getMusic(String.valueOf(ScreenData.ARENA));
+    bg.setLooping(true);
+    bg.setVolume(0.2f);
+    att = Assets.getSound("attack");
+    hit = Assets.getSound("hit_pj");
   }
 
   private void initScreenData() {
@@ -139,7 +152,8 @@ public class ArenaScreen implements Screen {
         
       }
     }
-
+    
+    bg.play();
     initialized = true;
     camera.position.x = pj.getCamx();
     camera.position.y = pj.getCamy();
@@ -183,6 +197,7 @@ public class ArenaScreen implements Screen {
         if ((pj2.getCurrentState() == Entidad.Estado.ATT_LEFT || pj2.getCurrentState() == Entidad.Estado.ATT_RIGHT)) {
           if (pj.getInvTime() <= 0) {
             pj.resetInvTime();
+            hit.play();
             if (pj.getStats()[0] > 0) {
               pj.getStats()[0] -= pj2.getStats()[1];
               if (pj.getStats()[0] < 0) {
@@ -196,6 +211,7 @@ public class ArenaScreen implements Screen {
           if ((pj.getCurrentState() == Entidad.Estado.ATT_LEFT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT)) {
             if (pj2.getInvTime() <= 0) {
               pj2.resetInvTime();
+              hit.play();
               if (pj2.getStats()[0] > 0) {
                 pj2.getStats()[0] -= pj.getStats()[1];
                 if (pj2.getStats()[0] < 0) {
@@ -297,6 +313,7 @@ public class ArenaScreen implements Screen {
               ? Entidad.Estado.ATT_RIGHT
               : Entidad.Estado.ATT_LEFT);
       attackTime = 0;
+      att.play();
       pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
     }
 
@@ -475,7 +492,7 @@ public class ArenaScreen implements Screen {
 
   @Override
   public void pause() {
-
+    bg.stop();
   }
 
   @Override

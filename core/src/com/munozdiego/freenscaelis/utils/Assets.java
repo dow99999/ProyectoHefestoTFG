@@ -6,6 +6,8 @@
 package com.munozdiego.freenscaelis.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Enemigo.Tipo;
 import com.munozdiego.freenscaelis.models.Entidad.Estado;
 import java.util.HashMap;
@@ -27,6 +30,8 @@ import java.util.Map;
 public class Assets {
 
   private static Map<String, BitmapFont> fonts = new HashMap<>();
+  private static Map<String, Music> music = new HashMap<>();
+  private static Map<String, Sound> sounds = new HashMap<>();
   private static Map<Tipo, Map<Estado, Animation<TextureRegion>>> enemyAnimations;
   private static Map<Tipo, Map<Estado, Animation<TextureRegion>>> enemyAnimationsAlt;
 
@@ -190,5 +195,21 @@ public class Assets {
    */
   public static Map<Estado, Animation<TextureRegion>> getEnemyAnimations(Tipo t, boolean variant) {
     return ((int) (Math.random() * 2)) == 0 && variant ? enemyAnimationsAlt.get(t) : enemyAnimations.get(t);
+  }
+  
+  public static void addMusic(String id, String path){
+    music.put(id, Gdx.audio.newMusic(Gdx.files.internal(path)));
+  }
+  
+  public static Music getMusic(String id){
+    return music.get(id);
+  }
+  
+  public static void addSound(String id, String path){
+    sounds.put(id, Gdx.audio.newSound(Gdx.files.internal(path)));
+  }
+  
+  public static Sound getSound(String id){
+    return sounds.get(id);
   }
 }

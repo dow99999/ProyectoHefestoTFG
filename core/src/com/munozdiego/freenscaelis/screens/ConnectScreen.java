@@ -39,13 +39,15 @@ public class ConnectScreen implements Screen {
   InputText textListener;
 
   String ip = "";
-
+  boolean clicked;
+  float delayClick;
+  
   //used to compute the dimensions of the text we are showing
   GlyphLayout layout;
 
   String[] texts = new String[]{
     "IP. ",
-    "e.g. 192.168.1.27",
+    "Type the host's IP",
     "Connect"
   };
 
@@ -79,7 +81,8 @@ public class ConnectScreen implements Screen {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (connect.contains(screenX, screenY)) {
-          conect(((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp);
+          texts[2] = "Waiting for the other player...";
+          clicked = true;
         }
         return super.touchDown(screenX, screenY, pointer, button);
       }
@@ -90,14 +93,14 @@ public class ConnectScreen implements Screen {
   }
 
   public void conect(boolean pvp) {
-    texts[2] = "Waiting for the other player...";
     if (SocketDataManager.lastInstance != null) {
       if (SocketDataManager.lastInstance.isAlive()) {
         SocketDataManager.lastInstance.interrupt();
       }
     }
-    System.out.println("connect");
+    
     new SocketDataManager(UserData.getInstance().getCurrentCharacter(), ip).start();
+    Assets.getMusic(MyGame.CodeScreen.MAIN_MENU.name()).stop();
 
     if (!pvp) {
       m_game.showScreen(MyGame.CodeScreen.LEVELS);
@@ -109,7 +112,8 @@ public class ConnectScreen implements Screen {
   @Override
   public void show() {
     texts[2] = "Connect";
-
+    clicked = false;
+    delayClick = 0.3f;
     //we set our listener to libGDX only when this screen is being shown
     Gdx.input.setInputProcessor(textListener);
   }
@@ -143,6 +147,15 @@ public class ConnectScreen implements Screen {
     fontw.draw(batch, texts[2], MyGame.WIDTH / 2 - layout.width / 2, 700);
 
     batch.end();
+    
+    if(clicked){
+      delayClick-= Gdx.graphics.getDeltaTime();
+      if(delayClick <= 0){
+        delayClick = 0.3f;
+        clicked = false;
+        conect(((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp);
+      }
+    }
     //end of the drawing process
   }
 

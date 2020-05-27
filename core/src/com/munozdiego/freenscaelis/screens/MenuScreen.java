@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,6 +36,8 @@ public class MenuScreen implements Screen {
   BitmapFont fontb;
 
   Sprite sprite_back;
+  
+  Music bg;
 
   final String[] texts = new String[]{
     "Log in",
@@ -62,6 +65,8 @@ public class MenuScreen implements Screen {
     batch = new SpriteBatch();
     fontw = Assets.getFont("pixel32w");
     fontb = Assets.getFont("pixel32b");
+    bg = Assets.getMusic(MyGame.CodeScreen.MAIN_MENU.name());
+    bg.setLooping(true);
     
     layout = new GlyphLayout();
 
@@ -86,6 +91,8 @@ public class MenuScreen implements Screen {
   
   @Override
   public void show() {
+    bg.play();
+    
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
