@@ -45,7 +45,7 @@ public class MenuScreen implements Screen {
     "One player",
     "Two players",
     "Player vs player",
-    "Configuration",
+    "",
     "Credits",
     "Exit"
   };

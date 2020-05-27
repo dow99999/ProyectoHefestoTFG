@@ -68,6 +68,10 @@ public class LevelScreen implements Screen {
   Personaje pj2;
   float stateTime;
   float attackTime;
+  
+  float respawnx;
+  float respawny;
+  int respawnmap;
 
   UserData userdata;
 
@@ -89,14 +93,14 @@ public class LevelScreen implements Screen {
   HUD health;
 
   Music currentbg;
-  
+
   Sound hit_pj;
   Sound hit_sk;
   Sound hit_gb;
   Sound hit_sl;
   Sound att;
   Sound enemy_death;
-  
+
   private int[][] enemyDir = new int[][]{
     {1, 1},
     {0, 0},
@@ -135,7 +139,7 @@ public class LevelScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
-    
+
     hit_pj = Assets.getSound("hit_pj");
     hit_sl = Assets.getSound("hit_sl");
     hit_gb = Assets.getSound("hit_gb");
@@ -179,6 +183,9 @@ public class LevelScreen implements Screen {
     }
 
     initialized = true;
+    
+    setRespawnPoint();
+    
     camera.position.x = pj.getCamx();
     camera.position.y = pj.getCamy();
 
@@ -209,6 +216,12 @@ public class LevelScreen implements Screen {
     });
 
   }
+  
+  public void setRespawnPoint(){
+    respawnx = pj.getPosx();
+    respawny = pj.getPosy();
+    respawnmap = pj.getMapa();
+  }
 
   public void processEnemies() {
     float last;
@@ -227,7 +240,7 @@ public class LevelScreen implements Screen {
       Enemigo e = iter.next();
       e.setInvTime(e.getInvTime() - Gdx.graphics.getDeltaTime());
       //follow player
-      if (e.getInvTime() <= 0) {
+      if (e.getInvTime() <= 0 && e.getStats()[0] != 0) {
 
         if ((pj.getPosx() - e.getPosx()) * (pj.getPosx() - e.getPosx()) + (pj.getPosy() - e.getPosy()) * (pj.getPosy() - e.getPosy()) <= e.getFollowRangePow()) {
           wandering = false;
@@ -338,8 +351,6 @@ public class LevelScreen implements Screen {
               if (pj.getStats()[0] < 0) {
                 pj.getStats()[0] = 0;
               }
-            } else {
-              //TODO end game
             }
           }
         }
@@ -356,8 +367,6 @@ public class LevelScreen implements Screen {
               if (pj2.getStats()[0] < 0) {
                 pj2.getStats()[0] = 0;
               }
-            } else {
-              //TODO end game
             }
           }
         }
@@ -368,7 +377,7 @@ public class LevelScreen implements Screen {
           e.resetInvTime();
           if (e.getStats()[0] > 0) {
             e.getStats()[0] -= hit ? pj.getStats()[1] : pj2.getStats()[1];
-            switch(e.tipo){
+            switch (e.tipo) {
               case GOBLIN:
               case BOSS_GOBLIN:
                 hit_gb.play();
@@ -384,16 +393,22 @@ public class LevelScreen implements Screen {
               default:
                 hit_sl.play();
             }
-            if (e.getStats()[0] < 0) {
+            if (e.getStats()[0] <= 0) {
               e.getStats()[0] = 0;
+              enemy_death.play();
+              e.setCurrentState(Entidad.Estado.DEAD);
             }
-          } else {
-            enemy_death.play();
-            iter.remove();
           }
         }
       }
 
+      if (e.getStats()[0] == 0) {
+        if (e.getDeathDelta() < (e.getAnimaciones().get(e.getCurrentState()).getAnimationDuration())) {
+          e.setDeathDelta(e.getDeathDelta() + Gdx.graphics.getDeltaTime());
+        } else {
+          iter.remove();
+        }
+      }
     }
   }
 
@@ -406,89 +421,103 @@ public class LevelScreen implements Screen {
     attackTime += Gdx.graphics.getDeltaTime();
 
     //movement player
-    if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-      pj.setvDir(0);
-      if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-        pj.setCurrentState(
-                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.RUN_RIGHT
-                : Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosy();
-        pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        pj.setvDir(-2);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setvDir(0);
-          pj.setPosy(lastPos);
+    if (pj.getStats()[0] > 0) {
+      if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+        pj.setvDir(0);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+          pj.setCurrentState(
+                  pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.RUN_RIGHT
+                  : Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosy();
+          pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          pj.setvDir(-2);
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setvDir(0);
+            pj.setPosy(lastPos);
+          }
+          System.out.println("W: " + pj.getvDir());
+          moving = true;
         }
-        System.out.println("W: " + pj.getvDir());
-        moving = true;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+          pj.setCurrentState(
+                  pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.RUN_RIGHT
+                  : Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosy();
+          pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          pj.setvDir(2);
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setvDir(0);
+            pj.setPosy(lastPos);
+          }
+          System.out.println("S: " + pj.getvDir());
+          moving = true;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+          pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
+          lastPos = pj.getPosx();
+          pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (pj.getvDir() != 0) {
+            pj.setvDir(pj.getvDir() / 2);
+          }
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setPosx(lastPos);
+          }
+          System.out.println("D: " + pj.getvDir());
+          moving = true;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+          pj.setCurrentState(Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosx();
+          pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1) {
+            pj.setvDir(pj.getvDir() / 2);
+          }
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setPosx(lastPos);
+          }
+          System.out.println("A: " + pj.getvDir());
+          moving = true;
+        }
+
+        if (!moving) {
+          pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.IDLE_RIGHT
+                  : Entidad.Estado.IDLE_LEFT);
+        }
+
+      } else {
+        if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
+          pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+                  ? Entidad.Estado.IDLE_RIGHT
+                  : Entidad.Estado.IDLE_LEFT);
+        }
       }
 
-      if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-        pj.setCurrentState(
-                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.RUN_RIGHT
-                : Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosy();
-        pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        pj.setvDir(2);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setvDir(0);
-          pj.setPosy(lastPos);
-        }
-        System.out.println("S: " + pj.getvDir());
-        moving = true;
-      }
-
-      if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
-        lastPos = pj.getPosx();
-        pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (pj.getvDir() != 0) {
-          pj.setvDir(pj.getvDir() / 2);
-        }
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setPosx(lastPos);
-        }
-        System.out.println("D: " + pj.getvDir());
-        moving = true;
-      }
-
-      if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-        pj.setCurrentState(Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosx();
-        pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1) {
-          pj.setvDir(pj.getvDir() / 2);
-        }
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setPosx(lastPos);
-        }
-        System.out.println("A: " + pj.getvDir());
-        moving = true;
-      }
-
-      if (!moving) {
-        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.IDLE_RIGHT
-                : Entidad.Estado.IDLE_LEFT);
+      if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration()) + 0.2f)) {
+        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+                ? Entidad.Estado.ATT_RIGHT
+                : Entidad.Estado.ATT_LEFT);
+        attackTime = 0;
+        att.play();
+        pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
       }
 
     } else {
-      if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
-        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
-                ? Entidad.Estado.IDLE_RIGHT
-                : Entidad.Estado.IDLE_LEFT);
+      pj.setCurrentState(Entidad.Estado.DEAD);
+      if(pj.getDeathDelta() > pj.getAnimaciones().get(Entidad.Estado.DEAD).getAnimationDuration() + 0.2f){
+        pj.setPosx(respawnx);
+        pj.setPosy(respawny);
+        pj.setMapa(respawnmap);
+        pj.getStats()[0] = 5;
+        pj.setDeathDelta(0);
+      } else {
+        pj.setDeathDelta(pj.getDeathDelta() + Gdx.graphics.getDeltaTime());
       }
-    }
-
-    if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration()) + 0.2f)) {
-      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
-              ? Entidad.Estado.ATT_RIGHT
-              : Entidad.Estado.ATT_LEFT);
-      attackTime = 0;
-      att.play();
-      pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -604,6 +633,7 @@ public class LevelScreen implements Screen {
         pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
         pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
         pj.setMapa(screendata.getCurrentMapa());
+        setRespawnPoint();
         setBgMusic(pj.getMapa());
         initScreenData();
       }
@@ -616,6 +646,7 @@ public class LevelScreen implements Screen {
         pj.setPosx(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).x);
         pj.setPosy(screendata.getPjWarpPos(auxMap, screendata.getCurrentMapa()).y);
         pj.setMapa(screendata.getCurrentMapa());
+        setRespawnPoint();
         setBgMusic(pj.getMapa());
         initScreenData();
       }
@@ -656,18 +687,30 @@ public class LevelScreen implements Screen {
     }
 
     //drawing user
-    if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
+    if (pj.getStats()[0] <= 0) {
+      if (pj.getDeathDelta() < (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
+        batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(pj.getDeathDelta()), pj.getPosx(), pj.getPosy());
+      }
     } else {
-      batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
+      if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+        batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), pj.getPosx(), pj.getPosy());
+      } else {
+        batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(attackTime, true), pj.getPosx(), pj.getPosy());
+      }
     }
 
     //drawing enemies
     for (Enemigo e : enemigos) {
-      if (e.getInvTime() > 0) {
-        batch.draw(e.getAnimaciones().get(Entidad.Estado.DEAD).getKeyFrame(0, false), e.getPosx(), e.getPosy());
+      if (e.getStats()[0] <= 0) {
+        if (e.getDeathDelta() < (e.getAnimaciones().get(e.getCurrentState()).getAnimationDuration())) {
+          batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(e.getDeathDelta()), e.getPosx(), e.getPosy());
+        }
       } else {
-        batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
+        if (e.getInvTime() > 0) {
+          batch.draw(e.getAnimaciones().get(Entidad.Estado.DEAD).getKeyFrame(0, false), e.getPosx(), e.getPosy());
+        } else {
+          batch.draw(e.getAnimaciones().get(e.getCurrentState()).getKeyFrame(stateTime, true), e.getPosx(), e.getPosy());
+        }
       }
     }
 
@@ -753,8 +796,9 @@ public class LevelScreen implements Screen {
   }
 
   private void setBgMusic(int map) {
-    if(currentbg != null)
-      currentbg.stop();
+    if (currentbg != null) {
+      currentbg.pause();
+    }
     currentbg = Assets.getMusic(String.valueOf(map));
     currentbg.setLooping(true);
     currentbg.setVolume(0.3f);

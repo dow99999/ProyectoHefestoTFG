@@ -61,7 +61,7 @@ public class MyGame extends Game {
     Assets.addMusic(String.valueOf(ScreenData.PLAYA), "audio/music/beach_st.wav");
     Assets.addMusic(String.valueOf(ScreenData.CUEVA), "audio/music/final_st.mp3");
     Assets.addMusic(String.valueOf(ScreenData.FINAL), "audio/music/final_st.mp3");
-    Assets.addMusic(String.valueOf(ScreenData.LABERINTO), "audio/music/final_st.mp3");
+    Assets.addMusic(String.valueOf(ScreenData.LABERINTO), "audio/music/town_st.wav");
     Assets.addMusic(String.valueOf(ScreenData.MADERA), "audio/music/final_st.mp3");
     Assets.addMusic(String.valueOf(ScreenData.ARENA), "audio/music/arena_st.mp3");
     

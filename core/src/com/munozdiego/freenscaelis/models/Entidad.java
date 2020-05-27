@@ -38,7 +38,8 @@ public class Entidad {
   protected Map<Estado, Vector2> colliderOffset;
   protected Map<Estado, Animation<TextureRegion>> animaciones;
   protected Map<Estado, Rectangle> colliders;
-
+  protected float deathDelta;
+  
   public Entidad() {
     stats = new int[2];
     inventario = new Item[10];
@@ -46,8 +47,21 @@ public class Entidad {
     animaciones = new HashMap<>();
     colliders = new HashMap<>();
     colliderOffset = new HashMap<>();
+    deathDelta = 0;
   }
 
+  public float getDeathDelta() {
+    return deathDelta;
+  }
+
+  public void setDeathDelta(float deathDelta) {
+    this.deathDelta = deathDelta;
+  }
+  
+  public void resetDeathDelta(){
+    
+  }
+  
   public float getSpeed() {
     return speed;
   }

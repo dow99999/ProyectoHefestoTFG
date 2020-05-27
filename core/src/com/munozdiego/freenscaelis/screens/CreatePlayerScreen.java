@@ -87,8 +87,8 @@ public class CreatePlayerScreen implements Screen {
     pj_sword.init(Personaje.Clase.SWORD, 0);
 
     pj_scepter = new Personaje();
-    pj_scepter.setClase(Personaje.Clase.SCEPTER);
-    pj_scepter.init(Personaje.Clase.SCEPTER, 0);
+    pj_scepter.setClase(Personaje.Clase.AXE);
+    pj_scepter.init(Personaje.Clase.AXE, 0);
 
     for (int i = boxes_player_selection.length - 1; i >= 0; --i) {
       boxes_player_selection[i] = new Rectangle();

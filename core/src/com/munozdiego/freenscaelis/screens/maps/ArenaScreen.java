@@ -54,6 +54,10 @@ public class ArenaScreen implements Screen {
   float stateTime;
   float attackTime;
 
+  float respawnx;
+  float respawny;
+  int respawnmap;
+
   UserData userdata;
 
   boolean colliderdebug;
@@ -67,9 +71,9 @@ public class ArenaScreen implements Screen {
 
   Rectangle[] colliders;
   Sprite[] layers;
-  
+
   Music bg;
-  
+
   Sound att;
   Sound hit;
 
@@ -104,7 +108,7 @@ public class ArenaScreen implements Screen {
     health.getTextura_estatica_estados().put(5, Assets.getSprite("HUD/HP/Value/HP_Value_5.png"));
     health.setPosx(50);
     health.setPosy(-50);
-    
+
     bg = Assets.getMusic(String.valueOf(ScreenData.ARENA));
     bg.setLooping(true);
     bg.setVolume(0.2f);
@@ -134,8 +138,8 @@ public class ArenaScreen implements Screen {
 
         pj.setMapa(ScreenData.ARENA);
         pj2.setMapa(ScreenData.ARENA);
-        
-        if(SocketDataManager.lastInstance.main){
+
+        if (SocketDataManager.lastInstance.main) {
           pj.setPosx(1656);
           pj2.setPosx(381);
           pj.setCamx(1196);
@@ -146,13 +150,14 @@ public class ArenaScreen implements Screen {
           pj.setCamx(961);
           pj.setCamy(579);
         }
-        
+
         pj.setPosy(500);
         pj2.setPosy(500);
         
+        setRespawnPoint();
       }
     }
-    
+
     bg.play();
     initialized = true;
     camera.position.x = pj.getCamx();
@@ -185,6 +190,12 @@ public class ArenaScreen implements Screen {
 
   }
 
+  public void setRespawnPoint(){
+    respawnx = pj.getPosx();
+    respawny = pj.getPosy();
+    respawnmap = pj.getMapa();
+  }
+  
   public void processEnemies() {
     pj.setInvTime(pj.getInvTime() - Gdx.graphics.getDeltaTime());
     pj2.setInvTime(pj2.getInvTime() - Gdx.graphics.getDeltaTime());
@@ -204,7 +215,7 @@ public class ArenaScreen implements Screen {
                 pj.getStats()[0] = 0;
               }
             } else {
-              //TODO pj die
+              pj.setCurrentState(Entidad.Estado.DEAD);
             }
           }
         } else {
@@ -218,7 +229,7 @@ public class ArenaScreen implements Screen {
                   pj2.getStats()[0] = 0;
                 }
               } else {
-                //TODO pj2 die
+                pj2.setCurrentState(Entidad.Estado.DEAD);
               }
             }
           }
@@ -236,85 +247,98 @@ public class ArenaScreen implements Screen {
     attackTime += Gdx.graphics.getDeltaTime();
 
     //movement player
-    if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
-      pj.setvDir(0);
-      if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-        pj.setCurrentState(
-                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.RUN_RIGHT
-                : Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosy();
-        pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        pj.setvDir(-2);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setvDir(0);
-          pj.setPosy(lastPos);
+    if (pj.getStats()[0] > 0) {
+      if (pj.getCurrentState() != Entidad.Estado.ATT_LEFT && pj.getCurrentState() != Entidad.Estado.ATT_RIGHT) {
+        pj.setvDir(0);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+          pj.setCurrentState(
+                  pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.RUN_RIGHT
+                  : Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosy();
+          pj.setPosy(pj.getPosy() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          pj.setvDir(-2);
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setvDir(0);
+            pj.setPosy(lastPos);
+          }
+          moving = true;
         }
-        moving = true;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+          pj.setCurrentState(
+                  pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.RUN_RIGHT
+                  : Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosy();
+          pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          pj.setvDir(2);
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setvDir(0);
+            pj.setPosy(lastPos);
+          }
+          moving = true;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+          pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
+          lastPos = pj.getPosx();
+          pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (pj.getvDir() != 0) {
+            pj.setvDir(pj.getvDir() / 2);
+          }
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setPosx(lastPos);
+          }
+          moving = true;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+          pj.setCurrentState(Entidad.Estado.RUN_LEFT);
+          lastPos = pj.getPosx();
+          pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
+          if (pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1) {
+            pj.setvDir(pj.getvDir() / 2);
+          }
+          if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
+            pj.setPosx(lastPos);
+          }
+          moving = true;
+        }
+
+        if (!moving) {
+          pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
+                  ? Entidad.Estado.IDLE_RIGHT
+                  : Entidad.Estado.IDLE_LEFT);
+        }
+
+      } else {
+        if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
+          pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+                  ? Entidad.Estado.IDLE_RIGHT
+                  : Entidad.Estado.IDLE_LEFT);
+        }
       }
 
-      if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-        pj.setCurrentState(
-                pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.RUN_RIGHT
-                : Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosy();
-        pj.setPosy(pj.getPosy() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        pj.setvDir(2);
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setvDir(0);
-          pj.setPosy(lastPos);
-        }
-        moving = true;
+      if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration()) + 0.2f)) {
+        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
+                ? Entidad.Estado.ATT_RIGHT
+                : Entidad.Estado.ATT_LEFT);
+        attackTime = 0;
+        att.play();
+        pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
       }
-
-      if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-        pj.setCurrentState(Entidad.Estado.RUN_RIGHT);
-        lastPos = pj.getPosx();
-        pj.setPosx(pj.getPosx() + pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (pj.getvDir() != 0) {
-          pj.setvDir(pj.getvDir() / 2);
-        }
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setPosx(lastPos);
-        }
-        moving = true;
-      }
-
-      if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-        pj.setCurrentState(Entidad.Estado.RUN_LEFT);
-        lastPos = pj.getPosx();
-        pj.setPosx(pj.getPosx() - pj.getSpeed() * Gdx.graphics.getDeltaTime() * 60);
-        if (pj.getvDir() != 0 && pj.getvDir() != 1 && pj.getvDir() != -1) {
-          pj.setvDir(pj.getvDir() / 2);
-        }
-        if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
-          pj.setPosx(lastPos);
-        }
-        moving = true;
-      }
-
-      if (!moving) {
-        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT || pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT
-                ? Entidad.Estado.IDLE_RIGHT
-                : Entidad.Estado.IDLE_LEFT);
-      }
-
     } else {
-      if (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration())) {
-        pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
-                ? Entidad.Estado.IDLE_RIGHT
-                : Entidad.Estado.IDLE_LEFT);
+      pj.setCurrentState(Entidad.Estado.DEAD);
+      if (pj.getDeathDelta() > pj.getAnimaciones().get(Entidad.Estado.DEAD).getAnimationDuration() + 0.2f) {
+        pj.setPosx(respawnx);
+        pj.setPosy(respawny);
+        pj.setMapa(respawnmap);
+        pj.getStats()[0] = 5;
+        pj.setDeathDelta(0);
+      } else {
+        pj.setDeathDelta(pj.getDeathDelta() + Gdx.graphics.getDeltaTime());
       }
-    }
-
-    if (Gdx.input.isKeyJustPressed(Input.Keys.O) && (attackTime > (pj.getAnimaciones().get(pj.getCurrentState()).getAnimationDuration()) + 0.2f)) {
-      pj.setCurrentState(pj.getCurrentState() == Entidad.Estado.IDLE_RIGHT || pj.getCurrentState() == Entidad.Estado.RUN_RIGHT || pj.getCurrentState() == Entidad.Estado.ATT_RIGHT
-              ? Entidad.Estado.ATT_RIGHT
-              : Entidad.Estado.ATT_LEFT);
-      attackTime = 0;
-      att.play();
-      pj.getAnimaciones().get(pj.getCurrentState()).setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -335,7 +359,7 @@ public class ArenaScreen implements Screen {
       if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
         disableSmoothCamera = !disableSmoothCamera;
       }
-      
+
       if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) {
         disableMultiPosGuess = !disableMultiPosGuess;
       }
@@ -418,7 +442,7 @@ public class ArenaScreen implements Screen {
   public void render(float f) {
     Gdx.gl.glClearColor(0F, 0F, 0F, 0F);
     Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-    
+
     //we process the user input before we draw
     processUserInput();
     guessSecondPlayerPos();

@@ -22,7 +22,7 @@ public class Personaje extends Entidad {
   
   public enum Clase {
     SWORD,
-    SCEPTER
+    AXE
   }
 
   private float camx;
@@ -79,31 +79,31 @@ public class Personaje extends Entidad {
         this.stats[0] = 5;
         this.stats[1] = 1;
         break;
-      case SCEPTER:
-        this.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Idle_Scepter_Defence" + playernum, 4, "png", 0.17f, true));
-        this.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Idle_Scepter_Defence" + playernum, 4, "png", 0.17f, false));
-        this.getAnimaciones().put(Entidad.Estado.RUN_LEFT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Walk_Scepter_Defence" + playernum, 4, "png", 0.17f, true));
-        this.getAnimaciones().put(Entidad.Estado.RUN_RIGHT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Walk_Scepter_Defence" + playernum, 4, "png", 0.17f, false));
-        this.getAnimaciones().put(Entidad.Estado.ATT_LEFT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Attack_Scepter_Defence" + playernum, 4, "png", 0.17f, true));
-        this.getAnimaciones().put(Entidad.Estado.ATT_RIGHT, Assets.getAnimation("Sprites/Player/Scepter/Defence" + playernum + "/", "Player_Attack_Scepter_Defence" + playernum, 4, "png", 0.17f, false));
-        this.getAnimaciones().put(Entidad.Estado.DEAD, Assets.getAnimation("Sprites/Player/Scepter/", "Player_Death_Scepter", 4, "png", 0.17f, false));
+      case AXE:
+        this.getAnimaciones().put(Entidad.Estado.IDLE_LEFT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Idle_Axe_Defence" + playernum, 4, "png", 0.17f, true));
+        this.getAnimaciones().put(Entidad.Estado.IDLE_RIGHT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Idle_Axe_Defence" + playernum, 4, "png", 0.17f, false));
+        this.getAnimaciones().put(Entidad.Estado.RUN_LEFT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Walk_Axe_Defence" + playernum, 4, "png", 0.17f, true));
+        this.getAnimaciones().put(Entidad.Estado.RUN_RIGHT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Walk_Axe_Defence" + playernum, 4, "png", 0.17f, false));
+        this.getAnimaciones().put(Entidad.Estado.ATT_LEFT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Attack_Axe_Defence" + playernum, 4, "png", 0.17f, true));
+        this.getAnimaciones().put(Entidad.Estado.ATT_RIGHT, Assets.getAnimation("Sprites/Player/Axe/Defence" + playernum + "/", "Player_Attack_Axe_Defence" + playernum, 4, "png", 0.17f, false));
+        this.getAnimaciones().put(Entidad.Estado.DEAD, Assets.getAnimation("Sprites/Player/Axe/", "Player_Death_Axe", 4, "png", 0.17f, false));
         this.getColliders().put(Entidad.Estado.IDLE_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.IDLE_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_LEFT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliders().put(Entidad.Estado.RUN_RIGHT, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT));
-        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT));
+        this.getColliders().put(Entidad.Estado.ATT_LEFT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT_ATT));
+        this.getColliders().put(Entidad.Estado.ATT_RIGHT, new Rectangle(0, 0, COL_WIDTH_ATT, COL_HEIGHT_ATT));
         this.getColliders().put(Entidad.Estado.DEAD, new Rectangle(0, 0, COL_WIDTH, COL_HEIGHT));
         this.getColliderOffset().put(Entidad.Estado.IDLE_LEFT, new Vector2(0,0));
         this.getColliderOffset().put(Entidad.Estado.IDLE_RIGHT, new Vector2(0,0));
         this.getColliderOffset().put(Entidad.Estado.RUN_LEFT, new Vector2(0,0));
         this.getColliderOffset().put(Entidad.Estado.RUN_RIGHT, new Vector2(0,0));
-        this.getColliderOffset().put(Entidad.Estado.ATT_LEFT, new Vector2(0,0));
-        this.getColliderOffset().put(Entidad.Estado.ATT_RIGHT, new Vector2(0,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_LEFT, new Vector2(-25,0));
+        this.getColliderOffset().put(Entidad.Estado.ATT_RIGHT, new Vector2(25,0));
         this.getColliderOffset().put(Entidad.Estado.DEAD, new Vector2(0,0));
         this.speed = 4f;
         this.stats[0] = 5;
-        this.stats[1] = 1;
+        this.stats[1] = 2;
         break;
     }
   }
