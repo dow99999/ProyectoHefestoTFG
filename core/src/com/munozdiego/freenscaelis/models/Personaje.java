@@ -32,8 +32,10 @@ public class Personaje extends Entidad {
   private float invTime;
   private float invTimef;
   
+  //current player map
   private int mapa;
   
+  //player's vertical direction
   private int vDir;
           
   public Personaje() {
@@ -51,6 +53,11 @@ public class Personaje extends Entidad {
     this.clase = clase;
   }
 
+  /**
+   * Method to initialize the players stats + visual
+   * @param clase
+   * @param playernum 
+   */
   public void init(Clase clase, int playernum) {
     switch (clase) {
       case SWORD:
@@ -108,6 +115,7 @@ public class Personaje extends Entidad {
     }
   }
 
+  //Getters & Setters
   public float getInvTime() {
     return invTime;
   }

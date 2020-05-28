@@ -6,7 +6,7 @@
 package com.munozdiego.freenscaelis.models;
 
 /**
- *
+ * This class is NOT implemented yet in the application
  * @author diego
  */
 public class Item {

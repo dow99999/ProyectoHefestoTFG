@@ -15,6 +15,12 @@ import java.util.Set;
  */
 public class ColliderUtils {
 
+  /**
+   * Method that checks if a rectangle is over an array of rectangles
+   * @param colliders Rectangle[] colliders of the map
+   * @param check Rectangle collider to check
+   * @return Rectangle if there is a colition | null if there is no collition
+   */
   public static Rectangle checkCollitions(Rectangle[] colliders, Rectangle check) {
     boolean col = false;
     Rectangle aux = null;
@@ -41,6 +47,12 @@ public class ColliderUtils {
     return aux;
   }
 
+  /**
+   * Method that checks if a rectangle is over a set of rectangles
+   * @param colliders set<Rectangle> colliders of the map
+   * @param check Rectangle collider to check
+   * @return Rectangle if there is a colition | null if there is no collition
+   */
   public static Rectangle checkCollitions(Set<Rectangle> colliders, Rectangle check) {
     Rectangle aux = null;
 
@@ -66,6 +78,17 @@ public class ColliderUtils {
     return aux;
   }
 
+  /**
+   * Method to control the camera view over the map
+   * 
+   * @param camx flaot cam x
+   * @param camy float cam y
+   * @param camw float cam width
+   * @param camh float cam height
+   * @param mapw float map width
+   * @param maph float map height
+   * @return int code of the camera collition
+   */
   public static int cameraOutside(float camx, float camy, float camw, float camh, float mapw, float maph) {
     int outside = 0;
     //System.out.println(camx + " " + camy + " " + camw + " " + camh + " " + mapw + " " + maph);

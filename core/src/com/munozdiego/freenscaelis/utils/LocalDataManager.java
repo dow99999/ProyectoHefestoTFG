@@ -48,6 +48,10 @@ public class LocalDataManager implements Serializable {
 
   }
 
+  /**
+   * Method to save the user's characters
+   * @param pjs Personaje[] the user's characters
+   */
   public void savePlayerData(Personaje[] pjs) {
     personajes = new PersonajeXML[pjs.length];
 
@@ -67,6 +71,10 @@ public class LocalDataManager implements Serializable {
     }
   }
 
+  /**
+   * Method to retrieve the user's characters
+   * @return Personaje[] the user's characters
+   */
   public Personaje[] retrievePlayerData() {
     Personaje[] aux = null;
 

@@ -59,6 +59,10 @@ public class SocketDataManager extends Thread {
     }
   }
 
+  /**
+   * Method that sends the player information
+   * @throws IOException 
+   */
   public void sendPlayerInfo() throws IOException {
     out.writeFloat(pj.getPosx());
     out.writeFloat(pj.getPosy());
@@ -66,6 +70,10 @@ public class SocketDataManager extends Thread {
     out.writeInt(pj.getvDir());
   }
 
+  /**
+   * Method that sends the initial player information
+   * @throws IOException 
+   */
   public void sendPlayerInfoInit() throws IOException {
     out.writeInt(pj.getClase().ordinal());
     out.writeFloat(pj.getPosx());
@@ -73,13 +81,20 @@ public class SocketDataManager extends Thread {
     out.writeInt(pj.getMapa());
   }
 
+  /**
+   * Method that retrieves the 2nd user's info
+   * @throws IOException 
+   */
   public void getPlayerInfo() throws IOException {
       pj2.setPosx(in.readFloat());
       pj2.setPosy(in.readFloat());
       pj2.setCurrentState(Entidad.Estado.values()[in.readInt()]);
       pj2.setvDir(in.readInt());
   }
-
+  /**
+   * * Method that retrieves the initial 2nd user's info
+   * @throws IOException 
+   */
   public void getPlayerInfoInit() throws IOException {
     pj2 = new Personaje();
     pj2.setClase(Personaje.Clase.values()[in.readInt()]);

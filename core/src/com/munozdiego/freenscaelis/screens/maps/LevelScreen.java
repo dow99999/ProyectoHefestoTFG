@@ -148,6 +148,9 @@ public class LevelScreen implements Screen {
     enemy_death = Assets.getSound("enemy_death");
   }
 
+  /**
+   * Method to initialize the current level
+   */
   private void initScreenData() {
     colliders = screendata.getColliders();
     warpZones = screendata.getWarpZones();
@@ -159,7 +162,7 @@ public class LevelScreen implements Screen {
   public void show() {
     pj = userdata.getCurrentCharacter();
     multi = ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi;
-    if (multi && !initialized) {
+    if (multi && !initialized) { //in case it is not initialized and is multi
       synchronized (SocketDataManager.lastInstance) {
         pj2 = SocketDataManager.lastInstance.pj2;
         while (pj2 == null) {
@@ -217,12 +220,18 @@ public class LevelScreen implements Screen {
 
   }
   
+  /**
+   * Method that sets the players respawn position to the current players position
+   */
   public void setRespawnPoint(){
     respawnx = pj.getPosx();
     respawny = pj.getPosy();
     respawnmap = pj.getMapa();
   }
 
+  /**
+   * Method that processes the enemies
+   */
   public void processEnemies() {
     float last;
     int rand;
@@ -795,6 +804,10 @@ public class LevelScreen implements Screen {
     shape.dispose();
   }
 
+  /**
+   * Method
+   * @param map 
+   */
   private void setBgMusic(int map) {
     if (currentbg != null) {
       currentbg.pause();

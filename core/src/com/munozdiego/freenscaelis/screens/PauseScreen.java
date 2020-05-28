@@ -20,6 +20,7 @@ import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.utils.LocalDataManager;
+import com.munozdiego.freenscaelis.utils.SocketDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 /**
  *
@@ -98,6 +99,9 @@ public class PauseScreen implements Screen {
           if (boxes[1].contains(screenX, screenY)) {
             System.out.println(texts[1]);
             LocalDataManager.getInstance().savePlayerData(UserData.getInstance().getCharacters());
+            if(SocketDataManager.lastInstance != null)
+              SocketDataManager.lastInstance.interrupt();
+            
             m_game.showScreen(MyGame.CodeScreen.MAIN_MENU);
           }
         }

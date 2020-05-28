@@ -41,6 +41,9 @@ public class Assets {
     initEnemyAnimations();
   }
 
+  /**
+   * Method to initialize the visual of the enemies
+   */
   private static void initEnemyAnimations() {
     Map<Estado, Animation<TextureRegion>> aux;
 
@@ -197,18 +200,38 @@ public class Assets {
     return ((int) (Math.random() * 2)) == 0 && variant ? enemyAnimationsAlt.get(t) : enemyAnimations.get(t);
   }
   
+  /**
+   * Method to add music
+   * @param id String id to retrieve it
+   * @param path String path of the music
+   */
   public static void addMusic(String id, String path){
     music.put(id, Gdx.audio.newMusic(Gdx.files.internal(path)));
   }
   
+  /**
+   * Method to get music
+   * @param id String id of the music
+   * @return Music the music
+   */
   public static Music getMusic(String id){
     return music.get(id);
   }
   
+  /**
+   * Method to add audio
+   * @param id String id to retrieve it
+   * @param path String path of the audio
+   */
   public static void addSound(String id, String path){
     sounds.put(id, Gdx.audio.newSound(Gdx.files.internal(path)));
   }
   
+  /**
+   * Method to get a sound
+   * @param id String id of the sound
+   * @return Sound the sound
+   */
   public static Sound getSound(String id){
     return sounds.get(id);
   }

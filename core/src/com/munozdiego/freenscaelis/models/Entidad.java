@@ -29,7 +29,7 @@ public class Entidad {
     DEAD
   }
   protected float posx, posy;
-  protected Item[] inventario;
+  protected Item[] inventario; //not implemented
   protected int[] stats;
   protected Sprite textura;
   protected Estado currentState;
@@ -40,6 +40,9 @@ public class Entidad {
   protected Map<Estado, Rectangle> colliders;
   protected float deathDelta;
   
+  /**
+   * Default constructor
+   */
   public Entidad() {
     stats = new int[2];
     inventario = new Item[10];
@@ -50,16 +53,14 @@ public class Entidad {
     deathDelta = 0;
   }
 
+  //Getters & Setters
+  
   public float getDeathDelta() {
     return deathDelta;
   }
 
   public void setDeathDelta(float deathDelta) {
     this.deathDelta = deathDelta;
-  }
-  
-  public void resetDeathDelta(){
-    
   }
   
   public float getSpeed() {
@@ -94,6 +95,9 @@ public class Entidad {
     return animaciones.get(Estado.RUN_RIGHT).getKeyFrame(0).getRegionHeight() / 2;
   }
 
+  /**
+   * Method that updates the entity's colliders positions
+   */
   private void updateCollider() {
     for (Estado aux : this.colliders.keySet()) {
       colliders.get(aux).setX(posx + colliderOffset.get(aux).x + getCenterX() - (colliders.get(aux).getWidth() / 2));

@@ -32,7 +32,11 @@ public class UserData {
   public Personaje[] getCharacters() {
     return characters;
   }
-
+  
+  /**
+   * Method that sets the user's characters
+   * @param p 
+   */
   public void setCharacters(Personaje[] p) {
     for(Personaje a : p){
       if(a != null)
@@ -41,10 +45,19 @@ public class UserData {
     characters = p;
   }
 
+  /**
+   * Method that erases an especific character
+   * @param i int index of the character
+   */
   public void eraseCharacter(int i) {
     characters[i] = null;
   }
 
+  /**
+   * Method that adds a character
+   * @param p Personaje the character
+   * @return true if it is saved, false if not
+   */
   public boolean addCharacter(Personaje p) {
     boolean done = false;
     boolean error = false;
@@ -72,10 +85,18 @@ public class UserData {
     return done;
   }
 
+  /**
+   * Method that sets the current character given a character
+   * @param p 
+   */
   public void selectCharacter(Personaje p) {
     current = p;
   }
 
+  /**
+   * Method that returns the current character
+   * @return Personaje the current character
+   */
   public Personaje getCurrentCharacter() {
     return current;
   }

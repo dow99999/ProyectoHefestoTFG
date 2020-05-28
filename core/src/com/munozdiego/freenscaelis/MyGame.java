@@ -48,6 +48,7 @@ public class MyGame extends Game {
   @Override
   public void create() {
     screens = new HashMap<>();
+    //load of assets
     Assets.addFont("pixel32r", 32, Color.RED, "fonts/pixelart.otf");
     Assets.addFont("pixel32y", 32, Color.YELLOW, "fonts/pixelart.otf");
     Assets.addFont("pixel32b", 32, Color.BLACK, "fonts/pixelart.otf");
@@ -87,6 +88,7 @@ public class MyGame extends Game {
       }
     }
 
+    //set of the aplication's screens
     screens.put(CodeScreen.MAIN_MENU, new MenuScreen(this));
     screens.put(CodeScreen.LOGIN, new LoginScreen(this));
     screens.put(CodeScreen.REGISTER, new RegisterScreen(this));

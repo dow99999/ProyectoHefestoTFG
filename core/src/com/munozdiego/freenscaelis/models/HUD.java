@@ -21,6 +21,10 @@ public class HUD {
   private float posx, posy;
   private OrthographicCamera camera;
   
+  /**
+   * You can only create a HUD Object giving a camera
+   * @param camera OrthographicCamera camera
+   */
   public HUD(OrthographicCamera camera){
     textura_estatica_estados = new HashMap<>();
     textura_dinamica_estados = new HashMap<>();
@@ -28,7 +32,9 @@ public class HUD {
     posx = 0;
     posy = 0;
   }
-
+  
+  
+//Getters & Setters
   public HashMap<Integer, Sprite> getTextura_estatica_estados() {
     return textura_estatica_estados;
   }
@@ -45,6 +51,10 @@ public class HUD {
     this.textura_dinamica_estados = textura_dinamica_estados;
   }
 
+  /**
+   * 
+   * @return float fixed position relative to the camera
+   */
   public float getPosx() {
     return camera.position.x - camera.viewportWidth/2 + posx;
   }
@@ -53,6 +63,10 @@ public class HUD {
     this.posx = posx;
   }
 
+  /**
+   * 
+   * @return float fixed position relative to the camera
+   */
   public float getPosy() {
     return camera.position.y - camera.viewportHeight/2 + posy;
   }

@@ -53,7 +53,7 @@ public class ArenaScreen implements Screen {
   Personaje pj2;
   float stateTime;
   float attackTime;
-
+  
   float respawnx;
   float respawny;
   int respawnmap;
@@ -94,6 +94,7 @@ public class ArenaScreen implements Screen {
     userdata = UserData.getInstance();
     screendata = ScreenData.getInstance();
 
+    //Debug switches
     colliderdebug = false;
     disableCameraLock = false;
     disableSmoothCamera = false;
@@ -109,6 +110,7 @@ public class ArenaScreen implements Screen {
     health.setPosx(50);
     health.setPosy(-50);
 
+    //init of music & sounds
     bg = Assets.getMusic(String.valueOf(ScreenData.ARENA));
     bg.setLooping(true);
     bg.setVolume(0.2f);
@@ -116,6 +118,9 @@ public class ArenaScreen implements Screen {
     hit = Assets.getSound("hit_pj");
   }
 
+  /**
+   * Method that initializes the level 
+   */
   private void initScreenData() {
     colliders = screendata.getColliders();
     layers = screendata.getLayers();
@@ -139,6 +144,7 @@ public class ArenaScreen implements Screen {
         pj.setMapa(ScreenData.ARENA);
         pj2.setMapa(ScreenData.ARENA);
 
+        //set user's initial position
         if (SocketDataManager.lastInstance.main) {
           pj.setPosx(1656);
           pj2.setPosx(381);
@@ -190,6 +196,9 @@ public class ArenaScreen implements Screen {
 
   }
 
+  /**
+   * Method to set the player's respawn point
+   */
   public void setRespawnPoint(){
     respawnx = pj.getPosx();
     respawny = pj.getPosy();
@@ -407,6 +416,9 @@ public class ArenaScreen implements Screen {
     pj.setCamy(camera.position.y);
   }
 
+  /**
+   * Method that guesses the 2nd player position given his State
+   */
   public void guessSecondPlayerPos() {
     if (pj2.getCurrentState() == Entidad.Estado.RUN_LEFT) {
       synchronized (pj2) {

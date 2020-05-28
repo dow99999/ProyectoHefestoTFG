@@ -15,6 +15,7 @@ import com.munozdiego.freenscaelis.utils.Assets;
  */
 public class Enemigo extends Entidad {
 
+  //Enemy class
   public enum Tipo {
     GOBLIN,
     SKELETON,
@@ -26,9 +27,10 @@ public class Enemigo extends Entidad {
     OBSTACLE_SLIME
   }
 
-  
+  //current enemy class
   public Tipo tipo;
   
+  //enemy's colliders
   private final Rectangle goblin = new Rectangle(0, 0, 20, 50);
   private final Rectangle skeleton = new Rectangle(0, 0, 40, 80);
   private final Rectangle slime = new Rectangle(0, 0, 80, 50);
@@ -38,21 +40,37 @@ public class Enemigo extends Entidad {
   private final Rectangle obstacle_skeleton = new Rectangle(0, 0, 45, 50);
   private final Rectangle obstacle_slime = new Rectangle(0, 0, 40, 40);
 
-  private float followRangePow;
+  //distance where the enemy will start following the player
   private float followRange;
+  //distance*distance to optimize calculations
+  private float followRangePow;
 
+  //base invincivilitiy time 
   private float invTimef;
+  //current invincivility time
   private float invTime;
 
+  //base direction change time
   private float directionTimef;
+  //current direction change time
   private float directionTime;
+  //current direction
   private int direction;
 
+  /**
+   * Default constructor
+   */
   public Enemigo() {
     super();
     super.setCurrentState(Estado.RUN_LEFT);
   }
 
+  /**
+   * Constructor to initialize an enemy on a map directly
+   * @param x int position x
+   * @param y int position y
+   * @param t Tipo enemy class
+   */
   public Enemigo(int x, int y, Tipo t) {
     super();
     super.setCurrentState(Estado.RUN_LEFT);
@@ -64,6 +82,10 @@ public class Enemigo extends Entidad {
     setPosy(y);
   }
 
+  /**
+   * Method that initializes an enemy (stats + visual) given the enemy's class
+   * @param t Tipo enemy's class
+   */
   public final void init(Tipo t) {
     switch (t) {
       case GOBLIN:
@@ -197,6 +219,7 @@ public class Enemigo extends Entidad {
     }
   }
 
+  //Getters & Setters
   public float getFollowRangePow() {
     return followRangePow;
   }

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Class NOT implemented in the aplication
  * @author diego
  */
 @XmlRootElement

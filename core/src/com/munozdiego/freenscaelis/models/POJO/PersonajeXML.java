@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Class used to save the user's data
  * @author diego
  */
 @XmlRootElement
