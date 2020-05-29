@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,6 +21,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.munozdiego.freenscaelis.utils.Assets;
 import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
+import com.munozdiego.freenscaelis.models.Personaje;
+import com.munozdiego.freenscaelis.utils.LocalDataManager;
+import com.munozdiego.freenscaelis.utils.UserData;
 
 /**
  *
@@ -36,8 +40,10 @@ public class MenuScreen implements Screen {
   BitmapFont fontb;
 
   Sprite sprite_back;
-  
+
   Music bg;
+  
+  Sound click;
 
   final String[] texts = new String[]{
     "Log in",
@@ -47,16 +53,18 @@ public class MenuScreen implements Screen {
     "Player vs player",
     "",
     "Credits",
-    "Exit"
+    "Exit",
+    "Backup Characters",
+    "Load Characters"
   };
-  
+
   //used to compute the dimensions of the text
   GlyphLayout layout;
-  
+
   final Rectangle[] boxes = new Rectangle[texts.length];
 
   float stateTime;
-  
+
   public MenuScreen(MyGame g) {
     m_game = g;
     camera = new OrthographicCamera();
@@ -67,7 +75,8 @@ public class MenuScreen implements Screen {
     fontb = Assets.getFont("pixel32b");
     bg = Assets.getMusic(MyGame.CodeScreen.MAIN_MENU.name());
     bg.setLooping(true);
-    
+    click = Assets.getSound("click");
+
     layout = new GlyphLayout();
 
     //setting the boxes where the user will click
@@ -85,14 +94,18 @@ public class MenuScreen implements Screen {
       boxes[i + 2].set(100, 750 + 35 * i, layout.width, layout.height * -1);
     }
 
+    layout.setText(fontw, texts[8]);
+    boxes[8].set(MyGame.WIDTH - 50 - layout.width, 100, layout.width, layout.height * -1);
+    layout.setText(fontw, texts[9]);
+    boxes[9].set(MyGame.WIDTH - 50 - layout.width, 100 + 35, layout.width, layout.height * -1);
+
     sprite_back = Assets.getSprite("images/bg-re.png");
   }
 
-  
   @Override
   public void show() {
     bg.play();
-    
+
     //setting of the InputProcessor we'll use in this screen
     Gdx.input.setInputProcessor(new InputAdapter() {
       @Override
@@ -102,51 +115,80 @@ public class MenuScreen implements Screen {
           System.out.println("Before Touch(" + screenX + "," + screenY + ")");
           System.out.println("camera(" + camera.position.x + "," + camera.position.y + ")");
         }
-        
+
         //testing on changing the position were the user clicked with a moved camera
-        screenX += camera.position.x - camera.viewportWidth/2;
-        screenY += camera.position.y - camera.viewportHeight/2;
-        
+        screenX += camera.position.x - camera.viewportWidth / 2;
+        screenY += camera.position.y - camera.viewportHeight / 2;
+
         if (MyGame.DEBUG_MODE) {
           System.out.println("After Touch(" + screenX + "," + screenY + ")");
         }
 
         if (boxes[0].contains(screenX, screenY)) {
-          System.out.println(texts[0]);
+          click.play();
+          //System.out.println(texts[0]);
           m_game.showScreen(MyGame.CodeScreen.LOGIN);
         } else {
           if (boxes[1].contains(screenX, screenY)) {
-            System.out.println(texts[1]);
+            click.play();
+            //System.out.println(texts[1]);
             m_game.showScreen(MyGame.CodeScreen.REGISTER);
           } else {
             if (boxes[2].contains(screenX, screenY)) {
-              System.out.println(texts[2]);
-              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = false;
+              click.play();
+              //System.out.println(texts[2]);
+              ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = false;
               m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
             } else {
               if (boxes[3].contains(screenX, screenY)) {
-                System.out.println(texts[3]);
-              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
-              ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = false;
+                click.play();
+                //System.out.println(texts[3]);
+                ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
+                ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = false;
                 m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
               } else {
                 if (boxes[4].contains(screenX, screenY)) {
-                  System.out.println(texts[4]);
-                  ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
-                  ((SelectPlayerScreen)m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = true;
+                  click.play();
+                  //System.out.println(texts[4]);
+                  ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).multi = true;
+                  ((SelectPlayerScreen) m_game.screens.get(MyGame.CodeScreen.SELECT_CHAR)).pvp = true;
                   m_game.showScreen(MyGame.CodeScreen.SELECT_CHAR);
                 } else {
                   if (boxes[5].contains(screenX, screenY)) {
-                    System.out.println(texts[5]);
+                    click.play();
+                    //System.out.println(texts[5]);
 
                   } else {
                     if (boxes[6].contains(screenX, screenY)) {
-                      System.out.println(texts[6]);
+                      click.play();
+                      //System.out.println(texts[6]);
 
                     } else {
                       if (boxes[7].contains(screenX, screenY)) {
-                        System.out.println(texts[7]);
+                        //System.out.println(texts[7]);
+                        click.play();
                         Gdx.app.exit();
+                      } else {
+                        if (boxes[8].contains(screenX, screenY)) {
+                          if (!DatabaseDataManager.getInstance().getUser().equals("")) {
+                            click.play();
+                            DatabaseDataManager.getInstance().saveCharacters(UserData.getInstance().getCharacters());
+                          }
+                        } else {
+                          if (boxes[9].contains(screenX, screenY)) {
+                            if (!DatabaseDataManager.getInstance().getUser().equals("")) {
+                              click.play();
+                              UserData.getInstance().setCharacters(DatabaseDataManager.getInstance().loadCharacters()); //load from cloud
+                              LocalDataManager.getInstance().savePlayerData(UserData.getInstance().getCharacters()); //save locally
+                              for (int i = UserData.getInstance().getCharacters().length - 1; i >= 0; --i) {
+                                Personaje aux = UserData.getInstance().getCharacters()[i];
+                                if (aux != null) {
+                                  aux.init(aux.getClase(), 0);
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -161,8 +203,8 @@ public class MenuScreen implements Screen {
   }
 
   /**
-   * This method controls the camera movement, it is only a test,
-   * it won't be used in this screen
+   * This method controls the camera movement, it is only a test, it won't be
+   * used in this screen
    */
   public void processUserInput() {
     if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -180,11 +222,11 @@ public class MenuScreen implements Screen {
     if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
       camera.translate(0, 5 * Gdx.graphics.getDeltaTime() * 60);
     }
-    
+
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
       Gdx.app.exit();
     }
-    
+
     //if (MyGame.DEBUG_MODE) {
     //  System.out.println("CameraPointing(" + camera.position.x + ", " + camera.position.y + ")");
     //}
@@ -196,7 +238,7 @@ public class MenuScreen implements Screen {
     Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
     //we process the user input before we draw
     processUserInput();
-    
+
     stateTime += Gdx.graphics.getDeltaTime();
 
     camera.update();
@@ -215,6 +257,13 @@ public class MenuScreen implements Screen {
 
     for (int i = 0; i < 6; i++) {
       fontw.draw(batch, texts[i + 2], 100, 750 + 35 * i);
+    }
+
+    if(!DatabaseDataManager.getInstance().getUser().equals("")){
+      layout.setText(fontw, texts[8]);
+      fontw.draw(batch, texts[8], MyGame.WIDTH - 50 - layout.width, 100);
+      layout.setText(fontw, texts[9]);
+      fontw.draw(batch, texts[9], MyGame.WIDTH - 50 - layout.width, 100 + 35);
     }
 
     batch.end();

@@ -272,7 +272,7 @@ public class SelectPlayerScreen implements Screen {
 
   @Override
   public void pause() {
-
+    
   }
 
   @Override
@@ -282,7 +282,7 @@ public class SelectPlayerScreen implements Screen {
 
   @Override
   public void hide() {
-
+    pj = null;
   }
 
   @Override
