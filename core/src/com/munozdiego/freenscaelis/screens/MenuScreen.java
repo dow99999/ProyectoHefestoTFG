@@ -23,6 +23,7 @@ import com.munozdiego.freenscaelis.utils.DatabaseDataManager;
 import com.munozdiego.freenscaelis.MyGame;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.utils.LocalDataManager;
+import com.munozdiego.freenscaelis.utils.SocketDataManager;
 import com.munozdiego.freenscaelis.utils.UserData;
 
 /**
@@ -42,7 +43,7 @@ public class MenuScreen implements Screen {
   Sprite sprite_back;
 
   Music bg;
-  
+
   Sound click;
 
   final String[] texts = new String[]{
@@ -161,6 +162,7 @@ public class MenuScreen implements Screen {
                   } else {
                     if (boxes[6].contains(screenX, screenY)) {
                       click.play();
+                      m_game.showScreen(MyGame.CodeScreen.CREDITS);
                       //System.out.println(texts[6]);
 
                     } else {
@@ -207,20 +209,24 @@ public class MenuScreen implements Screen {
    * used in this screen
    */
   public void processUserInput() {
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-      camera.translate(5 * Gdx.graphics.getDeltaTime() * 60, 0);
-    }
 
-    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-      camera.translate(-5 * Gdx.graphics.getDeltaTime() * 60, 0);
-    }
+    if (MyGame.DEBUG_MODE) {
 
-    if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-      camera.translate(0, -5 * Gdx.graphics.getDeltaTime() * 60);
-    }
+      if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        camera.translate(5 * Gdx.graphics.getDeltaTime() * 60, 0);
+      }
 
-    if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-      camera.translate(0, 5 * Gdx.graphics.getDeltaTime() * 60);
+      if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        camera.translate(-5 * Gdx.graphics.getDeltaTime() * 60, 0);
+      }
+
+      if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        camera.translate(0, -5 * Gdx.graphics.getDeltaTime() * 60);
+      }
+
+      if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        camera.translate(0, 5 * Gdx.graphics.getDeltaTime() * 60);
+      }
     }
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -259,7 +265,7 @@ public class MenuScreen implements Screen {
       fontw.draw(batch, texts[i + 2], 100, 750 + 35 * i);
     }
 
-    if(!DatabaseDataManager.getInstance().getUser().equals("")){
+    if (!DatabaseDataManager.getInstance().getUser().equals("")) {
       layout.setText(fontw, texts[8]);
       fontw.draw(batch, texts[8], MyGame.WIDTH - 50 - layout.width, 100);
       layout.setText(fontw, texts[9]);
@@ -271,26 +277,26 @@ public class MenuScreen implements Screen {
 
   @Override
   public void resize(int i, int i1) {
-    //la formula de abajo se ha conseguido haciendo pruebas hasta que funcionara...
-    float ratiox = new Float(Math.sqrt((float) i / (float) MyGame.WIDTH));
-    float ratioy = new Float(Math.sqrt((float) i1 / (float) MyGame.HEIGHT));
-    Rectangle aux;
-
-    if (MyGame.DEBUG_MODE) {
-      System.out.println("i: " + i + ", il: " + i1 + "ratio(" + ratiox + "," + ratioy + ")");
-    }
-
-    //when resizing the window we have to change the collider boxes' dimensions
-    for (int x = 0; x < boxes.length; x++) {
-      aux = boxes[x];
-      aux.set(aux.x * ratiox,
-              aux.y * ratioy,
-              aux.width * ratiox,
-              aux.height * ratioy);
-      if (MyGame.DEBUG_MODE) {
-        System.out.println("box " + x + ":" + aux.x + "," + aux.y + "," + aux.width + "," + aux.height);
-      }
-    }
+//    //la formula de abajo se ha conseguido haciendo pruebas hasta que funcionara...
+//    float ratiox = new Float(Math.sqrt((float) i / (float) MyGame.WIDTH));
+//    float ratioy = new Float(Math.sqrt((float) i1 / (float) MyGame.HEIGHT));
+//    Rectangle aux;
+//
+//    if (MyGame.DEBUG_MODE) {
+//      System.out.println("i: " + i + ", il: " + i1 + "ratio(" + ratiox + "," + ratioy + ")");
+//    }
+//
+//    //when resizing the window we have to change the collider boxes' dimensions
+//    for (int x = 0; x < boxes.length; x++) {
+//      aux = boxes[x];
+//      aux.set(aux.x * ratiox,
+//              aux.y * ratioy,
+//              aux.width * ratiox,
+//              aux.height * ratioy);
+//      if (MyGame.DEBUG_MODE) {
+//        System.out.println("box " + x + ":" + aux.x + "," + aux.y + "," + aux.width + "," + aux.height);
+//      }
+//    }
 
   }
 
@@ -313,5 +319,10 @@ public class MenuScreen implements Screen {
   public void dispose() {
     batch.dispose();
     sprite_back.getTexture().dispose();
+    if (SocketDataManager.lastInstance != null) {
+      if (SocketDataManager.lastInstance.isAlive()) {
+        SocketDataManager.lastInstance.interrupt();
+      }
+    }
   }
 }

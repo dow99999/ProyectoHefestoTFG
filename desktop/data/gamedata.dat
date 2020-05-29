@@ -2,68 +2,10 @@
 <freenscaelis>
     <characters>
         <character>
-            <name>BLOB</name>
-            <clase>AXE</clase>
-            <stats>
-                <stat>5</stat>
-                <stat>2</stat>
-            </stats>
-            <inventory>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-                <item>
-                    <id>0</id>
-                    <att>0</att>
-                    <def>0</def>
-                </item>
-            </inventory>
-            <posx>1320</posx>
-            <posy>1440</posy>
-            <camx>1320</camx>
-            <camy>1440</camy>
+            <posx>0</posx>
+            <posy>0</posy>
+            <camx>0</camx>
+            <camy>0</camy>
             <map>0</map>
         </character>
         <character>

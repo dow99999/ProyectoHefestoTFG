@@ -53,13 +53,13 @@ public class SelectPlayerScreen implements Screen {
   GlyphLayout layout;
 
   final float[][] posCol = new float[][]{
-    {1200, 50}, //character slots
-    {1200, 100},
-    {1200, 150},
-    {1050, 50}, //erase buttons
-    {1050, 100},
-    {1050, 150},
-    {1050, 200}, //create new
+    {1250, 50}, //character slots
+    {1250, 100},
+    {1250, 150},
+    {1100, 50}, //erase buttons
+    {1100, 100},
+    {1100, 150},
+    {1100, 200}, //create new
     {1050, 800} //start game
   };
 
@@ -85,6 +85,8 @@ public class SelectPlayerScreen implements Screen {
 
     layout = new GlyphLayout();
 
+    sprite_back = Assets.getSprite("images/bg-blur.png");
+    
     for (int i = boxes_player_selection.length - 1; i >= 0; --i) {
       boxes_player_selection[i] = new Rectangle();
     }
@@ -244,6 +246,8 @@ public class SelectPlayerScreen implements Screen {
 
     batch.begin();
 
+    batch.draw(sprite_back, 0, 0);
+    
     //batch.draw(sprite_back, 0, 0);
     if (pj != null) {
       batch.draw(pj.getAnimaciones().get(pj.getCurrentState()).getKeyFrame(stateTime, true), 500, 500);

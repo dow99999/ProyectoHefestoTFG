@@ -158,7 +158,10 @@ public class CreatePlayerScreen implements Screen {
         }
         return true;
       }
+    
     };
+    sprite_back = Assets.getSprite("images/bg-blur.png");
+    
   }
 
   @Override
@@ -197,8 +200,8 @@ public class CreatePlayerScreen implements Screen {
     batch.setProjectionMatrix(camera.combined);
 
     batch.begin();
-
-    //batch.draw(sprite_back, 0, 0);
+    
+    batch.draw(sprite_back, 0, 0);
     batch.draw(pj_sword.getAnimaciones().get(pj_sword.getCurrentState()).getKeyFrame(stateTime, true), posCol[0][0], posCol[0][1]);
     batch.draw(pj_scepter.getAnimaciones().get(pj_scepter.getCurrentState()).getKeyFrame(stateTime, true), posCol[1][0], posCol[1][1]);
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.munozdiego.freenscaelis.models.Personaje;
 import com.munozdiego.freenscaelis.screens.ConnectScreen;
 import com.munozdiego.freenscaelis.screens.CreatePlayerScreen;
+import com.munozdiego.freenscaelis.screens.CreditsScreen;
 import com.munozdiego.freenscaelis.screens.LoginScreen;
 import com.munozdiego.freenscaelis.screens.PauseScreen;
 import com.munozdiego.freenscaelis.screens.maps.LevelScreen;
@@ -36,7 +37,8 @@ public class MyGame extends Game {
     LEVELS,
     PAUSE,
     CONNECT,
-    PVP
+    PVP,
+    CREDITS
   }
 
   public Map<CodeScreen, Screen> screens;
@@ -98,6 +100,7 @@ public class MyGame extends Game {
     screens.put(CodeScreen.PAUSE, new PauseScreen(this));
     screens.put(CodeScreen.CONNECT, new ConnectScreen(this));
     screens.put(CodeScreen.PVP, new ArenaScreen(this));
+    screens.put(CodeScreen.CREDITS, new CreditsScreen(this));
     showScreen(CodeScreen.MAIN_MENU);
 
   }

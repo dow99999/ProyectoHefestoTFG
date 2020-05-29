@@ -51,6 +51,7 @@ public class SocketDataManager extends Thread {
         sendPlayerInfo();
         getPlayerInfo();
         Thread.sleep(timeBetween);
+        System.out.println("getting data through socket...");
         //Thread.sleep(200); //test lag
       } while (running); //TODO stop this
 
