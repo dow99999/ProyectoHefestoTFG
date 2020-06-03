@@ -28,7 +28,7 @@ public class SocketDataManager extends Thread {
   Personaje pj;
   public Socket cs;
   public Personaje pj2;
-  long timeBetween = (1000 * 5) / 60;
+  long timeBetween = (1000 * 1) / 60;
 
   public SocketDataManager(Personaje aje, String ip) {
     pj = aje;
@@ -51,9 +51,10 @@ public class SocketDataManager extends Thread {
         sendPlayerInfo();
         getPlayerInfo();
         Thread.sleep(timeBetween);
-        System.out.println("getting data through socket...");
+        if(MyGame.DEBUG_MODE)
+          System.out.println("getting data through socket...");
         //Thread.sleep(200); //test lag
-      } while (running); //TODO stop this
+      } while (running);
 
     } catch (IOException ex) {
     } catch (InterruptedException ex) {

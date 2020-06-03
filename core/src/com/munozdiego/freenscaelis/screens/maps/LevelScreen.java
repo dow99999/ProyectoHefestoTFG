@@ -445,7 +445,7 @@ public class LevelScreen implements Screen {
             pj.setvDir(0);
             pj.setPosy(lastPos);
           }
-          System.out.println("W: " + pj.getvDir());
+          //System.out.println("W: " + pj.getvDir());
           moving = true;
         }
 
@@ -461,7 +461,7 @@ public class LevelScreen implements Screen {
             pj.setvDir(0);
             pj.setPosy(lastPos);
           }
-          System.out.println("S: " + pj.getvDir());
+          //System.out.println("S: " + pj.getvDir());
           moving = true;
         }
 
@@ -475,7 +475,7 @@ public class LevelScreen implements Screen {
           if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
             pj.setPosx(lastPos);
           }
-          System.out.println("D: " + pj.getvDir());
+          //System.out.println("D: " + pj.getvDir());
           moving = true;
         }
 
@@ -489,7 +489,7 @@ public class LevelScreen implements Screen {
           if (ColliderUtils.checkCollitions(colliders, pj.getColliders().get(pj.getCurrentState())) != null) {
             pj.setPosx(lastPos);
           }
-          System.out.println("A: " + pj.getvDir());
+          //System.out.println("A: " + pj.getvDir());
           moving = true;
         }
 
@@ -593,7 +593,7 @@ public class LevelScreen implements Screen {
     pj.setCamx(camera.position.x);
     pj.setCamy(camera.position.y);
 
-    System.out.println("end process: " + pj.getvDir());
+    //System.out.println("end process: " + pj.getvDir());
   }
 
   public void guessSecondPlayerPos() {
@@ -624,6 +624,10 @@ public class LevelScreen implements Screen {
 
   }
 
+  /**
+   * Method that processes the map change when the user is on a warp zone and
+   * manages assets changing
+   */
   public void processWarpEnter() {
     Rectangle warp = ColliderUtils.checkCollitions(warpZones, pj.getColliders().get(pj.getCurrentState()));
     int auxMap;
@@ -772,6 +776,12 @@ public class LevelScreen implements Screen {
     }
   }
 
+  /**
+   * Method that gives a "random" number between 0 and number, cycling in intervals
+   * @param numbers double max number to return
+   * @param speed double speed between number change (speed = 10 => 1 second between changes)
+   * @return int the random number
+   */
   private int getSyncRandom(double numbers, double speed) {
     int out = (int) (((((System.currentTimeMillis() / (100.0 * speed)) % 10.0) / 10.0)
             * (numbers + 1.0)));
