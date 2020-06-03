@@ -98,7 +98,7 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
         this.speed = 4;
         this.stats[0] = 2;
-        this.stats[1] = 2;
+        this.stats[1] = 1;
         followRangePow = 200 * 200;
         followRange = 200;
         directionTimef = 5;
@@ -114,7 +114,7 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
         this.speed = 3;
         this.stats[0] = 3;
-        this.stats[1] = 3;
+        this.stats[1] = 2;
         followRangePow = 200 * 200;
         followRange = 200;
         directionTimef = 5;
@@ -130,7 +130,7 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
         this.speed = 2;
         this.stats[0] = 5;
-        this.stats[1] = 2;
+        this.stats[1] = 1;
         followRangePow = 200 * 200;
         followRange = 200;
         directionTimef = 5;
@@ -145,8 +145,8 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, 0));
         getColliderOffset().put(Estado.DEAD, new Vector2(0, 0));
         this.speed = 1;
-        this.stats[0] = 20;
-        this.stats[1] = 20;
+        this.stats[0] = 15;
+        this.stats[1] = 3;
         followRangePow = 600 * 600;
         followRange = 600;
         directionTimef = 5;
@@ -161,8 +161,8 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -40));
         getColliderOffset().put(Estado.DEAD, new Vector2(0, -40));
         this.speed = 3;
-        this.stats[0] = 40;
-        this.stats[1] = 40;
+        this.stats[0] = 20;
+        this.stats[1] = 4;
         followRangePow = 600 * 600;
         followRange = 600;
         directionTimef = 5;
@@ -177,8 +177,8 @@ public class Enemigo extends Entidad {
         getColliderOffset().put(Estado.RUN_RIGHT, new Vector2(0, -90));
         getColliderOffset().put(Estado.DEAD, new Vector2(0, -90));
         this.speed = 2;
-        this.stats[0] = 60;
-        this.stats[1] = 60;
+        this.stats[0] = 17;
+        this.stats[1] = 3;
         followRangePow = 800 * 800;
         followRange = 800;
         directionTimef = 5;
