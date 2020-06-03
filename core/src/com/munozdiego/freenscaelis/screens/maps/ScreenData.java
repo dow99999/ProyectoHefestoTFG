@@ -70,7 +70,11 @@ public class ScreenData {
       new Rectangle(1440, 2495, 65, 383),
       new Rectangle(1220, 2496, 76, 383),
       new Rectangle(0, 1316, 385, 76),
-      new Rectangle(0, 1536, 385, 66)
+      new Rectangle(0, 1536, 385, 66),
+      new Rectangle(2638, 1391, 100, 144),
+      new Rectangle(1290, -100, 150, 100),
+      new Rectangle(-100, 1391, 100, 144),
+      new Rectangle(1295, 2875, 150, 100)
     },
     {
       new Rectangle(0, 0, 629, 1791),
@@ -89,7 +93,9 @@ public class ScreenData {
       new Rectangle(0, 2784, 1825, 767),
       new Rectangle(4019, 1620, 776, 1501),
       new Rectangle(3208, 2105, 304, 305),
-      new Rectangle(3204, 2422, 165, 234)
+      new Rectangle(3204, 2422, 165, 234),
+      new Rectangle(-100, 1791, 100, 129),
+      new Rectangle(4795, 1497, 100, 120)
     },
     {
       new Rectangle(0, 0, 384, 3837),
@@ -103,7 +109,9 @@ public class ScreenData {
       new Rectangle(3174, 3066, 1249, 772),
       new Rectangle(4411, 0, 384, 3833),
       new Rectangle(1960, 0, 1214, 2127),
-      new Rectangle(3175, 0, 1239, 1112)
+      new Rectangle(3175, 0, 1239, 1112),
+      new Rectangle(2303, 3838, 133, 100),
+      new Rectangle(383, -100, 133, 100)
     },
     {
       new Rectangle(0, 0, 2359, 1118),
@@ -118,7 +126,9 @@ public class ScreenData {
       new Rectangle(2484, 955, 1121, 403),
       new Rectangle(3735, 951, 1059, 392),
       new Rectangle(4124, 402, 670, 541),
-      new Rectangle(2355, 2488, 177, 214)
+      new Rectangle(2355, 2488, 177, 214),
+      new Rectangle(2357, -100, 135, 100),
+      new Rectangle(2406, 3832, 127, 100)
     },
     {
       new Rectangle(0, 0, 750, 5594),
@@ -170,7 +180,9 @@ public class ScreenData {
       new Rectangle(4340, 1802, 370, 428),
       new Rectangle(4717, 1799, 79, 2039),
       new Rectangle(3132, 264, 1664, 189),
-      new Rectangle(0, 0, 4796, 262)
+      new Rectangle(0, 0, 4796, 262),
+      new Rectangle(-100, 1682, 100, 131),
+      new Rectangle(4796, 1700, 100, 100)
     },
     {
       new Rectangle(383, 0, 2016, 180),
@@ -184,7 +196,8 @@ public class ScreenData {
       new Rectangle(2832, 2831, 190, 230),
       new Rectangle(1006, 2926, 290, 230),
       new Rectangle(2207, 1053, 290, 230),
-      new Rectangle(2207, 2206, 290, 230)
+      new Rectangle(2207, 2206, 290, 230),
+      new Rectangle(2398, -100, 144, 100)
     },
     {
       new Rectangle(0, 230, 382, 1352),
@@ -207,20 +220,26 @@ public class ScreenData {
       new Rectangle(1007, 580, 238, 178),
       new Rectangle(1680, 1105, 238, 178),
       new Rectangle(2400, 578, 238, 178),
-      new Rectangle(2976, 963, 238, 178)
+      new Rectangle(2976, 963, 238, 178),
+      new Rectangle(2398, 3833, 144, 100)
     },
     {
-      new Rectangle(0,0,1613,1661),
-      new Rectangle(1615,0,1135,985),
-      new Rectangle(2750,0,592,1615),
-      new Rectangle(3342,0,1231,462),
-      new Rectangle(4573,0,221,3838),
-      new Rectangle(0,1750,1613,2087),
-      new Rectangle(1612,2327,1135,1510),
-      new Rectangle(2752,1701,592,2127),
-      new Rectangle(3340,3284,1231,553)
+      new Rectangle(0, 0, 1613, 1661),
+      new Rectangle(1615, 0, 1135, 985),
+      new Rectangle(2750, 0, 592, 1615),
+      new Rectangle(3342, 0, 1231, 462),
+      new Rectangle(4573, 0, 221, 3838),
+      new Rectangle(0, 1750, 1613, 2087),
+      new Rectangle(1612, 2327, 1135, 1510),
+      new Rectangle(2752, 1701, 592, 2127),
+      new Rectangle(3340, 3284, 1231, 553),
+      new Rectangle(-100, 1662, 100, 87)
     },
     {
+      new Rectangle(0, 0, 2155, 144),
+      new Rectangle(0, 0, 46, 1198),
+      new Rectangle(0, 1170, 2155, 100),
+      new Rectangle(2112, 0, 100, 1198)
     }
   };
 
