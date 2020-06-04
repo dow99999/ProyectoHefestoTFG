@@ -124,18 +124,18 @@ public class CreatePlayerScreen implements Screen {
         if (boxes_player_selection[0].contains(screenX, screenY)) {
           if (MyGame.DEBUG_MODE) {
             System.out.println("player 0");
+          }
             selected = pj_sword;
             pj_sword.setCurrentState(Entidad.Estado.RUN_RIGHT);
             pj_scepter.setCurrentState(Entidad.Estado.IDLE_RIGHT);
-          }
         } else {
           if (boxes_player_selection[1].contains(screenX, screenY)) {
             if (MyGame.DEBUG_MODE) {
               System.out.println("player 1");
+            }
               pj_scepter.setCurrentState(Entidad.Estado.RUN_RIGHT);
               pj_sword.setCurrentState(Entidad.Estado.IDLE_RIGHT);
               selected = pj_scepter;
-            }
           } else {
             if (boxes_player_selection[2].contains(screenX, screenY)) {
               if (MyGame.DEBUG_MODE) {
